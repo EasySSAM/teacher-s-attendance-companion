@@ -331,7 +331,17 @@ export default function Settings({
 
         {/* Student list */}
         <section>
-          <h3 className="font-semibold text-foreground mb-3">학생 명단 ({students.length}명)</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-foreground">학생 명단 ({students.length}명)</h3>
+            {students.length > 0 && (
+              <button
+                onClick={() => setShowDeleteAllModal(true)}
+                className="px-3 py-1.5 bg-destructive/10 text-destructive rounded-xl text-xs font-semibold hover:bg-destructive/20 transition-colors"
+              >
+                일괄 삭제
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-2 gap-2">
             {students.map(student => (
               <div key={student.id} className="bg-card border border-border rounded-2xl p-3">
