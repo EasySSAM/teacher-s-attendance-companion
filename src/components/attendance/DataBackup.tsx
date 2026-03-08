@@ -135,8 +135,9 @@ export default function DataBackup({ students, records, onImportData }: DataBack
   };
 
   const parseAndImport = (content: string, filename: string) => {
-    // Try JSON first
-    const isJson = filename.replace('.enc', '').endsWith('.json');
+    // Try JSON first - also handle iOS duplicate suffix like ".json 3"
+    const cleanName = filename.replace('.enc', '').replace(/\s+\d+$/, '');
+    const isJson = cleanName.endsWith('.json') || content.trimStart().startsWith('{');
     if (isJson) {
       try {
         const data = JSON.parse(content);
