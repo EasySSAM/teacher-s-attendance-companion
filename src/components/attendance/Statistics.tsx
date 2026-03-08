@@ -104,21 +104,8 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
         <div
           className="relative bg-card border border-border rounded-2xl p-2.5 shadow-sm"
         >
-          <div className="flex items-center justify-end gap-0.5 mb-1">
-            <button
-              onClick={() => openEdit(r)}
-              className="shrink-0 p-1 rounded-lg hover:bg-muted transition-colors"
-            >
-              <EditIcon className="w-3 h-3 opacity-40" />
-            </button>
-            <button
-              onClick={() => handleDelete(r.id)}
-              className="shrink-0 p-1 rounded-lg hover:bg-destructive/10 transition-colors"
-            >
-              <TrashIcon className="w-3 h-3 text-destructive opacity-60" />
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-1">
+          <div className="flex items-start gap-1">
+            <div className="flex-1 flex flex-wrap gap-1">
             <span className={`inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
               {r.type1}{r.type2}
             </span>
