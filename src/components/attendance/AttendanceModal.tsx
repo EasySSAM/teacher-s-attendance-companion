@@ -39,6 +39,8 @@ export default function AttendanceModal({
   const [periods, setPeriods] = useState<number[]>([]);
   const [submittedDocs, setSubmittedDocs] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showWarningPopup, setShowWarningPopup] = useState(false);
+  const [pendingSave, setPendingSave] = useState<AttendanceRecord | null>(null);
 
   const isEdit = !!record;
 
