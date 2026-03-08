@@ -12,6 +12,7 @@ interface SettingsProps {
   onUpdateStudent: (id: string, updates: Partial<Student>) => void;
   onDeleteStudent: (id: string) => void;
   onBulkAddStudents: (students: Student[]) => void;
+  onDeleteAllStudents: () => void;
   onUpdateSchedule: (schedule: DaySchedule) => void;
   onUpdateWarningPhrases: (phrases: string[]) => void;
   onUpdateYearlyExcludeTypes: (types: Type1[]) => void;
