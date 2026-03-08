@@ -225,7 +225,7 @@ export default function DailyView({
 
                   <div className="flex flex-wrap gap-1">
                     {record.periods.length > 0 ? (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-muted text-muted-foreground">
                         {formatPeriods(record.periods)}
                       </span>
                     ) : (
