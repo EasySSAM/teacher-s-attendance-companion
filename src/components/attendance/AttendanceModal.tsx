@@ -345,13 +345,13 @@ export default function AttendanceModal({
           {/* Periods */}
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-2">교시 선택</label>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="grid grid-cols-5 gap-1.5">
               {availablePeriods.map(p => (
                 <button
                   key={p}
                   onClick={() => handlePeriodClick(p)}
                   disabled={type2 === '결석'}
-                  className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                  className={`py-1.5 rounded-lg text-xs font-medium border transition-all ${
                     periods.includes(p)
                       ? 'bg-primary text-primary-foreground border-primary'
                       : 'bg-muted text-muted-foreground border-transparent'

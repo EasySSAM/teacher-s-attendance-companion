@@ -104,28 +104,28 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
           >
             <EditIcon className="w-3 h-3 opacity-40" />
           </button>
-          <div className="grid grid-cols-2 gap-1">
-            <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
+          <div className="flex flex-wrap gap-1">
+            <span className={`inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
               {r.type1}{r.type2}
             </span>
-            <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium bg-muted text-muted-foreground truncate">
               {r.date.slice(5)} ({getDayName(r.date)})
             </span>
             {r.periods.length > 0 ? (
-              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate">
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium bg-muted text-muted-foreground truncate">
                 {formatPeriods(r.periods)}
               </span>
             ) : (
-              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused truncate">
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium bg-att-unexcused-bg text-att-unexcused truncate">
                 ⚠ 교시
               </span>
             )}
             {r.reason ? (
-              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate" title={r.reason}>
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium bg-muted text-muted-foreground truncate" title={r.reason}>
                 {r.reason}
               </span>
             ) : (
-              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused truncate">
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium bg-att-unexcused-bg text-att-unexcused truncate">
                 ⚠ 사유
               </span>
             )}
@@ -238,16 +238,16 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                         <EditIcon className="w-3.5 h-3.5 opacity-40" />
                       </button>
 
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
+                      <div className="flex items-center gap-1.5 mb-2 flex-wrap">
+                        <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-xs font-medium ${
                           student.gender === 'male'
                             ? 'bg-gender-male text-gender-male-text'
                             : 'bg-gender-female text-gender-female-text'
                         }`}>
                           {student.number}
                         </span>
-                        <span className="font-semibold text-sm text-foreground">{student.name}</span>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
+                        <span className="font-semibold text-sm text-foreground truncate">{student.name}</span>
+                        <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
                           {r.type1}{r.type2}
                         </span>
                       </div>

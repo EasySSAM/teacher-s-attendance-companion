@@ -348,7 +348,7 @@ export default function Settings({
                     </button>
                   )}
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2">
                   {students.map(student => (
                     <div key={student.id} className="bg-card border border-border rounded-2xl p-3">
                       {editingId === student.id ? (
@@ -434,7 +434,7 @@ export default function Settings({
                       value={newPhrase}
                       onChange={e => setNewPhrase(e.target.value)}
                       placeholder="예: 생리통, 병원"
-                      className="flex-1 p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
+                      className="flex-1 min-w-0 p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
                       onKeyDown={e => {
                         if (e.key === 'Enter' && newPhrase.trim()) {
                           onUpdateWarningPhrases([...warningPhrases, newPhrase.trim()]);
@@ -449,7 +449,7 @@ export default function Settings({
                           setNewPhrase('');
                         }
                       }}
-                      className="px-4 py-2.5 bg-primary text-primary-foreground rounded-xl text-sm font-semibold"
+                      className="shrink-0 px-4 py-2.5 bg-primary text-primary-foreground rounded-xl text-sm font-semibold"
                     >
                       추가
                     </button>
