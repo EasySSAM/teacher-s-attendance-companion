@@ -350,6 +350,35 @@ export default function AttendanceModal({
           </button>
         </div>
       </div>
+
+      {/* Warning confirmation popup */}
+      {showWarningPopup && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center">
+          <div className="absolute inset-0 bg-foreground/50" onClick={() => { setShowWarningPopup(false); setPendingSave(null); }} />
+          <div className="relative bg-card rounded-2xl p-6 w-80 shadow-2xl animate-slide-up">
+            <div className="flex items-center gap-2 mb-3">
+              <AlertIcon className="w-5 h-5 text-att-unexcused" />
+              <h3 className="font-semibold text-foreground">경고</h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-5">{warningMessage}</p>
+            <p className="text-sm text-foreground font-medium mb-4">그래도 저장하시겠습니까?</p>
+            <div className="flex gap-2">
+              <button
+                onClick={confirmSave}
+                className="flex-1 py-2.5 bg-att-unexcused text-primary-foreground rounded-xl font-semibold text-sm"
+              >
+                저장
+              </button>
+              <button
+                onClick={() => { setShowWarningPopup(false); setPendingSave(null); }}
+                className="flex-1 py-2.5 bg-muted text-muted-foreground rounded-xl font-medium text-sm"
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
