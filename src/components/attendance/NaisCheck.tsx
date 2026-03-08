@@ -321,7 +321,7 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
 
     // Check app records not in NAIS
     const processedAppKeys = new Set<string>();
-    monthlyRecords.forEach(r => {
+    recordsToCompare.forEach(r => {
       const student = students.find(s => s.id === r.studentId);
       if (!student) return;
       const dsKey = `${r.date}|${student.number}`;
