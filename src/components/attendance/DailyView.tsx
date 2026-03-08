@@ -158,7 +158,7 @@ export default function DailyView({
                 <div
                   key={record.id}
                   onClick={() => openEdit(record)}
-                  className={`relative ${colors.bg} border ${colors.border} rounded-2xl p-3 cursor-pointer transition-all hover:shadow-md active:scale-[0.98]`}
+                  className={`relative bg-card border border-border rounded-2xl p-3 cursor-pointer transition-all hover:shadow-md active:scale-[0.98] shadow-sm`}
                 >
                   <button
                     onClick={(e) => handleDelete(e, record.id)}
@@ -178,21 +178,29 @@ export default function DailyView({
                     <span className="font-semibold text-sm text-foreground">{student.name}</span>
                   </div>
 
-                  <div className={`text-xs font-semibold mb-1 ${colors.text}`}>
-                    {record.type1}{record.type2}
+                  <div className="flex flex-wrap gap-1">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
+                      {record.type1}{record.type2}
+                    </span>
+                    {record.periods.length > 0 ? (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-muted text-muted-foreground">
+                        {formatPeriods(record.periods)}
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-att-unexcused-bg text-att-unexcused">
+                        ⚠ 교시 미선택
+                      </span>
+                    )}
+                    {record.reason ? (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-muted text-muted-foreground">
+                        {record.reason}
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-att-unexcused-bg text-att-unexcused">
+                        ⚠ 사유 미입력
+                      </span>
+                    )}
                   </div>
-
-                  {record.reason ? (
-                    <p className="text-xs text-muted-foreground truncate">{record.reason}</p>
-                  ) : (
-                    <p className="text-xs text-att-unexcused font-medium">⚠ 사유 미입력</p>
-                  )}
-
-                  {record.periods.length > 0 ? (
-                    <p className="text-xs text-muted-foreground mt-1">{formatPeriods(record.periods)}</p>
-                  ) : (
-                    <p className="text-xs text-att-unexcused font-medium mt-1">⚠ 교시 미선택</p>
-                  )}
                 </div>
               );
             })}
