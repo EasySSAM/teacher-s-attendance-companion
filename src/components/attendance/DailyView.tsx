@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Student, AttendanceRecord, DaySchedule, PERIOD_LABELS } from '@/types/attendance';
 import { formatDate, addDaysSkipWeekend, getType1Color, formatPeriods, getTodayStr, getMaxPeriod } from '@/utils/attendance';
 import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, TrashIcon } from './Icons';
+import { RotateCcw } from 'lucide-react';
 import AttendanceModal from './AttendanceModal';
 
 interface DailyViewProps {
