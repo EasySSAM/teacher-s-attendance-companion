@@ -308,7 +308,7 @@ export default function DataBackup({ students, records, onImportData }: DataBack
           파일 선택하여 불러오기
           <input
             type="file"
-            accept=".json,.json.enc,.enc"
+            accept=".json,.enc,application/json,application/octet-stream"
             onChange={handleImportFile}
             className="hidden"
           />
