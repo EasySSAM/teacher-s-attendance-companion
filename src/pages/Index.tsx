@@ -42,7 +42,11 @@ const Index = () => {
             students={store.students}
             records={store.records}
             yearlyExcludeTypes={store.yearlyExcludeTypes}
+            schedule={store.schedule}
+            warningPhrases={store.warningPhrases}
+            frequentReasons={store.getFrequentReasons()}
             onUpdateRecord={store.updateRecord}
+            onAddRecord={store.addRecord}
           />
         )}
         {activeTab === 'nais' && (
