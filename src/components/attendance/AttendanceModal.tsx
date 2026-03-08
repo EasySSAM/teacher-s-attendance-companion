@@ -208,26 +208,53 @@ export default function AttendanceModal({
           {/* Date */}
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-1">날짜</label>
-            <input
-              type="date"
-              value={date}
-              onChange={e => setDate(e.target.value)}
-              className="w-full p-3 rounded-xl border border-input bg-background text-foreground"
-            />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setDate(addDaysSkipWeekend(date, -1))}
+                className="p-2 rounded-xl hover:bg-muted transition-colors border border-input"
+              >
+                <ChevronLeftIcon />
+              </button>
+              <input
+                type="date"
+                value={date}
+                onChange={e => setDate(e.target.value)}
+                className="flex-1 p-3 rounded-xl border border-input bg-background text-foreground text-center"
+              />
+              <button
+                onClick={() => setDate(addDaysSkipWeekend(date, 1))}
+                className="p-2 rounded-xl hover:bg-muted transition-colors border border-input"
+              >
+                <ChevronRightIcon />
+              </button>
+            </div>
           </div>
 
-          {/* Student */}
+          {/* Student - 2 column grid */}
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-1">학생</label>
-            <select
-              value={studentId}
-              onChange={e => setStudentId(e.target.value)}
-              className="w-full p-3 rounded-xl border border-input bg-background text-foreground"
-            >
+            <label className="block text-sm font-medium text-muted-foreground mb-2">학생</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-40 overflow-y-auto rounded-xl border border-input p-2 bg-background">
               {students.map(s => (
-                <option key={s.id} value={s.id}>{s.number}번 {s.name}</option>
+                <button
+                  key={s.id}
+                  onClick={() => setStudentId(s.id)}
+                  className={`flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-sm transition-all ${
+                    studentId === s.id
+                      ? 'bg-primary text-primary-foreground font-semibold'
+                      : 'hover:bg-muted text-foreground'
+                  }`}
+                >
+                  <span className={`inline-flex items-center justify-center w-6 h-6 rounded-md text-xs font-medium ${
+                    s.gender === 'male'
+                      ? 'bg-gender-male text-gender-male-text'
+                      : 'bg-gender-female text-gender-female-text'
+                  }`}>
+                    {s.number}
+                  </span>
+                  <span className="truncate">{s.name}</span>
+                </button>
               ))}
-            </select>
+            </div>
           </div>
 
           {/* Type 1 */}
