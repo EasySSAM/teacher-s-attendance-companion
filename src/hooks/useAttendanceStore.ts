@@ -33,6 +33,9 @@ export function useAttendanceStore() {
   const [warningPhrases, setWarningPhrases] = useState<string[]>(() =>
     loadFromStorage(WARNING_PHRASES_KEY, [])
   );
+  const [yearlyExcludeTypes, setYearlyExcludeTypes] = useState<Type1[]>(() =>
+    loadFromStorage(YEARLY_EXCLUDE_TYPES_KEY, ['출석인정'] as Type1[])
+  );
 
   useEffect(() => saveToStorage(STUDENTS_KEY, students), [students]);
   useEffect(() => saveToStorage(RECORDS_KEY, records), [records]);
