@@ -4,6 +4,7 @@ import { Student, AttendanceRecord, DaySchedule, DEFAULT_SCHEDULE, SAMPLE_STUDEN
 const STUDENTS_KEY = 'attendance_students_list';
 const RECORDS_KEY = 'attendance_records_pro';
 const SCHEDULE_KEY = 'attendance_schedule';
+const WARNING_PHRASES_KEY = 'attendance_warning_phrases';
 
 function loadFromStorage<T>(key: string, fallback: T): T {
   try {
