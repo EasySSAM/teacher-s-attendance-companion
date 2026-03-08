@@ -57,6 +57,22 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        att: {
+          approved: "hsl(var(--att-approved))",
+          "approved-bg": "hsl(var(--att-approved-bg))",
+          sick: "hsl(var(--att-sick))",
+          "sick-bg": "hsl(var(--att-sick-bg))",
+          other: "hsl(var(--att-other))",
+          "other-bg": "hsl(var(--att-other-bg))",
+          unexcused: "hsl(var(--att-unexcused))",
+          "unexcused-bg": "hsl(var(--att-unexcused-bg))",
+        },
+        gender: {
+          male: "hsl(var(--gender-male))",
+          "male-text": "hsl(var(--gender-male-text))",
+          female: "hsl(var(--gender-female))",
+          "female-text": "hsl(var(--gender-female-text))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
