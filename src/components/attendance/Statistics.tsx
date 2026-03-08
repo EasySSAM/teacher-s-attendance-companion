@@ -105,27 +105,27 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
             <EditIcon className="w-3 h-3 opacity-40" />
           </button>
           <div className="grid grid-cols-2 gap-1">
-            <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
+            <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
               {r.type1}{r.type2}
             </span>
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate">
+            <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate">
               {r.date.slice(5)} ({getDayName(r.date)})
             </span>
             {r.periods.length > 0 ? (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate">
+              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate">
                 {formatPeriods(r.periods)}
               </span>
             ) : (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused truncate">
+              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused truncate">
                 ⚠ 교시
               </span>
             )}
             {r.reason ? (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate" title={r.reason}>
+              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate" title={r.reason}>
                 {r.reason}
               </span>
             ) : (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused truncate">
+              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused truncate">
                 ⚠ 사유
               </span>
             )}
