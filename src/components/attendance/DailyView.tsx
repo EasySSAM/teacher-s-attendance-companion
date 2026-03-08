@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Student, AttendanceRecord, DaySchedule, PERIOD_LABELS } from '@/types/attendance';
 import { formatDate, addDaysSkipWeekend, getType1Color, formatPeriods, getTodayStr, getMaxPeriod, toDateStr } from '@/utils/attendance';
 import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, TrashIcon, EditIcon } from './Icons';
@@ -20,6 +20,8 @@ interface DailyViewProps {
   onDeleteRecord: (id: string) => void;
 }
 
+const DAILY_CURRENT_DATE_KEY = 'daily_view_current_date';
+
 export default function DailyView({
   students,
   records,
@@ -32,7 +34,7 @@ export default function DailyView({
   onUpdateRecord,
   onDeleteRecord,
 }: DailyViewProps) {
-  const [currentDate, setCurrentDate] = useState(getTodayStr());
+  const [currentDate, setCurrentDate] = useState(() => localStorage.getItem(DAILY_CURRENT_DATE_KEY) || getTodayStr());
   const [modalOpen, setModalOpen] = useState(false);
   const [editRecord, setEditRecord] = useState<AttendanceRecord | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<number | null>(null);

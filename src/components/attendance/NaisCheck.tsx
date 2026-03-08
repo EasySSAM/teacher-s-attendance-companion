@@ -163,10 +163,6 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
     setDiffs(null);
   };
 
-  const monthlyRecords = useMemo(() => {
-    const prefix = `${selectedMonth.year}-${String(selectedMonth.month).padStart(2, '0')}`;
-    return records.filter(r => r.date.startsWith(prefix));
-  }, [records, selectedMonth]);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
