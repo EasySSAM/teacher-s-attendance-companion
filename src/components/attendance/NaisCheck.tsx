@@ -423,7 +423,7 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
               초기화
             </button>
           )}
-        </button>
+        </div>
 
         {/* Results */}
         {checked && diffs !== null && (
