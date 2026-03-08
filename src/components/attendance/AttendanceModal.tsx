@@ -29,6 +29,7 @@ export default function AttendanceModal({
   onSave,
   onUpdate,
   frequentReasons,
+  warningPhrases,
 }: AttendanceModalProps) {
   const [date, setDate] = useState(currentDate);
   const [studentId, setStudentId] = useState('');
