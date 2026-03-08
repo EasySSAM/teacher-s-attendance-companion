@@ -92,6 +92,48 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
     const student = getStudent(r.studentId);
     if (!student) return null;
     const colors = getType1Color(r.type1);
+    if (hideStudent) {
+      return (
+        <div
+          onClick={() => openEdit(r)}
+          className="relative bg-card border border-border rounded-2xl p-2.5 shadow-sm cursor-pointer transition-all hover:shadow-md active:scale-[0.98]"
+        >
+          <button
+            onClick={(e) => { e.stopPropagation(); openEdit(r); }}
+            className="absolute top-1.5 right-1.5 p-1 rounded-lg hover:bg-muted transition-colors"
+          >
+            <EditIcon className="w-3 h-3 opacity-40" />
+          </button>
+          <div className="grid grid-cols-2 gap-1">
+            <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
+              {r.type1}{r.type2}
+            </span>
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate">
+              {r.date.slice(5)} ({getDayName(r.date)})
+            </span>
+            {r.periods.length > 0 ? (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate">
+                {formatPeriods(r.periods)}
+              </span>
+            ) : (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused truncate">
+                ⚠ 교시
+              </span>
+            )}
+            {r.reason ? (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground truncate" title={r.reason}>
+                {r.reason}
+              </span>
+            ) : (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused truncate">
+                ⚠ 사유
+              </span>
+            )}
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div
         onClick={() => openEdit(r)}
@@ -105,18 +147,14 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
         </button>
 
         <div className="flex items-center gap-2 mb-2">
-          {!hideStudent && (
-            <>
-              <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
-                student.gender === 'male'
-                  ? 'bg-gender-male text-gender-male-text'
-                  : 'bg-gender-female text-gender-female-text'
-              }`}>
-                {student.number}
-              </span>
-              <span className="font-semibold text-sm text-foreground">{student.name}</span>
-            </>
-          )}
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
+            student.gender === 'male'
+              ? 'bg-gender-male text-gender-male-text'
+              : 'bg-gender-female text-gender-female-text'
+          }`}>
+            {student.number}
+          </span>
+          <span className="font-semibold text-sm text-foreground">{student.name}</span>
           <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
             {r.type1}{r.type2}
           </span>
