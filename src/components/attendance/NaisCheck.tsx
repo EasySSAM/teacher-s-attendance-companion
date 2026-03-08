@@ -317,6 +317,19 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
           });
         }
       }
+
+      // Compare reasons
+      const appReason = appRecs.map(r => r.reason.trim()).join(', ');
+      const naisReason = nr.reason.trim();
+      if (naisReason && appReason && naisReason !== appReason) {
+        results.push({
+          type: 'mismatch',
+          studentName,
+          studentNumber: nr.number,
+          date: nr.date,
+          detail: `${nr.type1}${nr.type2} 사유 불일치 - 나이스: "${naisReason}" / 앱: "${appReason}"`,
+        });
+      }
     });
 
     // Check app records not in NAIS
