@@ -60,6 +60,11 @@ export function useAttendanceStore() {
     setStudents(newStudents.sort((a, b) => a.number - b.number));
   }, []);
 
+  const deleteAllStudents = useCallback(() => {
+    setStudents([]);
+    setRecords([]);
+  }, []);
+
   const addRecord = useCallback((record: AttendanceRecord) => {
     setRecords(prev => [...prev, record]);
   }, []);
@@ -128,6 +133,7 @@ export function useAttendanceStore() {
     updateStudent,
     deleteStudent,
     bulkAddStudents,
+    deleteAllStudents,
     addRecord,
     updateRecord,
     deleteRecord,

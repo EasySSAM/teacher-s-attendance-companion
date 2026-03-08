@@ -12,6 +12,7 @@ interface SettingsProps {
   onUpdateStudent: (id: string, updates: Partial<Student>) => void;
   onDeleteStudent: (id: string) => void;
   onBulkAddStudents: (students: Student[]) => void;
+  onDeleteAllStudents: () => void;
   onUpdateSchedule: (schedule: DaySchedule) => void;
   onUpdateWarningPhrases: (phrases: string[]) => void;
   onUpdateYearlyExcludeTypes: (types: Type1[]) => void;
@@ -26,6 +27,7 @@ export default function Settings({
   onUpdateStudent,
   onDeleteStudent,
   onBulkAddStudents,
+  onDeleteAllStudents,
   onUpdateSchedule,
   onUpdateWarningPhrases,
   onUpdateYearlyExcludeTypes,
@@ -41,6 +43,8 @@ export default function Settings({
   const [transferModal, setTransferModal] = useState<{ type: 'in' | 'out'; studentId: string } | null>(null);
   const [transferDate, setTransferDate] = useState('');
   const [newPhrase, setNewPhrase] = useState('');
+  const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const days = ['월', '화', '수', '목', '금'];
 
   const handleBulkAdd = () => {
@@ -327,7 +331,17 @@ export default function Settings({
 
         {/* Student list */}
         <section>
-          <h3 className="font-semibold text-foreground mb-3">학생 명단 ({students.length}명)</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-foreground">학생 명단 ({students.length}명)</h3>
+            {students.length > 0 && (
+              <button
+                onClick={() => setShowDeleteAllModal(true)}
+                className="px-3 py-1.5 bg-destructive/10 text-destructive rounded-xl text-xs font-semibold hover:bg-destructive/20 transition-colors"
+              >
+                일괄 삭제
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-2 gap-2">
             {students.map(student => (
               <div key={student.id} className="bg-card border border-border rounded-2xl p-3">
@@ -405,6 +419,50 @@ export default function Settings({
             <div className="flex gap-2">
               <button onClick={handleTransfer} className="flex-1 py-2.5 bg-primary text-primary-foreground rounded-xl font-semibold text-sm">확인</button>
               <button onClick={() => setTransferModal(null)} className="flex-1 py-2.5 bg-muted text-muted-foreground rounded-xl font-medium text-sm">취소</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete all modal */}
+      {showDeleteAllModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-foreground/40" onClick={() => { setShowDeleteAllModal(false); setDeleteConfirmText(''); }} />
+          <div className="relative bg-card rounded-2xl p-6 w-80 shadow-2xl animate-slide-up">
+            <h3 className="font-semibold text-destructive mb-2">⚠️ 학생 명단 일괄 삭제</h3>
+            <p className="text-sm text-muted-foreground mb-1">
+              모든 학생과 출결 기록이 영구적으로 삭제됩니다.
+            </p>
+            <p className="text-sm text-foreground font-medium mb-3">
+              계속하려면 아래에 <span className="text-destructive font-bold">삭제합니다</span>를 입력하세요.
+            </p>
+            <input
+              type="text"
+              value={deleteConfirmText}
+              onChange={e => setDeleteConfirmText(e.target.value)}
+              placeholder="삭제합니다"
+              className="w-full p-3 rounded-xl border border-input bg-background text-foreground mb-4 text-sm"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  if (deleteConfirmText === '삭제합니다') {
+                    onDeleteAllStudents();
+                    setShowDeleteAllModal(false);
+                    setDeleteConfirmText('');
+                  }
+                }}
+                disabled={deleteConfirmText !== '삭제합니다'}
+                className="flex-1 py-2.5 bg-destructive text-destructive-foreground rounded-xl font-semibold text-sm disabled:opacity-40 transition-opacity"
+              >
+                삭제
+              </button>
+              <button
+                onClick={() => { setShowDeleteAllModal(false); setDeleteConfirmText(''); }}
+                className="flex-1 py-2.5 bg-muted text-muted-foreground rounded-xl font-medium text-sm"
+              >
+                취소
+              </button>
             </div>
           </div>
         </div>

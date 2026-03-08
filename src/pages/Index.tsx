@@ -65,6 +65,7 @@ const Index = () => {
             onUpdateStudent={store.updateStudent}
             onDeleteStudent={store.deleteStudent}
             onBulkAddStudents={store.bulkAddStudents}
+            onDeleteAllStudents={store.deleteAllStudents}
             onUpdateSchedule={store.updateSchedule}
             onUpdateWarningPhrases={store.updateWarningPhrases}
             onUpdateYearlyExcludeTypes={store.updateYearlyExcludeTypes}
