@@ -2,6 +2,8 @@ import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { Student, AttendanceRecord, Type1, Type2 } from '@/types/attendance';
 import { UploadIcon } from './Icons';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface NaisCheckProps {
   students: Student[];
