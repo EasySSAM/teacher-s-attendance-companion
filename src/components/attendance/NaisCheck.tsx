@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { Student, AttendanceRecord, Type1, Type2 } from '@/types/attendance';
 import { UploadIcon } from './Icons';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
@@ -130,13 +130,26 @@ function formatPeriodsShort(periods: number[]): string {
   return sorted.map(p => labels[p] || `${p}교시`).join(',');
 }
 
+const NAIS_CSV_KEY = 'nais_check_csv';
+const NAIS_DIFFS_KEY = 'nais_check_diffs';
+const NAIS_MONTH_KEY = 'nais_check_month';
+
 export default function NaisCheck({ students, records }: NaisCheckProps) {
-  const [csvText, setCsvText] = useState('');
-  const [diffs, setDiffs] = useState<DiffItem[] | null>(null);
-  const [checked, setChecked] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
   const now = new Date();
-  const [selectedMonth, setSelectedMonth] = useState({ year: now.getFullYear(), month: now.getMonth() + 1 });
+  const [csvText, setCsvText] = useState(() => localStorage.getItem(NAIS_CSV_KEY) || '');
+  const [diffs, setDiffs] = useState<DiffItem[] | null>(() => {
+    try { const d = localStorage.getItem(NAIS_DIFFS_KEY); return d ? JSON.parse(d) : null; } catch { return null; }
+  });
+  const [checked, setChecked] = useState(() => !!localStorage.getItem(NAIS_DIFFS_KEY));
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [selectedMonth, setSelectedMonth] = useState(() => {
+    try { const m = localStorage.getItem(NAIS_MONTH_KEY); return m ? JSON.parse(m) : { year: now.getFullYear(), month: now.getMonth() + 1 }; } catch { return { year: now.getFullYear(), month: now.getMonth() + 1 }; }
+  });
+
+  // Persist to localStorage
+  useEffect(() => { localStorage.setItem(NAIS_CSV_KEY, csvText); }, [csvText]);
+  useEffect(() => { if (diffs !== null) localStorage.setItem(NAIS_DIFFS_KEY, JSON.stringify(diffs)); else localStorage.removeItem(NAIS_DIFFS_KEY); }, [diffs]);
+  useEffect(() => { localStorage.setItem(NAIS_MONTH_KEY, JSON.stringify(selectedMonth)); }, [selectedMonth]);
 
   const changeMonth = (dir: number) => {
     setSelectedMonth(prev => {
@@ -393,14 +406,24 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
           />
         </div>
 
-        {/* Check button */}
-        <button
-          onClick={runCheck}
-          disabled={!csvText.trim()}
-          className="w-full py-3 bg-primary text-primary-foreground rounded-xl font-semibold disabled:opacity-40 transition-opacity"
-        >
-          점검하기
-        </button>
+        {/* Buttons */}
+        <div className="flex gap-2">
+          <button
+            onClick={runCheck}
+            disabled={!csvText.trim()}
+            className="flex-1 py-3 bg-primary text-primary-foreground rounded-xl font-semibold disabled:opacity-40 transition-opacity"
+          >
+            점검하기
+          </button>
+          {csvText.trim() && (
+            <button
+              onClick={() => { setCsvText(''); setDiffs(null); setChecked(false); localStorage.removeItem(NAIS_DIFFS_KEY); }}
+              className="px-4 py-3 bg-muted text-muted-foreground rounded-xl font-semibold transition-opacity"
+            >
+              초기화
+            </button>
+          )}
+        </div>
 
         {/* Results */}
         {checked && diffs !== null && (
