@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { Student, AttendanceRecord, DaySchedule, PERIOD_LABELS } from '@/types/attendance';
-import { formatDate, addDaysSkipWeekend, getType1Color, formatPeriods, getTodayStr, getMaxPeriod } from '@/utils/attendance';
+import { formatDate, addDaysSkipWeekend, getType1Color, formatPeriods, getTodayStr, getMaxPeriod, toDateStr } from '@/utils/attendance';
 import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, TrashIcon } from './Icons';
 import { RotateCcw } from 'lucide-react';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import AttendanceModal from './AttendanceModal';
 
 interface DailyViewProps {
@@ -88,15 +90,32 @@ export default function DailyView({
           >
             <ChevronLeftIcon />
           </button>
-          <div className="text-center">
-            <h2 className="text-base font-semibold text-foreground">{formatDate(currentDate)}</h2>
-            <input
-              type="date"
-              value={currentDate}
-              onChange={e => setCurrentDate(e.target.value)}
-              className="opacity-0 absolute w-0 h-0"
-              id="date-picker"
-            />
+          <div className="flex items-center gap-2">
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="text-base font-semibold text-foreground hover:text-primary transition-colors">
+                  {formatDate(currentDate)}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="center">
+                <Calendar
+                  mode="single"
+                  selected={new Date(currentDate + 'T00:00:00')}
+                  onSelect={(day) => {
+                    if (day) setCurrentDate(toDateStr(day));
+                  }}
+                  className="p-3 pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
+            {currentDate !== getTodayStr() && (
+              <button
+                onClick={() => setCurrentDate(getTodayStr())}
+                className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                오늘로
+              </button>
+            )}
           </div>
           <button
             onClick={() => setCurrentDate(addDaysSkipWeekend(currentDate, 1))}
