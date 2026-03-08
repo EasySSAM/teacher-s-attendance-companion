@@ -58,6 +58,7 @@ const Index = () => {
         {activeTab === 'settings' && (
           <Settings
             students={store.students}
+            records={store.records}
             schedule={store.schedule}
             warningPhrases={store.warningPhrases}
             yearlyExcludeTypes={store.yearlyExcludeTypes}
@@ -66,6 +67,7 @@ const Index = () => {
             onDeleteStudent={store.deleteStudent}
             onBulkAddStudents={store.bulkAddStudents}
             onDeleteAllStudents={store.deleteAllStudents}
+            onImportData={store.importData}
             onUpdateSchedule={store.updateSchedule}
             onUpdateWarningPhrases={store.updateWarningPhrases}
             onUpdateYearlyExcludeTypes={store.updateYearlyExcludeTypes}

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Student, DaySchedule, Type1, TYPE1_OPTIONS } from '@/types/attendance';
+import { Student, AttendanceRecord, DaySchedule, Type1, TYPE1_OPTIONS } from '@/types/attendance';
 import { TrashIcon, PlusIcon, EditIcon } from './Icons';
 import { generateId } from '@/utils/attendance';
+import DataBackup from './DataBackup';
 
 interface SettingsProps {
   students: Student[];
+  records: AttendanceRecord[];
   schedule: DaySchedule;
   warningPhrases: string[];
   yearlyExcludeTypes: Type1[];
@@ -13,6 +15,7 @@ interface SettingsProps {
   onDeleteStudent: (id: string) => void;
   onBulkAddStudents: (students: Student[]) => void;
   onDeleteAllStudents: () => void;
+  onImportData: (students: Student[], records: AttendanceRecord[]) => void;
   onUpdateSchedule: (schedule: DaySchedule) => void;
   onUpdateWarningPhrases: (phrases: string[]) => void;
   onUpdateYearlyExcludeTypes: (types: Type1[]) => void;
@@ -20,6 +23,7 @@ interface SettingsProps {
 
 export default function Settings({
   students,
+  records,
   schedule,
   warningPhrases,
   yearlyExcludeTypes,
@@ -28,6 +32,7 @@ export default function Settings({
   onDeleteStudent,
   onBulkAddStudents,
   onDeleteAllStudents,
+  onImportData,
   onUpdateSchedule,
   onUpdateWarningPhrases,
   onUpdateYearlyExcludeTypes,
@@ -242,7 +247,14 @@ export default function Settings({
           </div>
         </section>
 
-        {/* Bulk import */}
+        {/* Data backup */}
+        <DataBackup
+          students={students}
+          records={records}
+          onImportData={onImportData}
+        />
+
+
         <section>
           <h3 className="font-semibold text-foreground mb-3">일괄 등록</h3>
           <div className="bg-accent rounded-2xl p-4 text-sm mb-3">
