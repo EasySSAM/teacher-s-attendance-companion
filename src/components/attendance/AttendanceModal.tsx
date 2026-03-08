@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Student, AttendanceRecord, Type1, Type2, TYPE1_OPTIONS, TYPE2_OPTIONS, PERIOD_LABELS } from '@/types/attendance';
-import { XIcon, AlertIcon } from './Icons';
-import { getMaxPeriod, getAllPeriods, getRequiredDocs, getDayName, generateId } from '@/utils/attendance';
+import { XIcon, AlertIcon, ChevronLeftIcon, ChevronRightIcon } from './Icons';
+import { getMaxPeriod, getAllPeriods, getRequiredDocs, getDayName, generateId, addDaysSkipWeekend } from '@/utils/attendance';
 import { DaySchedule } from '@/types/attendance';
 
 interface AttendanceModalProps {
@@ -33,8 +33,8 @@ export default function AttendanceModal({
 }: AttendanceModalProps) {
   const [date, setDate] = useState(currentDate);
   const [studentId, setStudentId] = useState('');
-  const [type1, setType1] = useState<Type1>('질병');
-  const [type2, setType2] = useState<Type2>('결석');
+  const [type1, setType1] = useState<Type1 | null>(null);
+  const [type2, setType2] = useState<Type2 | null>(null);
   const [reason, setReason] = useState('');
   const [periods, setPeriods] = useState<number[]>([]);
   const [submittedDocs, setSubmittedDocs] = useState<string[]>([]);
@@ -55,9 +55,9 @@ export default function AttendanceModal({
       setSubmittedDocs(record.submittedDocs);
     } else {
       setDate(currentDate);
-      setStudentId(students[0]?.id || '');
-      setType1('질병');
-      setType2('결석');
+      setStudentId('');
+      setType1(null);
+      setType2(null);
       setReason('');
       setPeriods([]);
       setSubmittedDocs([]);
@@ -104,7 +104,7 @@ export default function AttendanceModal({
     }
   };
 
-  const requiredDocs = getRequiredDocs(type1, type2, reason);
+  const requiredDocs = (type1 && type2) ? getRequiredDocs(type1, type2, reason) : [];
 
   const toggleDoc = (doc: string) => {
     setSubmittedDocs(prev =>
@@ -146,8 +146,8 @@ export default function AttendanceModal({
     id: record?.id || generateId(),
     studentId,
     date,
-    type1,
-    type2,
+    type1: type1!,
+    type2: type2!,
     reason,
     periods,
     requiredDocs,
@@ -164,7 +164,7 @@ export default function AttendanceModal({
   };
 
   const handleSave = () => {
-    if (!studentId) return;
+    if (!studentId || !type1 || !type2) return;
     const data = buildRecord();
 
     // Check if warning should be shown before saving
@@ -208,26 +208,53 @@ export default function AttendanceModal({
           {/* Date */}
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-1">날짜</label>
-            <input
-              type="date"
-              value={date}
-              onChange={e => setDate(e.target.value)}
-              className="w-full p-3 rounded-xl border border-input bg-background text-foreground"
-            />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setDate(addDaysSkipWeekend(date, -1))}
+                className="p-2 rounded-xl hover:bg-muted transition-colors border border-input"
+              >
+                <ChevronLeftIcon />
+              </button>
+              <input
+                type="date"
+                value={date}
+                onChange={e => setDate(e.target.value)}
+                className="flex-1 p-3 rounded-xl border border-input bg-background text-foreground text-center"
+              />
+              <button
+                onClick={() => setDate(addDaysSkipWeekend(date, 1))}
+                className="p-2 rounded-xl hover:bg-muted transition-colors border border-input"
+              >
+                <ChevronRightIcon />
+              </button>
+            </div>
           </div>
 
-          {/* Student */}
+          {/* Student - 2 column grid */}
           <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-1">학생</label>
-            <select
-              value={studentId}
-              onChange={e => setStudentId(e.target.value)}
-              className="w-full p-3 rounded-xl border border-input bg-background text-foreground"
-            >
+            <label className="block text-sm font-medium text-muted-foreground mb-2">학생</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-40 overflow-y-auto rounded-xl border border-input p-2 bg-background">
               {students.map(s => (
-                <option key={s.id} value={s.id}>{s.number}번 {s.name}</option>
+                <button
+                  key={s.id}
+                  onClick={() => setStudentId(s.id)}
+                  className={`flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-sm transition-all ${
+                    studentId === s.id
+                      ? 'bg-primary text-primary-foreground font-semibold'
+                      : 'hover:bg-muted text-foreground'
+                  }`}
+                >
+                  <span className={`inline-flex items-center justify-center w-6 h-6 rounded-md text-xs font-medium ${
+                    s.gender === 'male'
+                      ? 'bg-gender-male text-gender-male-text'
+                      : 'bg-gender-female text-gender-female-text'
+                  }`}>
+                    {s.number}
+                  </span>
+                  <span className="truncate">{s.name}</span>
+                </button>
               ))}
-            </select>
+            </div>
           </div>
 
           {/* Type 1 */}
@@ -344,7 +371,12 @@ export default function AttendanceModal({
           {/* Save button */}
           <button
             onClick={handleSave}
-            className="w-full py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold text-base shadow-lg hover:opacity-90 transition-opacity"
+            disabled={!studentId || !type1 || !type2}
+            className={`w-full py-3.5 rounded-xl font-semibold text-base shadow-lg transition-opacity ${
+              !studentId || !type1 || !type2
+                ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                : 'bg-primary text-primary-foreground hover:opacity-90'
+            }`}
           >
             {isEdit ? '수정하기' : '저장하기'}
           </button>
