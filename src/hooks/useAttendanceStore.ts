@@ -114,6 +114,10 @@ export function useAttendanceStore() {
     setWarningPhrases(phrases);
   }, []);
 
+  const updateYearlyExcludeTypes = useCallback((types: Type1[]) => {
+    setYearlyExcludeTypes(types);
+  }, []);
+
   return {
     students,
     records,
