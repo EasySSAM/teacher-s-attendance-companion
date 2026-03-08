@@ -130,7 +130,7 @@ export default function DailyView({
             <ChevronRightIcon />
           </button>
         </div>
-        <div className="mt-2 flex items-center justify-center gap-1.5 overflow-x-auto scrollbar-hide">
+        <div className="mt-2 flex items-center justify-center gap-1 overflow-hidden">
           {selectedPeriod !== null && (
             <button
               onClick={() => setSelectedPeriod(null)}
@@ -151,19 +151,22 @@ export default function DailyView({
             {changedCount > 0 ? `${changedCount}명 변동` : '전원출석'}
           </button>
           <div className="h-4 w-px bg-border shrink-0" />
-          {availablePeriods.map(p => (
-            <button
-              key={p}
-              onClick={() => setSelectedPeriod(selectedPeriod === p ? null : p)}
-              className={`shrink-0 text-[11px] font-medium px-1.5 py-0.5 rounded-full transition-colors ${
-                selectedPeriod === p
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
-              }`}
-            >
-              {PERIOD_LABELS[p]}
-            </button>
-          ))}
+          {availablePeriods.map(p => {
+            const shortLabel = p === 0 ? '조회' : p === 11 ? '종례' : String(p);
+            return (
+              <button
+                key={p}
+                onClick={() => setSelectedPeriod(selectedPeriod === p ? null : p)}
+                className={`shrink-0 text-[11px] font-medium min-w-[28px] py-1 rounded-lg transition-colors ${
+                  selectedPeriod === p
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                }`}
+              >
+                {shortLabel}
+              </button>
+            );
+          })}
         </div>
       </div>
 
