@@ -430,7 +430,7 @@ export default function Settings({
                 <div className="flex flex-col items-center text-center space-y-2">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted">
                     <span className="text-xs font-semibold text-foreground">출결 관리 앱</span>
-                    <span className="text-[10px] text-muted-foreground font-mono">v2025.03.08</span>
+                    <span className="text-[10px] text-muted-foreground font-mono">v2026.03.08</span>
                   </div>
                   <div className="space-y-0.5">
                     <p className="text-xs text-muted-foreground">
