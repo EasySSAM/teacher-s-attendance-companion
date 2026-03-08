@@ -275,9 +275,9 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
                           <div key={r.id} className="bg-card border border-border rounded-lg p-1.5 shadow-sm">
                             <div className="flex items-center gap-1 mb-1">
                               <span className="inline-flex items-center px-1 py-0 rounded text-xs font-medium bg-muted text-muted-foreground">
-                                {r.date.slice(5)}
+                                {parseInt(r.date.slice(8))}({getDayName(r.date)})
                               </span>
-                              <span className={`inline-flex items-center px-1 py-0 rounded text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
+                              <span className={`inline-flex items-center px-1 py-0 rounded text-xs font-semibold whitespace-nowrap ${colors.bg} ${colors.text} border ${colors.border}`}>
                                 {r.type1}{r.type2}
                               </span>
                             </div>
