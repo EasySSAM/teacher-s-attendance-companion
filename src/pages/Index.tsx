@@ -54,11 +54,13 @@ const Index = () => {
           <Settings
             students={store.students}
             schedule={store.schedule}
+            warningPhrases={store.warningPhrases}
             onAddStudent={store.addStudent}
             onUpdateStudent={store.updateStudent}
             onDeleteStudent={store.deleteStudent}
             onBulkAddStudents={store.bulkAddStudents}
             onUpdateSchedule={store.updateSchedule}
+            onUpdateWarningPhrases={store.updateWarningPhrases}
           />
         )}
       </div>

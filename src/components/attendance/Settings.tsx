@@ -36,7 +36,7 @@ export default function Settings({
   const [editGender, setEditGender] = useState<'male' | 'female'>('male');
   const [transferModal, setTransferModal] = useState<{ type: 'in' | 'out'; studentId: string } | null>(null);
   const [transferDate, setTransferDate] = useState('');
-
+  const [newPhrase, setNewPhrase] = useState('');
   const days = ['월', '화', '수', '목', '금'];
 
   const handleBulkAdd = () => {

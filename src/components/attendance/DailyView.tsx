@@ -177,6 +177,7 @@ export default function DailyView({
         onSave={onAddRecord}
         onUpdate={onUpdateRecord}
         frequentReasons={frequentReasons}
+        warningPhrases={warningPhrases}
       />
     </div>
   );
