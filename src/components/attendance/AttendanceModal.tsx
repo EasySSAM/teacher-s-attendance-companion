@@ -112,10 +112,22 @@ export default function AttendanceModal({
     );
   };
 
-  // Warning: same reason in same month
+  // Warning: check warningPhrases against same-month records with matching reason
   const warningMessage = useMemo(() => {
     if (!reason || !studentId || !date) return '';
     const month = date.slice(0, 7);
+    // Check if reason contains any warning phrase
+    const matchedPhrase = warningPhrases.find(phrase => reason.includes(phrase));
+    if (matchedPhrase) {
+      const existing = records.filter(
+        r => r.studentId === studentId && r.date.startsWith(month) && r.reason.includes(matchedPhrase) && r.id !== record?.id
+      );
+      if (existing.length > 0) {
+        const details = existing.map(r => `${r.date.slice(5)} ${r.type1}${r.type2}`).join(', ');
+        return `⚠ 이번 달에 "${matchedPhrase}" 사유로 이미 기록이 있습니다: ${details}`;
+      }
+    }
+    // Fallback: exact reason match
     const existing = records.filter(
       r => r.studentId === studentId && r.date.startsWith(month) && r.reason === reason && r.id !== record?.id
     );
@@ -123,7 +135,7 @@ export default function AttendanceModal({
       return `이번 달에 같은 사유("${reason}")로 ${existing.length}건의 기록이 있습니다.`;
     }
     return '';
-  }, [reason, studentId, date, records, record]);
+  }, [reason, studentId, date, records, record, warningPhrases]);
 
   const filteredSuggestions = useMemo(() => {
     if (!reason || reason.length === 0) return [];
