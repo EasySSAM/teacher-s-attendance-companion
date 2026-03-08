@@ -215,12 +215,17 @@ export default function AttendanceModal({
               >
                 <ChevronLeftIcon />
               </button>
-              <input
-                type="date"
-                value={date}
-                onChange={e => setDate(e.target.value)}
-                className="flex-1 p-3 rounded-xl border border-input bg-background text-foreground text-center"
-              />
+              <div className="flex-1 relative">
+                <input
+                  type="date"
+                  value={date}
+                  onChange={e => setDate(e.target.value)}
+                  className="w-full p-3 rounded-xl border border-input bg-background text-foreground text-center"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">
+                  ({getDayName(date)})
+                </span>
+              </div>
               <button
                 onClick={() => setDate(addDaysSkipWeekend(date, 1))}
                 className="p-2 rounded-xl hover:bg-muted transition-colors border border-input"
@@ -230,28 +235,30 @@ export default function AttendanceModal({
             </div>
           </div>
 
-          {/* Student - 2 column grid */}
+          {/* Student - 5 column grid */}
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-2">학생</label>
-            <div className="grid grid-cols-2 gap-1.5 max-h-40 overflow-y-auto rounded-xl border border-input p-2 bg-background">
+            <div className="grid grid-cols-5 gap-1 max-h-44 overflow-y-auto rounded-xl border border-input p-1.5 bg-background">
               {students.map(s => (
                 <button
                   key={s.id}
                   onClick={() => setStudentId(s.id)}
-                  className={`flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-sm transition-all ${
+                  className={`flex flex-col items-center py-1.5 px-1 rounded-lg text-xs transition-all ${
                     studentId === s.id
                       ? 'bg-primary text-primary-foreground font-semibold'
                       : 'hover:bg-muted text-foreground'
                   }`}
                 >
-                  <span className={`inline-flex items-center justify-center w-6 h-6 rounded-md text-xs font-medium ${
-                    s.gender === 'male'
-                      ? 'bg-gender-male text-gender-male-text'
-                      : 'bg-gender-female text-gender-female-text'
+                  <span className={`inline-flex items-center justify-center w-6 h-6 rounded-md text-xs font-medium mb-0.5 ${
+                    studentId === s.id
+                      ? 'bg-primary-foreground/20 text-primary-foreground'
+                      : s.gender === 'male'
+                        ? 'bg-gender-male text-gender-male-text'
+                        : 'bg-gender-female text-gender-female-text'
                   }`}>
                     {s.number}
                   </span>
-                  <span className="truncate">{s.name}</span>
+                  <span className="truncate w-full text-center text-[11px]">{s.name}</span>
                 </button>
               ))}
             </div>
