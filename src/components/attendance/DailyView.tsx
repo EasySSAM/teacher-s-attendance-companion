@@ -102,6 +102,15 @@ export default function DailyView({
           </button>
         </div>
         <div className="mt-2 flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
+          {selectedPeriod !== null && (
+            <button
+              onClick={() => setSelectedPeriod(null)}
+              className="shrink-0 p-1.5 rounded-full bg-primary text-primary-foreground transition-colors"
+              title="기본 보기로 돌아가기"
+            >
+              <RotateCcw size={14} />
+            </button>
+          )}
           <button
             onClick={() => setSelectedPeriod(null)}
             className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${
