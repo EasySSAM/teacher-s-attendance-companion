@@ -24,6 +24,7 @@ export default function DailyView({
   getActiveStudents,
   getRecordsForDate,
   getFrequentReasons,
+  warningPhrases,
   onAddRecord,
   onUpdateRecord,
   onDeleteRecord,
