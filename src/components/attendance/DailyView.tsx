@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { Student, AttendanceRecord, DaySchedule } from '@/types/attendance';
-import { formatDate, addDaysSkipWeekend, getType1Color, formatPeriods, getTodayStr } from '@/utils/attendance';
+import { Student, AttendanceRecord, DaySchedule, PERIOD_LABELS } from '@/types/attendance';
+import { formatDate, addDaysSkipWeekend, getType1Color, formatPeriods, getTodayStr, getMaxPeriod } from '@/utils/attendance';
 import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, TrashIcon } from './Icons';
 import AttendanceModal from './AttendanceModal';
 
