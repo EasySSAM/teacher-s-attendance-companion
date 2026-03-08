@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Student, AttendanceRecord, Type1, DaySchedule } from '@/types/attendance';
-import { ChevronLeftIcon, ChevronRightIcon, CheckIcon, EditIcon } from './Icons';
+import { ChevronLeftIcon, ChevronRightIcon, CheckIcon, EditIcon, TrashIcon } from './Icons';
 import { formatDate, getType1Color, formatPeriods, getSchoolYear, getDayName } from '@/utils/attendance';
 import AttendanceModal from './AttendanceModal';
 
@@ -13,11 +13,12 @@ interface StatisticsProps {
   frequentReasons: string[];
   onUpdateRecord: (id: string, updates: Partial<AttendanceRecord>) => void;
   onAddRecord: (record: AttendanceRecord) => void;
+  onDeleteRecord: (id: string) => void;
 }
 
 type SubTab = 'docs' | 'monthly-date' | 'monthly-student' | 'yearly';
 
-export default function Statistics({ students, records, yearlyExcludeTypes, schedule, warningPhrases, frequentReasons, onUpdateRecord, onAddRecord }: StatisticsProps) {
+export default function Statistics({ students, records, yearlyExcludeTypes, schedule, warningPhrases, frequentReasons, onUpdateRecord, onAddRecord, onDeleteRecord }: StatisticsProps) {
   const [subTab, setSubTab] = useState<SubTab>('docs');
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState({ year: now.getFullYear(), month: now.getMonth() + 1 });
@@ -30,6 +31,12 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
   const openEdit = (record: AttendanceRecord) => {
     setEditRecord(record);
     setModalOpen(true);
+  };
+
+  const handleDelete = (id: string) => {
+    if (confirm('이 출결 기록을 삭제하시겠습니까?')) {
+      onDeleteRecord(id);
+    }
   };
 
   const subTabs: { key: SubTab; label: string }[] = [
@@ -97,13 +104,18 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
         <div
           className="relative bg-card border border-border rounded-2xl p-2.5 shadow-sm"
         >
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex-1" />
+          <div className="flex items-center justify-end gap-0.5 mb-1">
             <button
               onClick={() => openEdit(r)}
               className="shrink-0 p-1 rounded-lg hover:bg-muted transition-colors"
             >
               <EditIcon className="w-3 h-3 opacity-40" />
+            </button>
+            <button
+              onClick={() => handleDelete(r.id)}
+              className="shrink-0 p-1 rounded-lg hover:bg-destructive/10 transition-colors"
+            >
+              <TrashIcon className="w-3 h-3 text-destructive opacity-60" />
             </button>
           </div>
           <div className="flex flex-wrap gap-1">
@@ -154,12 +166,20 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
               {r.type1}{r.type2}
             </span>
           </div>
-          <button
-            onClick={() => openEdit(r)}
-            className="shrink-0 p-1.5 rounded-lg hover:bg-muted transition-colors"
-          >
-            <EditIcon className="w-3.5 h-3.5 opacity-40" />
-          </button>
+          <div className="flex items-center shrink-0">
+            <button
+              onClick={() => openEdit(r)}
+              className="p-1.5 rounded-lg hover:bg-muted transition-colors"
+            >
+              <EditIcon className="w-3.5 h-3.5 opacity-40" />
+            </button>
+            <button
+              onClick={() => handleDelete(r.id)}
+              className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors"
+            >
+              <TrashIcon className="w-3.5 h-3.5 text-destructive opacity-60" />
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-1">
@@ -246,12 +266,20 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                           {r.type1}{r.type2}
                         </span>
                         </div>
-                        <button
-                          onClick={() => openEdit(r)}
-                          className="shrink-0 p-1.5 rounded-lg hover:bg-muted transition-colors"
-                        >
-                          <EditIcon className="w-3.5 h-3.5 opacity-40" />
-                        </button>
+                        <div className="flex items-center shrink-0">
+                          <button
+                            onClick={() => openEdit(r)}
+                            className="p-1.5 rounded-lg hover:bg-muted transition-colors"
+                          >
+                            <EditIcon className="w-3.5 h-3.5 opacity-40" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(r.id)}
+                            className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors"
+                          >
+                            <TrashIcon className="w-3.5 h-3.5 text-destructive opacity-60" />
+                          </button>
+                        </div>
                       </div>
 
                       <div className="flex flex-wrap gap-1 mb-2">
