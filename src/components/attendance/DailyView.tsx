@@ -32,10 +32,24 @@ export default function DailyView({
   const [currentDate, setCurrentDate] = useState(getTodayStr());
   const [modalOpen, setModalOpen] = useState(false);
   const [editRecord, setEditRecord] = useState<AttendanceRecord | null>(null);
+  const [selectedPeriod, setSelectedPeriod] = useState<number | null>(null);
 
   const dayRecords = useMemo(() => getRecordsForDate(currentDate), [currentDate, getRecordsForDate]);
   const activeStudents = useMemo(() => getActiveStudents(currentDate), [currentDate, getActiveStudents]);
   const frequentReasons = useMemo(() => getFrequentReasons(), [getFrequentReasons]);
+
+  const maxPeriod = getMaxPeriod(currentDate, schedule);
+  const availablePeriods = useMemo(() => {
+    const p = [0];
+    for (let i = 1; i <= maxPeriod; i++) p.push(i);
+    p.push(11);
+    return p;
+  }, [maxPeriod]);
+
+  const filteredRecords = useMemo(() => {
+    if (selectedPeriod === null) return dayRecords;
+    return dayRecords.filter(r => r.periods.includes(selectedPeriod));
+  }, [dayRecords, selectedPeriod]);
 
   const changedCount = dayRecords.length;
 
