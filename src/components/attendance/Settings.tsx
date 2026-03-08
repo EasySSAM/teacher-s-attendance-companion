@@ -43,6 +43,8 @@ export default function Settings({
   const [transferModal, setTransferModal] = useState<{ type: 'in' | 'out'; studentId: string } | null>(null);
   const [transferDate, setTransferDate] = useState('');
   const [newPhrase, setNewPhrase] = useState('');
+  const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const days = ['월', '화', '수', '목', '금'];
 
   const handleBulkAdd = () => {
