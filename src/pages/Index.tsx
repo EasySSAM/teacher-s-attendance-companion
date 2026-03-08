@@ -31,6 +31,7 @@ const Index = () => {
             getActiveStudents={store.getActiveStudents}
             getRecordsForDate={store.getRecordsForDate}
             getFrequentReasons={store.getFrequentReasons}
+            warningPhrases={store.warningPhrases}
             onAddRecord={store.addRecord}
             onUpdateRecord={store.updateRecord}
             onDeleteRecord={store.deleteRecord}
