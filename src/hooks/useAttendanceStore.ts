@@ -1,10 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Student, AttendanceRecord, DaySchedule, DEFAULT_SCHEDULE, SAMPLE_STUDENTS, SAMPLE_RECORDS } from '@/types/attendance';
+import { Student, AttendanceRecord, DaySchedule, Type1, DEFAULT_SCHEDULE, SAMPLE_STUDENTS, SAMPLE_RECORDS } from '@/types/attendance';
 
 const STUDENTS_KEY = 'attendance_students_list';
 const RECORDS_KEY = 'attendance_records_pro';
 const SCHEDULE_KEY = 'attendance_schedule';
 const WARNING_PHRASES_KEY = 'attendance_warning_phrases';
+const YEARLY_EXCLUDE_TYPES_KEY = 'attendance_yearly_exclude_types';
 
 function loadFromStorage<T>(key: string, fallback: T): T {
   try {
@@ -32,11 +33,15 @@ export function useAttendanceStore() {
   const [warningPhrases, setWarningPhrases] = useState<string[]>(() =>
     loadFromStorage(WARNING_PHRASES_KEY, [])
   );
+  const [yearlyExcludeTypes, setYearlyExcludeTypes] = useState<Type1[]>(() =>
+    loadFromStorage(YEARLY_EXCLUDE_TYPES_KEY, ['출석인정'] as Type1[])
+  );
 
   useEffect(() => saveToStorage(STUDENTS_KEY, students), [students]);
   useEffect(() => saveToStorage(RECORDS_KEY, records), [records]);
   useEffect(() => saveToStorage(SCHEDULE_KEY, schedule), [schedule]);
   useEffect(() => saveToStorage(WARNING_PHRASES_KEY, warningPhrases), [warningPhrases]);
+  useEffect(() => saveToStorage(YEARLY_EXCLUDE_TYPES_KEY, yearlyExcludeTypes), [yearlyExcludeTypes]);
 
   const addStudent = useCallback((student: Student) => {
     setStudents(prev => [...prev, student].sort((a, b) => a.number - b.number));
@@ -109,11 +114,16 @@ export function useAttendanceStore() {
     setWarningPhrases(phrases);
   }, []);
 
+  const updateYearlyExcludeTypes = useCallback((types: Type1[]) => {
+    setYearlyExcludeTypes(types);
+  }, []);
+
   return {
     students,
     records,
     schedule,
     warningPhrases,
+    yearlyExcludeTypes,
     addStudent,
     updateStudent,
     deleteStudent,
@@ -128,5 +138,6 @@ export function useAttendanceStore() {
     getFrequentReasons,
     updateSchedule,
     updateWarningPhrases,
+    updateYearlyExcludeTypes,
   };
 }

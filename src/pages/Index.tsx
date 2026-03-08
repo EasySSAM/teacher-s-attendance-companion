@@ -41,6 +41,7 @@ const Index = () => {
           <Statistics
             students={store.students}
             records={store.records}
+            yearlyExcludeTypes={store.yearlyExcludeTypes}
             onUpdateRecord={store.updateRecord}
           />
         )}
@@ -55,12 +56,14 @@ const Index = () => {
             students={store.students}
             schedule={store.schedule}
             warningPhrases={store.warningPhrases}
+            yearlyExcludeTypes={store.yearlyExcludeTypes}
             onAddStudent={store.addStudent}
             onUpdateStudent={store.updateStudent}
             onDeleteStudent={store.deleteStudent}
             onBulkAddStudents={store.bulkAddStudents}
             onUpdateSchedule={store.updateSchedule}
             onUpdateWarningPhrases={store.updateWarningPhrases}
+            onUpdateYearlyExcludeTypes={store.updateYearlyExcludeTypes}
           />
         )}
       </div>

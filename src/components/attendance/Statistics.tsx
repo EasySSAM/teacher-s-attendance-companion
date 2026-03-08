@@ -6,12 +6,13 @@ import { formatDate, getType1Color, formatPeriods, getSchoolYear, getDayName } f
 interface StatisticsProps {
   students: Student[];
   records: AttendanceRecord[];
+  yearlyExcludeTypes: Type1[];
   onUpdateRecord: (id: string, updates: Partial<AttendanceRecord>) => void;
 }
 
 type SubTab = 'docs' | 'monthly-date' | 'monthly-student' | 'yearly';
 
-export default function Statistics({ students, records, onUpdateRecord }: StatisticsProps) {
+export default function Statistics({ students, records, yearlyExcludeTypes, onUpdateRecord }: StatisticsProps) {
   const [subTab, setSubTab] = useState<SubTab>('docs');
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState({ year: now.getFullYear(), month: now.getMonth() + 1 });
@@ -51,8 +52,8 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
   const yearlyRecords = useMemo(() => {
     const startDate = `${selectedSchoolYear}-03-01`;
     const endDate = `${selectedSchoolYear + 1}-02-28`;
-    return records.filter(r => r.date >= startDate && r.date <= endDate && r.type1 !== '출석인정');
-  }, [records, selectedSchoolYear]);
+    return records.filter(r => r.date >= startDate && r.date <= endDate && !yearlyExcludeTypes.includes(r.type1));
+  }, [records, selectedSchoolYear, yearlyExcludeTypes]);
 
   // Yearly stats per student
   const yearlyStats = useMemo(() => {
