@@ -284,11 +284,15 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
                                   <span className={`inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
                                     {r.type1}{r.type2}
                                   </span>
-                                  <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate">
-                                    {r.periods.length > 0 ? formatPeriods(r.periods) : '-'}
+                                  <span className={`inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium truncate ${
+                                    r.periods.length > 0 ? 'bg-muted text-muted-foreground' : 'bg-att-unexcused-bg text-att-unexcused'
+                                  }`}>
+                                    {r.periods.length > 0 ? formatPeriods(r.periods) : '⚠교시'}
                                   </span>
-                                  <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate" title={r.reason || ''}>
-                                    {r.reason || '-'}
+                                  <span className={`inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium truncate ${
+                                    r.reason ? 'bg-muted text-muted-foreground' : 'bg-att-unexcused-bg text-att-unexcused'
+                                  }`} title={r.reason || ''}>
+                                    {r.reason || '⚠사유'}
                                   </span>
                                 </div>
                               </div>
