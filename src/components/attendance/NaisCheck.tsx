@@ -115,7 +115,7 @@ function parseCSVLine(line: string): string[] {
   return result;
 }
 
-
+function formatDateShort(dateStr: string): string {
   const d = new Date(dateStr + 'T00:00:00');
   const m = d.getMonth() + 1;
   const day = d.getDate();
