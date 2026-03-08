@@ -222,7 +222,7 @@ export default function AttendanceModal({
                   onChange={e => setDate(e.target.value)}
                   className="w-full p-3 rounded-xl border border-input bg-background text-foreground text-center"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-foreground pointer-events-none">
                   ({getDayName(date)})
                 </span>
               </div>
