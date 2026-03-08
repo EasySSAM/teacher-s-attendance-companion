@@ -311,7 +311,7 @@ export default function Settings({
         {/* Student list */}
         <section>
           <h3 className="font-semibold text-foreground mb-3">학생 명단 ({students.length}명)</h3>
-          <div className="space-y-2">
+          <div className="grid grid-cols-2 gap-2">
             {students.map(student => (
               <div key={student.id} className="bg-card border border-border rounded-2xl p-3">
                 {editingId === student.id ? (
