@@ -423,6 +423,50 @@ export default function Settings({
           </div>
         </div>
       )}
+
+      {/* Delete all modal */}
+      {showDeleteAllModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-foreground/40" onClick={() => { setShowDeleteAllModal(false); setDeleteConfirmText(''); }} />
+          <div className="relative bg-card rounded-2xl p-6 w-80 shadow-2xl animate-slide-up">
+            <h3 className="font-semibold text-destructive mb-2">⚠️ 학생 명단 일괄 삭제</h3>
+            <p className="text-sm text-muted-foreground mb-1">
+              모든 학생과 출결 기록이 영구적으로 삭제됩니다.
+            </p>
+            <p className="text-sm text-foreground font-medium mb-3">
+              계속하려면 아래에 <span className="text-destructive font-bold">삭제합니다</span>를 입력하세요.
+            </p>
+            <input
+              type="text"
+              value={deleteConfirmText}
+              onChange={e => setDeleteConfirmText(e.target.value)}
+              placeholder="삭제합니다"
+              className="w-full p-3 rounded-xl border border-input bg-background text-foreground mb-4 text-sm"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  if (deleteConfirmText === '삭제합니다') {
+                    onDeleteAllStudents();
+                    setShowDeleteAllModal(false);
+                    setDeleteConfirmText('');
+                  }
+                }}
+                disabled={deleteConfirmText !== '삭제합니다'}
+                className="flex-1 py-2.5 bg-destructive text-destructive-foreground rounded-xl font-semibold text-sm disabled:opacity-40 transition-opacity"
+              >
+                삭제
+              </button>
+              <button
+                onClick={() => { setShowDeleteAllModal(false); setDeleteConfirmText(''); }}
+                className="flex-1 py-2.5 bg-muted text-muted-foreground rounded-xl font-medium text-sm"
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
