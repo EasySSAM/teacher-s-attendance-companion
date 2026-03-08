@@ -255,41 +255,47 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
               <span className="font-semibold text-foreground">{selectedMonth.year}년 {selectedMonth.month}월</span>
               <button onClick={() => changeMonth(1)} className="p-2 rounded-xl hover:bg-muted"><ChevronRightIcon /></button>
             </div>
-            <div className="p-4 space-y-4">
+            <div className="p-3 space-y-2">
               {students.map(student => {
                 const studentRecords = monthlyRecords.filter(r => r.studentId === student.id);
                 if (studentRecords.length === 0) return null;
                 return (
-                  <div key={student.id} className="bg-card border border-border rounded-2xl p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${
-                        student.gender === 'male' ? 'bg-gender-male text-gender-male-text' : 'bg-gender-female text-gender-female-text'
-                      }`}>{student.number}</span>
-                      <span className="font-semibold text-foreground">{student.name}</span>
-                      <span className="text-xs text-muted-foreground">{studentRecords.length}건</span>
-                    </div>
-                    <div className="grid grid-cols-4 gap-1">
-                      {studentRecords.map(r => {
-                        const colors = getType1Color(r.type1);
-                        return (
-                          <div key={r.id} className="bg-card border border-border rounded-lg p-1 shadow-sm overflow-hidden">
-                            <div className="grid grid-cols-2 gap-0.5">
-                              <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate">
-                                {parseInt(r.date.slice(8))}({getDayName(r.date)})
-                              </span>
-                              <span className={`inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
-                                {r.type1}{r.type2}
-                              </span>
-                              <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate">
-                                {r.periods.length > 0 ? formatPeriods(r.periods) : '-'}
-                              </span>
-                              <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate" title={r.reason || ''}>
-                                {r.reason || '-'}
-                              </span>
-                            </div>
-                          </div>
-                        );
-                      })}
+                  <div key={student.id} className="bg-card border border-border rounded-2xl overflow-hidden">
+                    <div className="flex">
+                      {/* 1 part: student info */}
+                      <div className="flex flex-col items-center justify-center px-2 py-2 bg-muted/50 border-r border-border min-w-[48px]">
+                        <span className={`px-1.5 py-0.5 rounded text-[11px] font-semibold ${
+                          student.gender === 'male' ? 'bg-gender-male text-gender-male-text' : 'bg-gender-female text-gender-female-text'
+                        }`}>{student.number}</span>
+                        <span className="font-semibold text-[11px] text-foreground mt-0.5">{student.name}</span>
+                        <span className="text-[10px] text-muted-foreground">{studentRecords.length}건</span>
+                      </div>
+                      {/* 9 part: records grid */}
+                      <div className="flex-1 p-1.5">
+                        <div className="grid grid-cols-4 gap-1">
+                          {studentRecords.map(r => {
+                            const colors = getType1Color(r.type1);
+                            return (
+                              <div key={r.id} className="border border-border rounded-lg p-0.5 overflow-hidden">
+                                <div className="grid grid-cols-2 gap-0.5">
+                                  <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate">
+                                    {parseInt(r.date.slice(8))}({getDayName(r.date)})
+                                  </span>
+                                  <span className={`inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
+                                    {r.type1}{r.type2}
+                                  </span>
+                                  <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate">
+                                    {r.periods.length > 0 ? formatPeriods(r.periods) : '-'}
+                                  </span>
+                                  <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate" title={r.reason || ''}>
+                                    {r.reason || '-'}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );
