@@ -54,16 +54,18 @@ export function formatPeriods(periods: number[]): string {
   if (!periods.length) return '';
   const sorted = [...periods].sort((a, b) => a - b);
   
-  // Check if it's all periods (full day)
   const groups: number[][] = [];
   let current = [sorted[0]];
   
   for (let i = 1; i < sorted.length; i++) {
-    if (sorted[i] === sorted[i - 1] + 1 || (sorted[i] === 11 && sorted[i - 1] + 1 > 10)) {
-      current.push(sorted[i]);
+    const prev = sorted[i - 1];
+    const curr = sorted[i];
+    // Treat 11(종례) as continuous if it follows the last regular period
+    if (curr === prev + 1 || (curr === 11 && prev >= 1)) {
+      current.push(curr);
     } else {
       groups.push(current);
-      current = [sorted[i]];
+      current = [curr];
     }
   }
   groups.push(current);
