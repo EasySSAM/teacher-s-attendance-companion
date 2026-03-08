@@ -217,15 +217,23 @@ export default function AttendanceModal({
               >
                 <ChevronLeftIcon />
               </button>
-              <div className="flex-1 flex items-center justify-center gap-1 p-3 rounded-xl border border-input bg-background">
-                <input
-                  type="date"
-                  value={date}
-                  onChange={e => setDate(e.target.value)}
-                  className="bg-transparent text-foreground text-sm text-center outline-none"
-                />
-                <span className="text-sm text-foreground">({getDayName(date)})</span>
-              </div>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="flex-1 flex items-center justify-center gap-1 p-3 rounded-xl border border-input bg-background hover:bg-muted/50 transition-colors">
+                    <span className="text-sm font-medium text-foreground">{formatDate(date)}</span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 z-[60]" align="center">
+                  <Calendar
+                    mode="single"
+                    selected={new Date(date + 'T00:00:00')}
+                    onSelect={(day) => {
+                      if (day) setDate(toDateStr(day));
+                    }}
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
               <button
                 onClick={() => setDate(addDaysSkipWeekend(date, 1))}
                 className="p-2 rounded-xl hover:bg-muted transition-colors border border-input"
