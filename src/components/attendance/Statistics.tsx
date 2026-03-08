@@ -95,15 +95,17 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
     if (hideStudent) {
       return (
         <div
-          onClick={() => openEdit(r)}
-          className="relative bg-card border border-border rounded-2xl p-2.5 pr-7 shadow-sm cursor-pointer transition-all hover:shadow-md active:scale-[0.98]"
+          className="relative bg-card border border-border rounded-2xl p-2.5 shadow-sm"
         >
-          <button
-            onClick={(e) => { e.stopPropagation(); openEdit(r); }}
-            className="absolute top-1.5 right-1.5 p-1 rounded-lg hover:bg-muted transition-colors"
-          >
-            <EditIcon className="w-3 h-3 opacity-40" />
-          </button>
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex-1" />
+            <button
+              onClick={() => openEdit(r)}
+              className="shrink-0 p-1 rounded-lg hover:bg-muted transition-colors"
+            >
+              <EditIcon className="w-3 h-3 opacity-40" />
+            </button>
+          </div>
           <div className="flex flex-wrap gap-1">
             <span className={`inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
               {r.type1}{r.type2}
