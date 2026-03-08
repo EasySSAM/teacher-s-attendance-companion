@@ -183,7 +183,7 @@ export default function DailyView({
                       {record.type1}{record.type2}
                     </span>
                     {record.periods.length > 0 ? (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-muted text-muted-foreground">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
                         {formatPeriods(record.periods)}
                       </span>
                     ) : (
