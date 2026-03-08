@@ -348,7 +348,7 @@ export default function Settings({
                     </button>
                   )}
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2">
                   {students.map(student => (
                     <div key={student.id} className="bg-card border border-border rounded-2xl p-3">
                       {editingId === student.id ? (
