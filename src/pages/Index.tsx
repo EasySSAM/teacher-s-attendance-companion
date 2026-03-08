@@ -41,6 +41,7 @@ const Index = () => {
           <Statistics
             students={store.students}
             records={store.records}
+            yearlyExcludeTypes={store.yearlyExcludeTypes}
             onUpdateRecord={store.updateRecord}
           />
         )}

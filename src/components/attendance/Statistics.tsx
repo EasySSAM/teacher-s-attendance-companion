@@ -52,8 +52,8 @@ export default function Statistics({ students, records, yearlyExcludeTypes, onUp
   const yearlyRecords = useMemo(() => {
     const startDate = `${selectedSchoolYear}-03-01`;
     const endDate = `${selectedSchoolYear + 1}-02-28`;
-    return records.filter(r => r.date >= startDate && r.date <= endDate && r.type1 !== '출석인정');
-  }, [records, selectedSchoolYear]);
+    return records.filter(r => r.date >= startDate && r.date <= endDate && !yearlyExcludeTypes.includes(r.type1));
+  }, [records, selectedSchoolYear, yearlyExcludeTypes]);
 
   // Yearly stats per student
   const yearlyStats = useMemo(() => {

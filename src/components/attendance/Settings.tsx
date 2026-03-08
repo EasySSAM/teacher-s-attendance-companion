@@ -201,6 +201,42 @@ export default function Settings({
           </div>
         </section>
 
+        {/* Yearly exclude types */}
+        <section>
+          <h3 className="font-semibold text-foreground mb-3">연간 누적 필터 설정</h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            연간(누적) 통계에서 카운팅에서 제외할 출결 구분을 선택하세요. 개근상·정근상 판단 기준으로 활용됩니다.
+          </p>
+          <div className="bg-card border border-border rounded-2xl p-4">
+            <div className="space-y-2">
+              {TYPE1_OPTIONS.map(type => {
+                const isExcluded = yearlyExcludeTypes.includes(type);
+                return (
+                  <label key={type} className="flex items-center gap-3 cursor-pointer">
+                    <div
+                      onClick={() => {
+                        const newTypes = isExcluded
+                          ? yearlyExcludeTypes.filter(t => t !== type)
+                          : [...yearlyExcludeTypes, type];
+                        onUpdateYearlyExcludeTypes(newTypes);
+                      }}
+                      className={`w-5 h-5 rounded flex items-center justify-center border-2 transition-colors cursor-pointer ${
+                        isExcluded ? 'bg-primary border-primary' : 'border-input'
+                      }`}
+                    >
+                      {isExcluded && <span className="text-primary-foreground text-xs font-bold">✓</span>}
+                    </div>
+                    <span className="text-sm text-foreground">{type}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {isExcluded ? '(제외)' : '(포함)'}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
         {/* Bulk import */}
         <section>
           <h3 className="font-semibold text-foreground mb-3">일괄 등록</h3>
