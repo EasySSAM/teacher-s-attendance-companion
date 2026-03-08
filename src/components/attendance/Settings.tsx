@@ -143,6 +143,60 @@ export default function Settings({
           </div>
         </section>
 
+        {/* Warning phrases */}
+        <section>
+          <h3 className="font-semibold text-foreground mb-3">경고 문구 설정</h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            설정한 문구가 사유에 포함되어 있고, 같은 달에 동일 문구로 기록이 있으면 저장 시 경고 팝업이 표시됩니다.
+          </p>
+          <div className="bg-card border border-border rounded-2xl p-4 space-y-3">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newPhrase}
+                onChange={e => setNewPhrase(e.target.value)}
+                placeholder="예: 생리통, 병원"
+                className="flex-1 p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && newPhrase.trim()) {
+                    onUpdateWarningPhrases([...warningPhrases, newPhrase.trim()]);
+                    setNewPhrase('');
+                  }
+                }}
+              />
+              <button
+                onClick={() => {
+                  if (newPhrase.trim()) {
+                    onUpdateWarningPhrases([...warningPhrases, newPhrase.trim()]);
+                    setNewPhrase('');
+                  }
+                }}
+                className="px-4 py-2.5 bg-primary text-primary-foreground rounded-xl text-sm font-semibold"
+              >
+                추가
+              </button>
+            </div>
+            {warningPhrases.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {warningPhrases.map((phrase, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-att-sick-bg text-att-sick rounded-full text-sm font-medium"
+                  >
+                    {phrase}
+                    <button
+                      onClick={() => onUpdateWarningPhrases(warningPhrases.filter((_, j) => j !== i))}
+                      className="hover:opacity-70"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
         {/* Bulk import */}
         <section>
           <h3 className="font-semibold text-foreground mb-3">일괄 등록</h3>
