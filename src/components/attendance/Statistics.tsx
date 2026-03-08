@@ -213,23 +213,22 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
 
   return (
     <div className="flex flex-col h-full">
-      {/* Sub tabs */}
-      <div className="bg-card border-b border-border px-2 pt-3 pb-0">
-        <div className="flex gap-1 overflow-x-auto">
-          {subTabs.map(t => (
-            <button
-              key={t.key}
-              onClick={() => setSubTab(t.key)}
-              className={`px-3 py-2 text-xs font-medium rounded-t-xl whitespace-nowrap transition-colors ${
-                subTab === t.key
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-muted'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+      {/* Sub tabs - same style as Settings */}
+      <div className="flex border-b border-border bg-card shrink-0">
+        {subTabs.map(t => (
+          <button
+            key={t.key}
+            onClick={() => setSubTab(t.key)}
+            className={`flex-1 py-3 text-sm font-medium transition-colors relative ${
+              subTab === t.key ? 'text-primary' : 'text-muted-foreground'
+            }`}
+          >
+            {t.label}
+            {subTab === t.key && (
+              <div className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-primary rounded-full" />
+            )}
+          </button>
+        ))}
       </div>
 
       <div className="flex-1 overflow-y-auto">
