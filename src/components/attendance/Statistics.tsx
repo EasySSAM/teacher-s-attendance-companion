@@ -181,7 +181,7 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
                           <span className="text-xs text-muted-foreground">{dayRecords.length}건</span>
                         </div>
                         <div className="border-t border-border mb-2" />
-                        <div className="space-y-1.5">
+                        <div className="grid grid-cols-2 gap-1.5">
                           {dayRecords.map(r => {
                             const student = getStudent(r.studentId);
                             if (!student) return null;
