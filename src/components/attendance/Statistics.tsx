@@ -130,6 +130,21 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                 ⚠ 사유
               </span>
             )}
+            </div>
+            <div className="flex items-start shrink-0">
+              <button
+                onClick={() => openEdit(r)}
+                className="p-1 rounded-lg hover:bg-muted transition-colors"
+              >
+                <EditIcon className="w-3 h-3 opacity-40" />
+              </button>
+              <button
+                onClick={() => handleDelete(r.id)}
+                className="p-1 rounded-lg hover:bg-destructive/10 transition-colors"
+              >
+                <TrashIcon className="w-3 h-3 text-destructive opacity-60" />
+              </button>
+            </div>
           </div>
         </div>
       );
