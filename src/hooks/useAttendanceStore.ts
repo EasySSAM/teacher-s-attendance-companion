@@ -146,6 +146,7 @@ export function useAttendanceStore() {
     deleteStudent,
     bulkAddStudents,
     deleteAllStudents,
+    importData,
     addRecord,
     updateRecord,
     deleteRecord,
