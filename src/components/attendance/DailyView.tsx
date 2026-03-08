@@ -183,12 +183,20 @@ export default function DailyView({
                   onClick={() => openEdit(record)}
                   className={`relative bg-card border border-border rounded-2xl p-3 cursor-pointer transition-all hover:shadow-md active:scale-[0.98] shadow-sm`}
                 >
-                  <button
-                    onClick={(e) => handleDelete(e, record.id)}
-                    className="absolute top-2 right-2 p-1.5 rounded-lg hover:bg-foreground/10 transition-colors"
-                  >
-                    <TrashIcon className="w-3.5 h-3.5 opacity-50" />
-                  </button>
+                  <div className="absolute top-2 right-2 flex items-center gap-0.5">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); openEdit(record); }}
+                      className="p-1.5 rounded-lg hover:bg-muted transition-colors"
+                    >
+                      <EditIcon className="w-3.5 h-3.5 opacity-40" />
+                    </button>
+                    <button
+                      onClick={(e) => handleDelete(e, record.id)}
+                      className="p-1.5 rounded-lg hover:bg-foreground/10 transition-colors"
+                    >
+                      <TrashIcon className="w-3.5 h-3.5 opacity-50" />
+                    </button>
+                  </div>
                   
                   <div className="flex items-center gap-2 mb-2">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
