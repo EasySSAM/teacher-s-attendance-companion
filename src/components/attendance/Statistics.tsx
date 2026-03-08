@@ -266,12 +266,20 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                           {r.type1}{r.type2}
                         </span>
                         </div>
-                        <button
-                          onClick={() => openEdit(r)}
-                          className="shrink-0 p-1.5 rounded-lg hover:bg-muted transition-colors"
-                        >
-                          <EditIcon className="w-3.5 h-3.5 opacity-40" />
-                        </button>
+                        <div className="flex items-center shrink-0">
+                          <button
+                            onClick={() => openEdit(r)}
+                            className="p-1.5 rounded-lg hover:bg-muted transition-colors"
+                          >
+                            <EditIcon className="w-3.5 h-3.5 opacity-40" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(r.id)}
+                            className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors"
+                          >
+                            <TrashIcon className="w-3.5 h-3.5 text-destructive opacity-60" />
+                          </button>
+                        </div>
                       </div>
 
                       <div className="flex flex-wrap gap-1 mb-2">
