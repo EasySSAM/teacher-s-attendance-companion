@@ -154,7 +154,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
       <div
         className="relative bg-card border border-border rounded-2xl p-3 shadow-sm"
       >
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-start justify-between mb-2">
           <div className="flex items-center gap-1.5 min-w-0 flex-wrap flex-1">
             <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-xs font-medium ${
               student.gender === 'male'
@@ -168,7 +168,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
               {r.type1}{r.type2}
             </span>
           </div>
-          <div className="flex items-center shrink-0">
+          <div className="flex items-start shrink-0">
             <button
               onClick={() => openEdit(r)}
               className="p-1.5 rounded-lg hover:bg-muted transition-colors"
