@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { Student, AttendanceRecord, DaySchedule, PERIOD_LABELS } from '@/types/attendance';
-import { formatDate, addDaysSkipWeekend, getType1Color, formatPeriods, getTodayStr, getMaxPeriod } from '@/utils/attendance';
+import { formatDate, addDaysSkipWeekend, getType1Color, formatPeriods, getTodayStr, getMaxPeriod, toDateStr } from '@/utils/attendance';
 import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, TrashIcon } from './Icons';
 import { RotateCcw } from 'lucide-react';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import AttendanceModal from './AttendanceModal';
 
 interface DailyViewProps {
