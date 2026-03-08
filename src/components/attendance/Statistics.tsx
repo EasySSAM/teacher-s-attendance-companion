@@ -271,8 +271,8 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
                         <span className="text-[10px] text-muted-foreground">{studentRecords.length}건</span>
                       </div>
                       {/* 9 part: records grid */}
-                      <div className="flex-1 p-1.5">
-                        <div className="grid grid-cols-2 gap-1">
+                      <div className="flex-1 p-1.5 flex items-center">
+                        <div className="grid grid-cols-2 gap-1 w-full">
                           {studentRecords.map(r => {
                             const colors = getType1Color(r.type1);
                             return (
