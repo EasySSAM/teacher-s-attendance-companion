@@ -23,6 +23,7 @@ interface SettingsProps {
 
 export default function Settings({
   students,
+  records,
   schedule,
   warningPhrases,
   yearlyExcludeTypes,
@@ -31,6 +32,7 @@ export default function Settings({
   onDeleteStudent,
   onBulkAddStudents,
   onDeleteAllStudents,
+  onImportData,
   onUpdateSchedule,
   onUpdateWarningPhrases,
   onUpdateYearlyExcludeTypes,
