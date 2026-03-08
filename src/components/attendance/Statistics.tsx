@@ -328,7 +328,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                     <div className="border-t border-border mb-2" />
                     <div className="grid grid-cols-2 gap-2">
                       {studentRecords.map(r => (
-                        <RecordCard key={r.id} r={r} showDate />
+                        <RecordCard key={r.id} r={r} showDate hideStudent />
                       ))}
                     </div>
                   </div>
