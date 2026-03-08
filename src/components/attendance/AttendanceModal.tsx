@@ -164,7 +164,7 @@ export default function AttendanceModal({
   };
 
   const handleSave = () => {
-    if (!studentId) return;
+    if (!studentId || !type1 || !type2) return;
     const data = buildRecord();
 
     // Check if warning should be shown before saving
