@@ -27,6 +27,7 @@ export default function Settings({
   onUpdateStudent,
   onDeleteStudent,
   onBulkAddStudents,
+  onDeleteAllStudents,
   onUpdateSchedule,
   onUpdateWarningPhrases,
   onUpdateYearlyExcludeTypes,
