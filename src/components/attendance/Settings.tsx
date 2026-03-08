@@ -18,11 +18,13 @@ interface SettingsProps {
 export default function Settings({
   students,
   schedule,
+  warningPhrases,
   onAddStudent,
   onUpdateStudent,
   onDeleteStudent,
   onBulkAddStudents,
   onUpdateSchedule,
+  onUpdateWarningPhrases,
 }: SettingsProps) {
   const [bulkText, setBulkText] = useState('');
   const [newNumber, setNewNumber] = useState('');
