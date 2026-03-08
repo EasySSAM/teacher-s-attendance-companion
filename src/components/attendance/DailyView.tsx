@@ -48,9 +48,13 @@ export default function DailyView({
   }, [maxPeriod]);
 
   const filteredRecords = useMemo(() => {
-    if (selectedPeriod === null) return dayRecords;
-    return dayRecords.filter(r => r.periods.includes(selectedPeriod));
-  }, [dayRecords, selectedPeriod]);
+    const recs = selectedPeriod === null ? dayRecords : dayRecords.filter(r => r.periods.includes(selectedPeriod));
+    return recs.sort((a, b) => {
+      const sA = students.find(s => s.id === a.studentId);
+      const sB = students.find(s => s.id === b.studentId);
+      return (sA?.number || 0) - (sB?.number || 0);
+    });
+  }, [dayRecords, selectedPeriod, students]);
 
   const changedCount = dayRecords.length;
 
