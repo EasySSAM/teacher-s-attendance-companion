@@ -24,7 +24,7 @@ export function useAttendanceStore() {
     loadFromStorage(STUDENTS_KEY, SAMPLE_STUDENTS)
   );
   const [records, setRecords] = useState<AttendanceRecord[]>(() =>
-    loadFromStorage(RECORDS_KEY, [])
+    loadFromStorage(RECORDS_KEY, SAMPLE_RECORDS)
   );
   const [schedule, setSchedule] = useState<DaySchedule>(() =>
     loadFromStorage(SCHEDULE_KEY, DEFAULT_SCHEDULE)
