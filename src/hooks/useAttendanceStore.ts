@@ -1,10 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Student, AttendanceRecord, DaySchedule, DEFAULT_SCHEDULE, SAMPLE_STUDENTS, SAMPLE_RECORDS } from '@/types/attendance';
+import { Student, AttendanceRecord, DaySchedule, Type1, DEFAULT_SCHEDULE, SAMPLE_STUDENTS, SAMPLE_RECORDS } from '@/types/attendance';
 
 const STUDENTS_KEY = 'attendance_students_list';
 const RECORDS_KEY = 'attendance_records_pro';
 const SCHEDULE_KEY = 'attendance_schedule';
 const WARNING_PHRASES_KEY = 'attendance_warning_phrases';
+const YEARLY_EXCLUDE_TYPES_KEY = 'attendance_yearly_exclude_types';
 
 function loadFromStorage<T>(key: string, fallback: T): T {
   try {
