@@ -65,6 +65,18 @@ export function useAttendanceStore() {
     setRecords([]);
   }, []);
 
+  const importData = useCallback((newStudents: Student[], newRecords: AttendanceRecord[]) => {
+    setStudents(prev => {
+      const existingIds = new Set(prev.map(s => s.id));
+      const merged = [...prev, ...newStudents.filter(s => !existingIds.has(s.id))];
+      return merged.sort((a, b) => a.number - b.number);
+    });
+    setRecords(prev => {
+      const existingIds = new Set(prev.map(r => r.id));
+      return [...prev, ...newRecords.filter(r => !existingIds.has(r.id))];
+    });
+  }, []);
+
   const addRecord = useCallback((record: AttendanceRecord) => {
     setRecords(prev => [...prev, record]);
   }, []);
