@@ -359,7 +359,7 @@ export default function AttendanceModal({
           {requiredDocs.length > 0 && (
             <div>
               <label className="block text-sm font-medium text-muted-foreground mb-2">필요 서류</label>
-              <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
                 {requiredDocs.map(doc => (
                   <label key={doc} className="flex items-center gap-3 p-3 rounded-xl bg-muted/50 cursor-pointer">
                     <input
