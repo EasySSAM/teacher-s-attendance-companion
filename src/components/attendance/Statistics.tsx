@@ -272,26 +272,20 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
                       {studentRecords.map(r => {
                         const colors = getType1Color(r.type1);
                         return (
-                          <div key={r.id} className="bg-card border border-border rounded-lg p-1.5 shadow-sm">
-                            <div className="flex items-center gap-1 mb-1">
-                              <span className="inline-flex items-center px-1 py-0 rounded text-xs font-medium bg-muted text-muted-foreground">
+                          <div key={r.id} className="bg-card border border-border rounded-lg p-1 shadow-sm overflow-hidden">
+                            <div className="grid grid-cols-2 gap-0.5">
+                              <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate">
                                 {parseInt(r.date.slice(8))}({getDayName(r.date)})
                               </span>
-                              <span className={`inline-flex items-center px-1 py-0 rounded text-xs font-semibold whitespace-nowrap ${colors.bg} ${colors.text} border ${colors.border}`}>
+                              <span className={`inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
                                 {r.type1}{r.type2}
                               </span>
-                            </div>
-                            <div className="flex flex-wrap gap-0.5">
-                              {r.periods.length > 0 && (
-                                <span className="inline-flex items-center px-1 py-0 rounded text-xs font-medium bg-muted text-muted-foreground">
-                                  {formatPeriods(r.periods)}
-                                </span>
-                              )}
-                              {r.reason && (
-                                <span className="inline-flex items-center px-1 py-0 rounded text-xs font-medium bg-muted text-muted-foreground truncate max-w-full">
-                                  {r.reason}
-                                </span>
-                              )}
+                              <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate">
+                                {r.periods.length > 0 ? formatPeriods(r.periods) : '-'}
+                              </span>
+                              <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate" title={r.reason || ''}>
+                                {r.reason || '-'}
+                              </span>
                             </div>
                           </div>
                         );
