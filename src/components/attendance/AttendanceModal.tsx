@@ -55,9 +55,9 @@ export default function AttendanceModal({
       setSubmittedDocs(record.submittedDocs);
     } else {
       setDate(currentDate);
-      setStudentId(students[0]?.id || '');
-      setType1('질병');
-      setType2('결석');
+      setStudentId('');
+      setType1(null);
+      setType2(null);
       setReason('');
       setPeriods([]);
       setSubmittedDocs([]);
