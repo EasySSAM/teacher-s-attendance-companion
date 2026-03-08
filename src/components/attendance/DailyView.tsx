@@ -180,36 +180,36 @@ export default function DailyView({
               return (
                 <div
                   key={record.id}
-                  onClick={() => openEdit(record)}
-                  className={`relative bg-card border border-border rounded-2xl p-3 cursor-pointer transition-all hover:shadow-md active:scale-[0.98] shadow-sm`}
+                  className={`relative bg-card border border-border rounded-2xl p-3 shadow-sm`}
                 >
-                  <div className="absolute top-2 right-2 flex items-center gap-0.5">
-                    <button
-                      onClick={(e) => { e.stopPropagation(); openEdit(record); }}
-                      className="p-1.5 rounded-lg hover:bg-muted transition-colors"
-                    >
-                      <EditIcon className="w-3.5 h-3.5 opacity-40" />
-                    </button>
-                    <button
-                      onClick={(e) => handleDelete(e, record.id)}
-                      className="p-1.5 rounded-lg hover:bg-foreground/10 transition-colors"
-                    >
-                      <TrashIcon className="w-3.5 h-3.5 opacity-50" />
-                    </button>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
-                      student.gender === 'male'
-                        ? 'bg-gender-male text-gender-male-text'
-                        : 'bg-gender-female text-gender-female-text'
-                    }`}>
-                      {student.number}
-                    </span>
-                    <span className="font-semibold text-sm text-foreground">{student.name}</span>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
-                      {record.type1}{record.type2}
-                    </span>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-1.5 min-w-0 flex-wrap flex-1">
+                      <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-xs font-medium ${
+                        student.gender === 'male'
+                          ? 'bg-gender-male text-gender-male-text'
+                          : 'bg-gender-female text-gender-female-text'
+                      }`}>
+                        {student.number}
+                      </span>
+                      <span className="font-semibold text-sm text-foreground truncate">{student.name}</span>
+                      <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
+                        {record.type1}{record.type2}
+                      </span>
+                    </div>
+                    <div className="flex items-center shrink-0">
+                      <button
+                        onClick={() => openEdit(record)}
+                        className="p-1.5 rounded-lg hover:bg-muted transition-colors"
+                      >
+                        <EditIcon className="w-3.5 h-3.5 opacity-40" />
+                      </button>
+                      <button
+                        onClick={(e) => handleDelete(e, record.id)}
+                        className="p-1.5 rounded-lg hover:bg-foreground/10 transition-colors"
+                      >
+                        <TrashIcon className="w-3.5 h-3.5 opacity-50" />
+                      </button>
+                    </div>
                   </div>
 
                   <div className="flex flex-wrap gap-1">

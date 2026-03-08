@@ -206,7 +206,7 @@ export default function AttendanceModal({
           <button onClick={onClose} className="p-1 rounded-full hover:bg-muted"><XIcon /></button>
         </div>
 
-        <div className="p-4 space-y-5">
+        <div className="p-4 space-y-3">
           {/* Date */}
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-1">날짜</label>
