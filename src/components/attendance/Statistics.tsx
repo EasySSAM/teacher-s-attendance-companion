@@ -299,7 +299,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                         )}
                       </div>
 
-                      <div className={`border-t border-border pt-2 grid gap-1 ${r.requiredDocs.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`} onClick={e => e.stopPropagation()}>
+                      <div className={`border-t border-border pt-2 flex gap-3 flex-wrap`} onClick={e => e.stopPropagation()}>
                         {r.requiredDocs.map(doc => (
                           <label key={doc} className="flex items-center gap-1.5 cursor-pointer">
                             <div
