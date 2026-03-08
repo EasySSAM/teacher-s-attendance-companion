@@ -180,12 +180,12 @@ export default function DailyView({
                       {student.number}
                     </span>
                     <span className="font-semibold text-sm text-foreground">{student.name}</span>
-                  </div>
-
-                  <div className="flex flex-wrap gap-1">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
                       {record.type1}{record.type2}
                     </span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1">
                     {record.periods.length > 0 ? (
                       <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
                         {formatPeriods(record.periods)}
