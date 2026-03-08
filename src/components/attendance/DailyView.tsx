@@ -196,7 +196,7 @@ export default function DailyView({
                         {record.reason}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-att-unexcused-bg text-att-unexcused">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused">
                         ⚠ 사유 미입력
                       </span>
                     )}
