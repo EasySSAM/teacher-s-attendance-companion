@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { Student, AttendanceRecord, Type1, Type2 } from '@/types/attendance';
 import { UploadIcon } from './Icons';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
