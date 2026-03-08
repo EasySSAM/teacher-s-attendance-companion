@@ -13,6 +13,7 @@ interface StatisticsProps {
   frequentReasons: string[];
   onUpdateRecord: (id: string, updates: Partial<AttendanceRecord>) => void;
   onAddRecord: (record: AttendanceRecord) => void;
+  onDeleteRecord: (id: string) => void;
 }
 
 type SubTab = 'docs' | 'monthly-date' | 'monthly-student' | 'yearly';
