@@ -2,6 +2,8 @@ import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { Student, AttendanceRecord, Type1, Type2 } from '@/types/attendance';
 import { UploadIcon } from './Icons';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface NaisCheckProps {
   students: Student[];
@@ -366,7 +368,37 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
       <div className="bg-card border-b border-border px-4 py-3 shrink-0">
         <div className="flex items-center justify-between">
           <button onClick={() => changeMonth(-1)} className="p-2 rounded-xl hover:bg-muted transition-colors"><ChevronLeftIcon /></button>
-          <span className="text-base font-semibold text-foreground">{selectedMonth.year}년 {selectedMonth.month}월</span>
+          <div className="flex items-center gap-2">
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="text-base font-semibold text-foreground hover:text-primary transition-colors">
+                  {selectedMonth.year}년 {selectedMonth.month}월
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="center">
+                <Calendar
+                  mode="single"
+                  selected={new Date(selectedMonth.year, selectedMonth.month - 1, 1)}
+                  onSelect={(day) => {
+                    if (day) {
+                      setSelectedMonth({ year: day.getFullYear(), month: day.getMonth() + 1 });
+                      setChecked(false);
+                      setDiffs(null);
+                    }
+                  }}
+                  className="p-3 pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
+            {(selectedMonth.year !== now.getFullYear() || selectedMonth.month !== now.getMonth() + 1) && (
+              <button
+                onClick={() => { setSelectedMonth({ year: now.getFullYear(), month: now.getMonth() + 1 }); setChecked(false); setDiffs(null); }}
+                className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                오늘로
+              </button>
+            )}
+          </div>
           <button onClick={() => changeMonth(1)} className="p-2 rounded-xl hover:bg-muted transition-colors"><ChevronRightIcon /></button>
         </div>
       </div>

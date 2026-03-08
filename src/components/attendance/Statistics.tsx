@@ -334,7 +334,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
               <div className="flex items-center gap-2">
                 <Popover>
                   <PopoverTrigger asChild>
-                    <button className="font-semibold text-foreground hover:text-primary transition-colors">
+                    <button className="text-base font-semibold text-foreground hover:text-primary transition-colors">
                       {selectedMonth.year}년 {selectedMonth.month}월
                     </button>
                   </PopoverTrigger>
@@ -409,7 +409,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
               <div className="flex items-center gap-2">
                 <Popover>
                   <PopoverTrigger asChild>
-                    <button className="font-semibold text-foreground hover:text-primary transition-colors">
+                    <button className="text-base font-semibold text-foreground hover:text-primary transition-colors">
                       {selectedMonth.year}년 {selectedMonth.month}월
                     </button>
                   </PopoverTrigger>
@@ -470,9 +470,9 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
         {subTab === 'yearly' && (
           <div>
             <div className="flex items-center justify-between px-4 py-3 bg-card border-b border-border">
-              <button onClick={() => setSelectedSchoolYear(y => y - 1)} className="p-2 rounded-xl hover:bg-muted"><ChevronLeftIcon /></button>
-              <span className="font-semibold text-foreground">{selectedSchoolYear}학년도</span>
-              <button onClick={() => setSelectedSchoolYear(y => y + 1)} className="p-2 rounded-xl hover:bg-muted"><ChevronRightIcon /></button>
+              <button onClick={() => setSelectedSchoolYear(y => y - 1)} className="p-2 rounded-xl hover:bg-muted transition-colors"><ChevronLeftIcon /></button>
+              <span className="text-base font-semibold text-foreground">{selectedSchoolYear}학년도</span>
+              <button onClick={() => setSelectedSchoolYear(y => y + 1)} className="p-2 rounded-xl hover:bg-muted transition-colors"><ChevronRightIcon /></button>
             </div>
             <div className="p-4">
               <div className="bg-card border border-border rounded-2xl overflow-hidden">
