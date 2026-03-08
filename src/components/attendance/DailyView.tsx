@@ -100,12 +100,26 @@ export default function DailyView({
             <ChevronRightIcon />
           </button>
         </div>
-        <div className="text-center mt-1">
-          <span className={`text-xs font-medium px-3 py-1 rounded-full ${
+        <div className="mt-2 flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
+          <span className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full ${
             changedCount > 0 ? 'bg-att-unexcused-bg text-att-unexcused' : 'bg-att-other-bg text-att-other'
           }`}>
-            {changedCount > 0 ? `${changedCount}명 변동` : '전원 출석'}
+            {changedCount > 0 ? `${changedCount}명` : '전원출석'}
           </span>
+          <div className="h-4 w-px bg-border shrink-0" />
+          {availablePeriods.map(p => (
+            <button
+              key={p}
+              onClick={() => setSelectedPeriod(selectedPeriod === p ? null : p)}
+              className={`shrink-0 text-[11px] font-medium px-2 py-1 rounded-full transition-colors ${
+                selectedPeriod === p
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
+              }`}
+            >
+              {PERIOD_LABELS[p]}
+            </button>
+          ))}
         </div>
       </div>
 
