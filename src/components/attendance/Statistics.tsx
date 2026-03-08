@@ -33,6 +33,12 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
     setModalOpen(true);
   };
 
+  const handleDelete = (id: string) => {
+    if (confirm('이 출결 기록을 삭제하시겠습니까?')) {
+      onDeleteRecord(id);
+    }
+  };
+
   const subTabs: { key: SubTab; label: string }[] = [
     { key: 'docs', label: '서류미제출' },
     { key: 'monthly-date', label: '월별(일자)' },
