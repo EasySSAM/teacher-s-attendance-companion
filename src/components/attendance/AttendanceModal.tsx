@@ -15,6 +15,7 @@ interface AttendanceModalProps {
   onSave: (record: AttendanceRecord) => void;
   onUpdate: (id: string, updates: Partial<AttendanceRecord>) => void;
   frequentReasons: string[];
+  warningPhrases: string[];
 }
 
 export default function AttendanceModal({
