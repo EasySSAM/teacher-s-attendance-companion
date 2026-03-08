@@ -330,9 +330,35 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
         {subTab === 'monthly-date' && (
           <div>
             <div className="flex items-center justify-between px-4 py-3 bg-card border-b border-border">
-              <button onClick={() => changeMonth(-1)} className="p-2 rounded-xl hover:bg-muted"><ChevronLeftIcon /></button>
-              <span className="font-semibold text-foreground">{selectedMonth.year}년 {selectedMonth.month}월</span>
-              <button onClick={() => changeMonth(1)} className="p-2 rounded-xl hover:bg-muted"><ChevronRightIcon /></button>
+              <button onClick={() => changeMonth(-1)} className="p-2 rounded-xl hover:bg-muted transition-colors"><ChevronLeftIcon /></button>
+              <div className="flex items-center gap-2">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="font-semibold text-foreground hover:text-primary transition-colors">
+                      {selectedMonth.year}년 {selectedMonth.month}월
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="center">
+                    <Calendar
+                      mode="single"
+                      selected={new Date(selectedMonth.year, selectedMonth.month - 1, 1)}
+                      onSelect={(day) => {
+                        if (day) setSelectedMonth({ year: day.getFullYear(), month: day.getMonth() + 1 });
+                      }}
+                      className="p-3 pointer-events-auto"
+                    />
+                  </PopoverContent>
+                </Popover>
+                {(selectedMonth.year !== now.getFullYear() || selectedMonth.month !== now.getMonth() + 1) && (
+                  <button
+                    onClick={() => setSelectedMonth({ year: now.getFullYear(), month: now.getMonth() + 1 })}
+                    className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+                  >
+                    오늘로
+                  </button>
+                )}
+              </div>
+              <button onClick={() => changeMonth(1)} className="p-2 rounded-xl hover:bg-muted transition-colors"><ChevronRightIcon /></button>
             </div>
             <div className="p-4 space-y-4">
               {monthlyRecords.length === 0 ? (
