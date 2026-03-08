@@ -101,27 +101,27 @@ export default function DailyView({
             <ChevronRightIcon />
           </button>
         </div>
-        <div className="mt-2 flex items-center gap-1 overflow-x-auto scrollbar-hide">
+        <div className="mt-2 flex items-center justify-center gap-1.5 overflow-x-auto scrollbar-hide">
           {selectedPeriod !== null && (
             <button
               onClick={() => setSelectedPeriod(null)}
-              className="shrink-0 p-1 rounded-full bg-primary text-primary-foreground transition-colors"
+              className="shrink-0 p-1.5 rounded-full bg-primary text-primary-foreground transition-colors"
               title="기본 보기로 돌아가기"
             >
-              <RotateCcw size={12} />
+              <RotateCcw size={14} />
             </button>
           )}
           <button
             onClick={() => setSelectedPeriod(null)}
-            className={`shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-full transition-colors ${
+            className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${
               selectedPeriod === null
                 ? (changedCount > 0 ? 'bg-att-unexcused-bg text-att-unexcused' : 'bg-att-other-bg text-att-other')
                 : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
-            {changedCount > 0 ? `${changedCount}명` : '전원'}
+            {changedCount > 0 ? `${changedCount}명 변동` : '전원출석'}
           </button>
-          <div className="h-3.5 w-px bg-border shrink-0" />
+          <div className="h-4 w-px bg-border shrink-0" />
           {availablePeriods.map(p => (
             <button
               key={p}
