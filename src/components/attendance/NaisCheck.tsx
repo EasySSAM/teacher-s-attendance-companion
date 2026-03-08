@@ -130,13 +130,26 @@ function formatPeriodsShort(periods: number[]): string {
   return sorted.map(p => labels[p] || `${p}교시`).join(',');
 }
 
+const NAIS_CSV_KEY = 'nais_check_csv';
+const NAIS_DIFFS_KEY = 'nais_check_diffs';
+const NAIS_MONTH_KEY = 'nais_check_month';
+
 export default function NaisCheck({ students, records }: NaisCheckProps) {
-  const [csvText, setCsvText] = useState('');
-  const [diffs, setDiffs] = useState<DiffItem[] | null>(null);
-  const [checked, setChecked] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
   const now = new Date();
-  const [selectedMonth, setSelectedMonth] = useState({ year: now.getFullYear(), month: now.getMonth() + 1 });
+  const [csvText, setCsvText] = useState(() => localStorage.getItem(NAIS_CSV_KEY) || '');
+  const [diffs, setDiffs] = useState<DiffItem[] | null>(() => {
+    try { const d = localStorage.getItem(NAIS_DIFFS_KEY); return d ? JSON.parse(d) : null; } catch { return null; }
+  });
+  const [checked, setChecked] = useState(() => !!localStorage.getItem(NAIS_DIFFS_KEY));
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [selectedMonth, setSelectedMonth] = useState(() => {
+    try { const m = localStorage.getItem(NAIS_MONTH_KEY); return m ? JSON.parse(m) : { year: now.getFullYear(), month: now.getMonth() + 1 }; } catch { return { year: now.getFullYear(), month: now.getMonth() + 1 }; }
+  });
+
+  // Persist to localStorage
+  useEffect(() => { localStorage.setItem(NAIS_CSV_KEY, csvText); }, [csvText]);
+  useEffect(() => { if (diffs !== null) localStorage.setItem(NAIS_DIFFS_KEY, JSON.stringify(diffs)); else localStorage.removeItem(NAIS_DIFFS_KEY); }, [diffs]);
+  useEffect(() => { localStorage.setItem(NAIS_MONTH_KEY, JSON.stringify(selectedMonth)); }, [selectedMonth]);
 
   const changeMonth = (dir: number) => {
     setSelectedMonth(prev => {
