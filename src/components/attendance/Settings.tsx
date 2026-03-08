@@ -33,7 +33,7 @@ export default function Settings({
   const [bulkText, setBulkText] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [newName, setNewName] = useState('');
-  const [newGender, setNewGender] = useState<'male' | 'female'>('male');
+  const [newGender, setNewGender] = useState<'male' | 'female' | ''>('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editNumber, setEditNumber] = useState('');
   const [editName, setEditName] = useState('');
@@ -83,10 +83,11 @@ export default function Settings({
 
   const handleAddSingle = () => {
     const num = parseInt(newNumber);
-    if (isNaN(num) || !newName.trim()) return;
-    onAddStudent({ id: generateId(), number: num, name: newName.trim(), gender: newGender });
+    if (isNaN(num) || !newName.trim() || !newGender) return;
+    onAddStudent({ id: generateId(), number: num, name: newName.trim(), gender: newGender as 'male' | 'female' });
     setNewNumber('');
     setNewName('');
+    setNewGender('');
   };
 
   const handleEdit = (student: Student) => {
@@ -295,6 +296,7 @@ export default function Settings({
                 onChange={e => setNewGender(e.target.value as 'male' | 'female')}
                 className="p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
               >
+                <option value="" disabled>성별</option>
                 <option value="male">남학생</option>
                 <option value="female">여학생</option>
               </select>
