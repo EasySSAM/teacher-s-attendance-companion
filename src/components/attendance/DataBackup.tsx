@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Student, AttendanceRecord, PERIOD_LABELS } from '@/types/attendance';
 import { encryptData, decryptData } from '@/utils/crypto';
+import { toDateStr } from '@/utils/attendance';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface DataBackupProps {
   students: Student[];
