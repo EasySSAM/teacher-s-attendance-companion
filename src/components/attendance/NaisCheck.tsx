@@ -406,13 +406,23 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
           />
         </div>
 
-        {/* Check button */}
-        <button
-          onClick={runCheck}
-          disabled={!csvText.trim()}
-          className="w-full py-3 bg-primary text-primary-foreground rounded-xl font-semibold disabled:opacity-40 transition-opacity"
-        >
-          점검하기
+        {/* Buttons */}
+        <div className="flex gap-2">
+          <button
+            onClick={runCheck}
+            disabled={!csvText.trim()}
+            className="flex-1 py-3 bg-primary text-primary-foreground rounded-xl font-semibold disabled:opacity-40 transition-opacity"
+          >
+            점검하기
+          </button>
+          {csvText.trim() && (
+            <button
+              onClick={() => { setCsvText(''); setDiffs(null); setChecked(false); localStorage.removeItem(NAIS_DIFFS_KEY); }}
+              className="px-4 py-3 bg-muted text-muted-foreground rounded-xl font-semibold transition-opacity"
+            >
+              초기화
+            </button>
+          )}
         </button>
 
         {/* Results */}
