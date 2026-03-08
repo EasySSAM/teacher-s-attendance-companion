@@ -334,7 +334,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
               <div className="flex items-center gap-2">
                 <Popover>
                   <PopoverTrigger asChild>
-                    <button className="font-semibold text-foreground hover:text-primary transition-colors">
+                    <button className="text-base font-semibold text-foreground hover:text-primary transition-colors">
                       {selectedMonth.year}년 {selectedMonth.month}월
                     </button>
                   </PopoverTrigger>
