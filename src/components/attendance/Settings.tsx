@@ -33,7 +33,7 @@ export default function Settings({
   const [bulkText, setBulkText] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [newName, setNewName] = useState('');
-  const [newGender, setNewGender] = useState<'male' | 'female'>('male');
+  const [newGender, setNewGender] = useState<'male' | 'female' | ''>('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editNumber, setEditNumber] = useState('');
   const [editName, setEditName] = useState('');
