@@ -124,7 +124,7 @@ export default function AttendanceModal({
       );
       if (existing.length > 0) {
         const details = existing.map(r => `${r.date.slice(5)} ${r.type1}${r.type2}`).join(', ');
-        return `⚠ 이번 달에 "${matchedPhrase}" 사유로 이미 기록이 있습니다: ${details}`;
+        return `이번 달에 "${matchedPhrase}" 사유로 이미 기록이 있습니다: ${details}`;
       }
     }
     // Fallback: exact reason match
