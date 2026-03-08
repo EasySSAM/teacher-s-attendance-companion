@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Student, AttendanceRecord, Type1 } from '@/types/attendance';
 import { ChevronLeftIcon, ChevronRightIcon, CheckIcon } from './Icons';
-import { formatDate, getType1Color, formatPeriods, getSchoolYear } from '@/utils/attendance';
+import { formatDate, getType1Color, formatPeriods, getSchoolYear, getDayName } from '@/utils/attendance';
 
 interface StatisticsProps {
   students: Student[];
