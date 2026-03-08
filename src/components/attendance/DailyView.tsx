@@ -157,7 +157,7 @@ export default function DailyView({
               <button
                 key={p}
                 onClick={() => setSelectedPeriod(selectedPeriod === p ? null : p)}
-                className={`shrink-0 text-[11px] font-medium min-w-[28px] py-1 rounded-lg transition-colors ${
+                className={`shrink-0 text-[11px] font-medium min-w-[28px] py-1 rounded-md transition-colors ${
                   selectedPeriod === p
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted text-muted-foreground hover:bg-muted/80'
