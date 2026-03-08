@@ -196,7 +196,7 @@ export default function DailyView({
                         {record.type1}{record.type2}
                       </span>
                     </div>
-                    <div className="flex items-center shrink-0">
+                    <div className="flex items-start shrink-0">
                       <button
                         onClick={() => openEdit(record)}
                         className="p-1.5 rounded-lg hover:bg-muted transition-colors"
