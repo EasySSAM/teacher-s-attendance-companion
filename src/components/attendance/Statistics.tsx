@@ -272,7 +272,7 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
                       </div>
                       {/* 9 part: records grid */}
                       <div className="flex-1 p-1.5">
-                        <div className="grid grid-cols-4 gap-1">
+                        <div className="grid grid-cols-2 gap-1">
                           {studentRecords.map(r => {
                             const colors = getType1Color(r.type1);
                             return (
