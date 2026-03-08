@@ -136,52 +136,52 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
 
     return (
       <div
-        onClick={() => openEdit(r)}
-        className="relative bg-card border border-border rounded-2xl p-3 shadow-sm cursor-pointer transition-all hover:shadow-md active:scale-[0.98]"
+        className="relative bg-card border border-border rounded-2xl p-3 shadow-sm"
       >
-        <button
-          onClick={(e) => { e.stopPropagation(); openEdit(r); }}
-          className="absolute top-2 right-2 p-1.5 rounded-lg hover:bg-muted transition-colors"
-        >
-          <EditIcon className="w-3.5 h-3.5 opacity-40" />
-        </button>
-
-        <div className="flex items-center gap-2 mb-2">
-          <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
-            student.gender === 'male'
-              ? 'bg-gender-male text-gender-male-text'
-              : 'bg-gender-female text-gender-female-text'
-          }`}>
-            {student.number}
-          </span>
-          <span className="font-semibold text-sm text-foreground">{student.name}</span>
-          <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
-            {r.type1}{r.type2}
-          </span>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5 min-w-0 flex-wrap flex-1">
+            <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-xs font-medium ${
+              student.gender === 'male'
+                ? 'bg-gender-male text-gender-male-text'
+                : 'bg-gender-female text-gender-female-text'
+            }`}>
+              {student.number}
+            </span>
+            <span className="font-semibold text-sm text-foreground truncate">{student.name}</span>
+            <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
+              {r.type1}{r.type2}
+            </span>
+          </div>
+          <button
+            onClick={() => openEdit(r)}
+            className="shrink-0 p-1.5 rounded-lg hover:bg-muted transition-colors"
+          >
+            <EditIcon className="w-3.5 h-3.5 opacity-40" />
+          </button>
         </div>
 
         <div className="flex flex-wrap gap-1">
           {showDate && (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium bg-muted text-muted-foreground">
               {r.date.slice(5)} ({getDayName(r.date)})
             </span>
           )}
           {r.periods.length > 0 ? (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium bg-muted text-muted-foreground">
               {formatPeriods(r.periods)}
             </span>
           ) : (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused">
-              ⚠ 교시 미선택
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium bg-att-unexcused-bg text-att-unexcused">
+              ⚠ 교시
             </span>
           )}
           {r.reason ? (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium bg-muted text-muted-foreground">
               {r.reason}
             </span>
           ) : (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused">
-              ⚠ 사유 미입력
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-medium bg-att-unexcused-bg text-att-unexcused">
+              ⚠ 사유
             </span>
           )}
         </div>

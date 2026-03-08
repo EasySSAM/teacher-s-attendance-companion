@@ -555,9 +555,9 @@ export default function Settings({
 
       {/* Transfer modal */}
       {transferModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
           <div className="absolute inset-0 bg-foreground/40" onClick={() => setTransferModal(null)} />
-          <div className="relative bg-card rounded-2xl p-6 w-80 shadow-2xl animate-slide-up">
+          <div className="relative bg-card rounded-2xl p-5 w-full max-w-xs shadow-2xl animate-slide-up">
             <h3 className="font-semibold text-foreground mb-4">
               {transferModal.type === 'out' ? '전출일 입력' : '전입일 입력'}
             </h3>
