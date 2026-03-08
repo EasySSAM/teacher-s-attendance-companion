@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Student, DaySchedule } from '@/types/attendance';
+import { Student, DaySchedule, Type1, TYPE1_OPTIONS } from '@/types/attendance';
 import { TrashIcon, PlusIcon, EditIcon } from './Icons';
 import { generateId } from '@/utils/attendance';
 
