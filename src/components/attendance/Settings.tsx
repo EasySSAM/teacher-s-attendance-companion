@@ -21,12 +21,14 @@ export default function Settings({
   students,
   schedule,
   warningPhrases,
+  yearlyExcludeTypes,
   onAddStudent,
   onUpdateStudent,
   onDeleteStudent,
   onBulkAddStudents,
   onUpdateSchedule,
   onUpdateWarningPhrases,
+  onUpdateYearlyExcludeTypes,
 }: SettingsProps) {
   const [bulkText, setBulkText] = useState('');
   const [newNumber, setNewNumber] = useState('');
