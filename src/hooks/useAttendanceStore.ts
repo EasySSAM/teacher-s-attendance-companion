@@ -105,10 +105,15 @@ export function useAttendanceStore() {
     setSchedule(newSchedule);
   }, []);
 
+  const updateWarningPhrases = useCallback((phrases: string[]) => {
+    setWarningPhrases(phrases);
+  }, []);
+
   return {
     students,
     records,
     schedule,
+    warningPhrases,
     addStudent,
     updateStudent,
     deleteStudent,
@@ -122,5 +127,6 @@ export function useAttendanceStore() {
     getActiveStudents,
     getFrequentReasons,
     updateSchedule,
+    updateWarningPhrases,
   };
 }

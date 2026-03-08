@@ -142,26 +142,47 @@ export default function AttendanceModal({
     return frequentReasons.filter(r => r.includes(reason) && r !== reason);
   }, [reason, frequentReasons]);
 
-  const handleSave = () => {
-    if (!studentId) return;
-    const data: AttendanceRecord = {
-      id: record?.id || generateId(),
-      studentId,
-      date,
-      type1,
-      type2,
-      reason,
-      periods,
-      requiredDocs,
-      submittedDocs,
-    };
+  const buildRecord = (): AttendanceRecord => ({
+    id: record?.id || generateId(),
+    studentId,
+    date,
+    type1,
+    type2,
+    reason,
+    periods,
+    requiredDocs,
+    submittedDocs,
+  });
 
+  const doSave = (data: AttendanceRecord) => {
     if (isEdit) {
       onUpdate(record!.id, data);
     } else {
       onSave(data);
     }
     onClose();
+  };
+
+  const handleSave = () => {
+    if (!studentId) return;
+    const data = buildRecord();
+
+    // Check if warning should be shown before saving
+    if (warningMessage) {
+      setPendingSave(data);
+      setShowWarningPopup(true);
+      return;
+    }
+
+    doSave(data);
+  };
+
+  const confirmSave = () => {
+    if (pendingSave) {
+      doSave(pendingSave);
+    }
+    setShowWarningPopup(false);
+    setPendingSave(null);
   };
 
   if (!isOpen) return null;
