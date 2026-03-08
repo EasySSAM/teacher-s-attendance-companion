@@ -344,24 +344,24 @@ export default function Settings({
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${
+                  <div className="flex items-center justify-between gap-1">
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                      <span className={`shrink-0 px-1.5 py-0.5 rounded-md text-xs font-medium ${
                         student.gender === 'male' ? 'bg-gender-male text-gender-male-text' : 'bg-gender-female text-gender-female-text'
                       }`}>{student.number}</span>
-                      <span className="font-medium text-sm text-foreground">{student.name}</span>
+                      <span className="font-medium text-sm text-foreground truncate">{student.name}</span>
                       {student.transferOutDate && (
-                        <span className="text-xs text-att-unexcused bg-att-unexcused-bg px-1.5 py-0.5 rounded">전출 {student.transferOutDate}</span>
+                        <span className="shrink-0 text-[10px] text-att-unexcused bg-att-unexcused-bg px-1 py-0.5 rounded">전출</span>
                       )}
                       {student.transferInDate && (
-                        <span className="text-xs text-att-approved bg-att-approved-bg px-1.5 py-0.5 rounded">전입 {student.transferInDate}</span>
+                        <span className="shrink-0 text-[10px] text-att-approved bg-att-approved-bg px-1 py-0.5 rounded">전입</span>
                       )}
                     </div>
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => setTransferModal({ type: 'out', studentId: student.id })} className="px-2 py-1 text-xs rounded-lg bg-att-sick-bg text-att-sick font-medium">전출</button>
-                      <button onClick={() => setTransferModal({ type: 'in', studentId: student.id })} className="px-2 py-1 text-xs rounded-lg bg-att-approved-bg text-att-approved font-medium">전입</button>
-                      <button onClick={() => handleEdit(student)} className="p-1.5 rounded-lg hover:bg-muted transition-colors"><EditIcon /></button>
-                      <button onClick={() => handleDelete(student.id, student.name)} className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-destructive"><TrashIcon /></button>
+                    <div className="flex items-center shrink-0">
+                      <button onClick={() => setTransferModal({ type: 'out', studentId: student.id })} className="px-1.5 py-1 text-[10px] rounded-lg bg-att-sick-bg text-att-sick font-medium">전출</button>
+                      <button onClick={() => setTransferModal({ type: 'in', studentId: student.id })} className="px-1.5 py-1 text-[10px] rounded-lg bg-att-approved-bg text-att-approved font-medium">전입</button>
+                      <button onClick={() => handleEdit(student)} className="p-1 rounded-lg hover:bg-muted transition-colors"><EditIcon className="w-3.5 h-3.5" /></button>
+                      <button onClick={() => handleDelete(student.id, student.name)} className="p-1 rounded-lg hover:bg-destructive/10 transition-colors text-destructive"><TrashIcon className="w-3.5 h-3.5" /></button>
                     </div>
                   </div>
                 )}
