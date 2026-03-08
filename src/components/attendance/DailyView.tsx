@@ -101,11 +101,16 @@ export default function DailyView({
           </button>
         </div>
         <div className="mt-2 flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
-          <span className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full ${
-            changedCount > 0 ? 'bg-att-unexcused-bg text-att-unexcused' : 'bg-att-other-bg text-att-other'
-          }`}>
-            {changedCount > 0 ? `${changedCount}명` : '전원출석'}
-          </span>
+          <button
+            onClick={() => setSelectedPeriod(null)}
+            className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${
+              selectedPeriod === null
+                ? (changedCount > 0 ? 'bg-att-unexcused-bg text-att-unexcused' : 'bg-att-other-bg text-att-other')
+                : 'bg-muted text-muted-foreground hover:bg-muted/80'
+            }`}
+          >
+            {changedCount > 0 ? `${changedCount}명 변동` : '전원출석'}
+          </button>
           <div className="h-4 w-px bg-border shrink-0" />
           {availablePeriods.map(p => (
             <button
