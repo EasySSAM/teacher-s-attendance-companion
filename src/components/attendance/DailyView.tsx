@@ -125,15 +125,15 @@ export default function DailyView({
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4">
-        {dayRecords.length === 0 ? (
+        {filteredRecords.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
             <div className="text-5xl mb-3">✨</div>
-            <p className="font-medium">전원 출석입니다</p>
-            <p className="text-sm mt-1">출결 변동이 없습니다</p>
+            <p className="font-medium">{selectedPeriod !== null ? '해당 교시에 변동이 없습니다' : '전원 출석입니다'}</p>
+            <p className="text-sm mt-1">{selectedPeriod !== null ? '다른 교시를 선택해보세요' : '출결 변동이 없습니다'}</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
-            {dayRecords.map(record => {
+            {filteredRecords.map(record => {
               const student = getStudent(record.studentId);
               if (!student) return null;
               const colors = getType1Color(record.type1);
