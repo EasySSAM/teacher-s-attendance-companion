@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Student, AttendanceRecord, Type1, Type2, TYPE1_OPTIONS, TYPE2_OPTIONS, PERIOD_LABELS } from '@/types/attendance';
-import { XIcon, AlertIcon } from './Icons';
-import { getMaxPeriod, getAllPeriods, getRequiredDocs, getDayName, generateId } from '@/utils/attendance';
+import { XIcon, AlertIcon, ChevronLeftIcon, ChevronRightIcon } from './Icons';
+import { getMaxPeriod, getAllPeriods, getRequiredDocs, getDayName, generateId, addDaysSkipWeekend } from '@/utils/attendance';
 import { DaySchedule } from '@/types/attendance';
 
 interface AttendanceModalProps {
