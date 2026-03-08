@@ -98,46 +98,50 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
       <div className="flex-1 overflow-y-auto">
         {/* Docs */}
         {subTab === 'docs' && (
-          <div className="p-4 space-y-3">
+          <div className="p-3">
             {missingDocRecords.length === 0 ? (
               <div className="text-center py-16 text-muted-foreground">
                 <div className="text-4xl mb-2">📄</div>
                 <p className="font-medium">미제출 서류가 없습니다</p>
               </div>
             ) : (
-              missingDocRecords.map(r => {
-                const student = getStudent(r.studentId);
-                if (!student) return null;
-                const colors = getType1Color(r.type1);
-                return (
-                  <div key={r.id} className={`${colors.bg} border ${colors.border} rounded-2xl p-4`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold text-sm text-foreground">{student.number}번 {student.name}</span>
-                        <span className={`text-xs font-medium ${colors.text}`}>{r.type1}{r.type2}</span>
+              <div className="grid grid-cols-2 gap-2">
+                {missingDocRecords.map(r => {
+                  const student = getStudent(r.studentId);
+                  if (!student) return null;
+                  const colors = getType1Color(r.type1);
+                  const dow = getDayName(r.date);
+                  return (
+                    <div key={r.id} className={`${colors.bg} border ${colors.border} rounded-xl p-3`}>
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <span className="font-semibold text-xs text-foreground">{student.number}번 {student.name}</span>
+                        <span className={`text-[10px] font-medium ${colors.text}`}>{r.type1}{r.type2}</span>
                       </div>
-                      <span className="text-xs text-muted-foreground">{r.date}</span>
+                      <div className="text-[10px] text-muted-foreground space-y-0.5 mb-2">
+                        <div>{r.date.slice(5)} ({dow}) · {formatPeriods(r.periods)}</div>
+                        {r.reason && <div>사유: {r.reason}</div>}
+                      </div>
+                      <div className="space-y-1">
+                        {r.requiredDocs.map(doc => (
+                          <label key={doc} className="flex items-center gap-1.5 cursor-pointer">
+                            <div
+                              onClick={() => toggleSubmittedDoc(r.id, doc, r.submittedDocs)}
+                              className={`w-4 h-4 rounded flex items-center justify-center border-2 transition-colors cursor-pointer ${
+                                r.submittedDocs.includes(doc) ? 'bg-primary border-primary' : 'border-input'
+                              }`}
+                            >
+                              {r.submittedDocs.includes(doc) && <CheckIcon className="w-2.5 h-2.5 text-primary-foreground" />}
+                            </div>
+                            <span className={`text-xs ${r.submittedDocs.includes(doc) ? 'text-muted-foreground line-through' : 'text-foreground'}`}>
+                              {doc}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
                     </div>
-                    <div className="space-y-1.5 mt-3">
-                      {r.requiredDocs.map(doc => (
-                        <label key={doc} className="flex items-center gap-2 cursor-pointer">
-                          <div
-                            onClick={() => toggleSubmittedDoc(r.id, doc, r.submittedDocs)}
-                            className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors cursor-pointer ${
-                              r.submittedDocs.includes(doc) ? 'bg-primary border-primary' : 'border-input'
-                            }`}
-                          >
-                            {r.submittedDocs.includes(doc) && <CheckIcon className="w-3 h-3 text-primary-foreground" />}
-                          </div>
-                          <span className={`text-sm ${r.submittedDocs.includes(doc) ? 'text-muted-foreground line-through' : 'text-foreground'}`}>
-                            {doc}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })
+                  );
+                })}
+              </div>
             )}
           </div>
         )}
