@@ -39,6 +39,10 @@ export default function DailyView({
   const [editRecord, setEditRecord] = useState<AttendanceRecord | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<number | null>(null);
 
+  useEffect(() => {
+    localStorage.setItem(DAILY_CURRENT_DATE_KEY, currentDate);
+  }, [currentDate]);
+
   const dayRecords = useMemo(() => getRecordsForDate(currentDate), [currentDate, getRecordsForDate]);
   const activeStudents = useMemo(() => getActiveStudents(currentDate), [currentDate, getActiveStudents]);
   const frequentReasons = useMemo(() => getFrequentReasons(), [getFrequentReasons]);
