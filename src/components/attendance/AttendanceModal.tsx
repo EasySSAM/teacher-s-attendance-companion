@@ -33,8 +33,8 @@ export default function AttendanceModal({
 }: AttendanceModalProps) {
   const [date, setDate] = useState(currentDate);
   const [studentId, setStudentId] = useState('');
-  const [type1, setType1] = useState<Type1>('질병');
-  const [type2, setType2] = useState<Type2>('결석');
+  const [type1, setType1] = useState<Type1 | null>(null);
+  const [type2, setType2] = useState<Type2 | null>(null);
   const [reason, setReason] = useState('');
   const [periods, setPeriods] = useState<number[]>([]);
   const [submittedDocs, setSubmittedDocs] = useState<string[]>([]);
