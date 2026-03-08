@@ -7,12 +7,14 @@ interface SettingsProps {
   students: Student[];
   schedule: DaySchedule;
   warningPhrases: string[];
+  yearlyExcludeTypes: Type1[];
   onAddStudent: (student: Student) => void;
   onUpdateStudent: (id: string, updates: Partial<Student>) => void;
   onDeleteStudent: (id: string) => void;
   onBulkAddStudents: (students: Student[]) => void;
   onUpdateSchedule: (schedule: DaySchedule) => void;
   onUpdateWarningPhrases: (phrases: string[]) => void;
+  onUpdateYearlyExcludeTypes: (types: Type1[]) => void;
 }
 
 export default function Settings({
