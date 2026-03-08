@@ -163,10 +163,6 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
     setDiffs(null);
   };
 
-  const monthlyRecords = useMemo(() => {
-    const prefix = `${selectedMonth.year}-${String(selectedMonth.month).padStart(2, '0')}`;
-    return records.filter(r => r.date.startsWith(prefix));
-  }, [records, selectedMonth]);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -232,6 +228,9 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
     const naisRecords = parseNaisCSV(csvText);
     const results: DiffItem[] = [];
 
+    const targetMonthPrefixes = new Set(naisRecords.map(r => r.date.slice(0, 7)));
+    const recordsToCompare = records.filter(r => targetMonthPrefixes.has(r.date.slice(0, 7)));
+
     // Build a key for matching: date + studentNumber + type1 + type2
     type RecordKey = string;
     const makeKey = (date: string, num: number, t1: string, t2: string): RecordKey =>
@@ -239,7 +238,7 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
 
     // Build app record map
     const appMap = new Map<RecordKey, AttendanceRecord[]>();
-    monthlyRecords.forEach(r => {
+    recordsToCompare.forEach(r => {
       const student = students.find(s => s.id === r.studentId);
       if (!student) return;
       const key = makeKey(r.date, student.number, r.type1, r.type2);
@@ -247,17 +246,9 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
       appMap.get(key)!.push(r);
     });
 
-    // Build nais record map
-    const naisMap = new Map<RecordKey, NaisRecord[]>();
-    naisRecords.forEach(nr => {
-      const key = makeKey(nr.date, nr.number, nr.type1, nr.type2);
-      if (!naisMap.has(key)) naisMap.set(key, []);
-      naisMap.get(key)!.push(nr);
-    });
-
     // Also build simpler maps by date+student for detecting records that exist in one but not other
     const appByDateStudent = new Map<string, AttendanceRecord[]>();
-    monthlyRecords.forEach(r => {
+    recordsToCompare.forEach(r => {
       const student = students.find(s => s.id === r.studentId);
       if (!student) return;
       const key = `${r.date}|${student.number}`;
@@ -330,7 +321,7 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
 
     // Check app records not in NAIS
     const processedAppKeys = new Set<string>();
-    monthlyRecords.forEach(r => {
+    recordsToCompare.forEach(r => {
       const student = students.find(s => s.id === r.studentId);
       if (!student) return;
       const dsKey = `${r.date}|${student.number}`;
