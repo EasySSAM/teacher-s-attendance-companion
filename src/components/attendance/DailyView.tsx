@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { Student, AttendanceRecord, DaySchedule } from '@/types/attendance';
-import { formatDate, addDaysSkipWeekend, getType1Color, formatPeriods, getTodayStr } from '@/utils/attendance';
+import { Student, AttendanceRecord, DaySchedule, PERIOD_LABELS } from '@/types/attendance';
+import { formatDate, addDaysSkipWeekend, getType1Color, formatPeriods, getTodayStr, getMaxPeriod } from '@/utils/attendance';
 import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, TrashIcon } from './Icons';
 import AttendanceModal from './AttendanceModal';
 
@@ -32,10 +32,24 @@ export default function DailyView({
   const [currentDate, setCurrentDate] = useState(getTodayStr());
   const [modalOpen, setModalOpen] = useState(false);
   const [editRecord, setEditRecord] = useState<AttendanceRecord | null>(null);
+  const [selectedPeriod, setSelectedPeriod] = useState<number | null>(null);
 
   const dayRecords = useMemo(() => getRecordsForDate(currentDate), [currentDate, getRecordsForDate]);
   const activeStudents = useMemo(() => getActiveStudents(currentDate), [currentDate, getActiveStudents]);
   const frequentReasons = useMemo(() => getFrequentReasons(), [getFrequentReasons]);
+
+  const maxPeriod = getMaxPeriod(currentDate, schedule);
+  const availablePeriods = useMemo(() => {
+    const p = [0];
+    for (let i = 1; i <= maxPeriod; i++) p.push(i);
+    p.push(11);
+    return p;
+  }, [maxPeriod]);
+
+  const filteredRecords = useMemo(() => {
+    if (selectedPeriod === null) return dayRecords;
+    return dayRecords.filter(r => r.periods.includes(selectedPeriod));
+  }, [dayRecords, selectedPeriod]);
 
   const changedCount = dayRecords.length;
 
@@ -86,26 +100,40 @@ export default function DailyView({
             <ChevronRightIcon />
           </button>
         </div>
-        <div className="text-center mt-1">
-          <span className={`text-xs font-medium px-3 py-1 rounded-full ${
+        <div className="mt-2 flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
+          <span className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full ${
             changedCount > 0 ? 'bg-att-unexcused-bg text-att-unexcused' : 'bg-att-other-bg text-att-other'
           }`}>
-            {changedCount > 0 ? `${changedCount}명 변동` : '전원 출석'}
+            {changedCount > 0 ? `${changedCount}명` : '전원출석'}
           </span>
+          <div className="h-4 w-px bg-border shrink-0" />
+          {availablePeriods.map(p => (
+            <button
+              key={p}
+              onClick={() => setSelectedPeriod(selectedPeriod === p ? null : p)}
+              className={`shrink-0 text-[11px] font-medium px-2 py-1 rounded-full transition-colors ${
+                selectedPeriod === p
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
+              }`}
+            >
+              {PERIOD_LABELS[p]}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4">
-        {dayRecords.length === 0 ? (
+        {filteredRecords.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
             <div className="text-5xl mb-3">✨</div>
-            <p className="font-medium">전원 출석입니다</p>
-            <p className="text-sm mt-1">출결 변동이 없습니다</p>
+            <p className="font-medium">{selectedPeriod !== null ? '해당 교시에 변동이 없습니다' : '전원 출석입니다'}</p>
+            <p className="text-sm mt-1">{selectedPeriod !== null ? '다른 교시를 선택해보세요' : '출결 변동이 없습니다'}</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
-            {dayRecords.map(record => {
+            {filteredRecords.map(record => {
               const student = getStudent(record.studentId);
               if (!student) return null;
               const colors = getType1Color(record.type1);
