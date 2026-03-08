@@ -172,14 +172,18 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto">
-      <div className="p-4 space-y-4">
-        {/* Month selector */}
-        <div className="flex items-center justify-between bg-card border border-border rounded-2xl px-4 py-3">
-          <button onClick={() => changeMonth(-1)} className="p-2 rounded-xl hover:bg-muted"><ChevronLeftIcon /></button>
-          <span className="font-semibold text-foreground">{selectedMonth.year}년 {selectedMonth.month}월</span>
-          <button onClick={() => changeMonth(1)} className="p-2 rounded-xl hover:bg-muted"><ChevronRightIcon /></button>
+    <div className="flex flex-col h-full">
+      {/* Header - same style as DailyView */}
+      <div className="bg-card border-b border-border px-4 py-3 shrink-0">
+        <div className="flex items-center justify-between">
+          <button onClick={() => changeMonth(-1)} className="p-2 rounded-xl hover:bg-muted transition-colors"><ChevronLeftIcon /></button>
+          <span className="text-base font-semibold text-foreground">{selectedMonth.year}년 {selectedMonth.month}월</span>
+          <button onClick={() => changeMonth(1)} className="p-2 rounded-xl hover:bg-muted transition-colors"><ChevronRightIcon /></button>
         </div>
+      </div>
+
+      <div className="flex-1 overflow-y-auto">
+      <div className="p-4 space-y-4">
 
         {/* Instructions */}
         <div className="bg-accent rounded-2xl p-4 text-sm text-foreground">
