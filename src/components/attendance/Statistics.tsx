@@ -202,21 +202,38 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
                           <span className="text-xs text-muted-foreground">{dayRecords.length}건</span>
                         </div>
                         <div className="border-t border-border mb-2" />
-                        <div className="grid grid-cols-2 gap-1.5">
+                        <div className="grid grid-cols-2 gap-2">
                           {dayRecords.map(r => {
                             const student = getStudent(r.studentId);
                             if (!student) return null;
                             const colors = getType1Color(r.type1);
                             return (
-                              <div key={r.id} className={`${colors.bg} border ${colors.border} rounded-xl p-2.5`}>
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-1.5">
-                                    <span className="font-medium text-xs text-foreground">{student.number}번 {student.name}</span>
-                                    <span className={`text-[10px] font-medium ${colors.text}`}>{r.type1}{r.type2}</span>
-                                  </div>
-                                  <span className="text-[10px] text-muted-foreground">{formatPeriods(r.periods)}</span>
+                              <div key={r.id} className="bg-card border border-border rounded-2xl p-3 shadow-sm">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
+                                    student.gender === 'male'
+                                      ? 'bg-gender-male text-gender-male-text'
+                                      : 'bg-gender-female text-gender-female-text'
+                                  }`}>
+                                    {student.number}
+                                  </span>
+                                  <span className="font-semibold text-sm text-foreground">{student.name}</span>
+                                  <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
+                                    {r.type1}{r.type2}
+                                  </span>
                                 </div>
-                                {r.reason && <div className="text-[10px] text-muted-foreground mt-0.5">{r.reason}</div>}
+                                <div className="flex flex-wrap gap-1">
+                                  {r.periods.length > 0 && (
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+                                      {formatPeriods(r.periods)}
+                                    </span>
+                                  )}
+                                  {r.reason && (
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+                                      {r.reason}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                             );
                           })}
