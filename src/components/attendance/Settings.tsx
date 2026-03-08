@@ -296,6 +296,7 @@ export default function Settings({
                 onChange={e => setNewGender(e.target.value as 'male' | 'female')}
                 className="p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
               >
+                <option value="" disabled>성별</option>
                 <option value="male">남학생</option>
                 <option value="female">여학생</option>
               </select>
