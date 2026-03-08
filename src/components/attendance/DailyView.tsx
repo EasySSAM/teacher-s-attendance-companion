@@ -11,6 +11,7 @@ interface DailyViewProps {
   getActiveStudents: (date: string) => Student[];
   getRecordsForDate: (date: string) => AttendanceRecord[];
   getFrequentReasons: () => string[];
+  warningPhrases: string[];
   onAddRecord: (record: AttendanceRecord) => void;
   onUpdateRecord: (id: string, updates: Partial<AttendanceRecord>) => void;
   onDeleteRecord: (id: string) => void;
