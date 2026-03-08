@@ -6,11 +6,13 @@ import { generateId } from '@/utils/attendance';
 interface SettingsProps {
   students: Student[];
   schedule: DaySchedule;
+  warningPhrases: string[];
   onAddStudent: (student: Student) => void;
   onUpdateStudent: (id: string, updates: Partial<Student>) => void;
   onDeleteStudent: (id: string) => void;
   onBulkAddStudents: (students: Student[]) => void;
   onUpdateSchedule: (schedule: DaySchedule) => void;
+  onUpdateWarningPhrases: (phrases: string[]) => void;
 }
 
 export default function Settings({
