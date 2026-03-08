@@ -53,6 +53,7 @@ const Index = () => {
             frequentReasons={store.getFrequentReasons()}
             onUpdateRecord={store.updateRecord}
             onAddRecord={store.addRecord}
+            onDeleteRecord={store.deleteRecord}
           />
         )}
         {activeTab === 'nais' && (

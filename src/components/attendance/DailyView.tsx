@@ -205,9 +205,9 @@ export default function DailyView({
                       </button>
                       <button
                         onClick={(e) => handleDelete(e, record.id)}
-                        className="p-1.5 rounded-lg hover:bg-foreground/10 transition-colors"
+                        className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors"
                       >
-                        <TrashIcon className="w-3.5 h-3.5 opacity-50" />
+                        <TrashIcon className="w-3.5 h-3.5 text-destructive opacity-60" />
                       </button>
                     </div>
                   </div>
