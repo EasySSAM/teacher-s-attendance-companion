@@ -41,6 +41,7 @@ export function useAttendanceStore() {
   useEffect(() => saveToStorage(RECORDS_KEY, records), [records]);
   useEffect(() => saveToStorage(SCHEDULE_KEY, schedule), [schedule]);
   useEffect(() => saveToStorage(WARNING_PHRASES_KEY, warningPhrases), [warningPhrases]);
+  useEffect(() => saveToStorage(YEARLY_EXCLUDE_TYPES_KEY, yearlyExcludeTypes), [yearlyExcludeTypes]);
 
   const addStudent = useCallback((student: Student) => {
     setStudents(prev => [...prev, student].sort((a, b) => a.number - b.number));
