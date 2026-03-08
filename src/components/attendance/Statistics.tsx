@@ -268,27 +268,27 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
                       <span className="font-semibold text-foreground">{student.name}</span>
                       <span className="text-xs text-muted-foreground">{studentRecords.length}건</span>
                     </div>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-4 gap-1">
                       {studentRecords.map(r => {
                         const colors = getType1Color(r.type1);
                         return (
-                          <div key={r.id} className="bg-card border border-border rounded-2xl p-3 shadow-sm">
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground`}>
-                                {r.date.slice(5)} ({getDayName(r.date)})
+                          <div key={r.id} className="bg-card border border-border rounded-lg p-1.5 shadow-sm">
+                            <div className="flex items-center gap-1 mb-1">
+                              <span className="inline-flex items-center px-1 py-0 rounded text-xs font-medium bg-muted text-muted-foreground">
+                                {r.date.slice(5)}
                               </span>
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
+                              <span className={`inline-flex items-center px-1 py-0 rounded text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
                                 {r.type1}{r.type2}
                               </span>
                             </div>
-                            <div className="flex flex-wrap gap-1">
+                            <div className="flex flex-wrap gap-0.5">
                               {r.periods.length > 0 && (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+                                <span className="inline-flex items-center px-1 py-0 rounded text-xs font-medium bg-muted text-muted-foreground">
                                   {formatPeriods(r.periods)}
                                 </span>
                               )}
                               {r.reason && (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+                                <span className="inline-flex items-center px-1 py-0 rounded text-xs font-medium bg-muted text-muted-foreground truncate max-w-full">
                                   {r.reason}
                                 </span>
                               )}
