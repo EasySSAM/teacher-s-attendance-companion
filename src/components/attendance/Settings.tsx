@@ -22,7 +22,103 @@ interface SettingsProps {
   onUpdateYearlyExcludeTypes: (types: Type1[]) => void;
 }
 
-export default function Settings({
+function AppLockSettings() {
+  const [lockEnabled, setLockEnabled] = useState(getPinEnabled());
+  const [showSetPin, setShowSetPin] = useState(false);
+  const [newPin, setNewPin] = useState('');
+  const [confirmPin, setConfirmPin] = useState('');
+  const [pinError, setPinError] = useState('');
+
+  const handleToggle = () => {
+    if (lockEnabled) {
+      clearStoredPin();
+      setLockEnabled(false);
+    } else {
+      setShowSetPin(true);
+      setNewPin('');
+      setConfirmPin('');
+      setPinError('');
+    }
+  };
+
+  const handleSetPin = () => {
+    if (newPin.length !== 4) { setPinError('4자리를 입력하세요'); return; }
+    if (newPin !== confirmPin) { setPinError('비밀번호가 일치하지 않습니다'); return; }
+    setStoredPin(newPin);
+    setLockEnabled(true);
+    setShowSetPin(false);
+  };
+
+  const handleChangePin = () => {
+    setShowSetPin(true);
+    setNewPin('');
+    setConfirmPin('');
+    setPinError('');
+  };
+
+  return (
+    <section>
+      <h3 className="font-semibold text-foreground mb-3">앱 잠금</h3>
+      <div className="bg-card border border-border rounded-2xl p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-foreground">비밀번호 잠금</p>
+            <p className="text-xs text-muted-foreground">앱 실행 시 4자리 비밀번호 입력</p>
+          </div>
+          <button
+            onClick={handleToggle}
+            className={`w-12 h-7 rounded-full transition-colors relative ${
+              lockEnabled ? 'bg-primary' : 'bg-muted'
+            }`}
+          >
+            <div className={`absolute top-1 w-5 h-5 rounded-full bg-card shadow transition-transform ${
+              lockEnabled ? 'translate-x-6' : 'translate-x-1'
+            }`} />
+          </button>
+        </div>
+
+        {lockEnabled && !showSetPin && (
+          <button
+            onClick={handleChangePin}
+            className="text-xs text-primary font-medium hover:underline"
+          >
+            비밀번호 변경
+          </button>
+        )}
+
+        {showSetPin && (
+          <div className="space-y-2 pt-2 border-t border-border">
+            <input
+              type="password"
+              inputMode="numeric"
+              maxLength={4}
+              value={newPin}
+              onChange={e => { setNewPin(e.target.value.replace(/\D/g, '').slice(0, 4)); setPinError(''); }}
+              placeholder="새 비밀번호 (숫자 4자리)"
+              className="w-full p-2.5 rounded-xl border border-input bg-background text-foreground text-sm tracking-widest text-center"
+            />
+            <input
+              type="password"
+              inputMode="numeric"
+              maxLength={4}
+              value={confirmPin}
+              onChange={e => { setConfirmPin(e.target.value.replace(/\D/g, '').slice(0, 4)); setPinError(''); }}
+              placeholder="비밀번호 확인"
+              className="w-full p-2.5 rounded-xl border border-input bg-background text-foreground text-sm tracking-widest text-center"
+            />
+            {pinError && <p className="text-xs text-destructive font-medium">{pinError}</p>}
+            <div className="flex gap-2">
+              <button onClick={handleSetPin} className="flex-1 py-2.5 bg-primary text-primary-foreground rounded-xl text-sm font-semibold">설정</button>
+              <button onClick={() => setShowSetPin(false)} className="flex-1 py-2.5 bg-muted text-muted-foreground rounded-xl text-sm font-medium">취소</button>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+
   students,
   records,
   schedule,
