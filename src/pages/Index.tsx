@@ -4,6 +4,7 @@ import DailyView from '@/components/attendance/DailyView';
 import Statistics from '@/components/attendance/Statistics';
 import NaisCheck from '@/components/attendance/NaisCheck';
 import Settings from '@/components/attendance/Settings';
+import LockScreen, { getPinEnabled, getStoredPin } from '@/components/attendance/LockScreen';
 import { CalendarIcon, BarChart2Icon, SearchIcon, SettingsIcon } from '@/components/attendance/Icons';
 
 type Tab = 'daily' | 'stats' | 'nais' | 'settings';
@@ -17,7 +18,12 @@ const tabs: { key: Tab; label: string; Icon: React.FC<React.SVGProps<SVGSVGEleme
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab>('daily');
+  const [isLocked, setIsLocked] = useState(() => getPinEnabled() && !!getStoredPin());
   const store = useAttendanceStore();
+
+  if (isLocked) {
+    return <LockScreen onUnlock={() => setIsLocked(false)} />;
+  }
 
   return (
     <div className="flex flex-col h-screen max-w-lg mx-auto bg-background">
