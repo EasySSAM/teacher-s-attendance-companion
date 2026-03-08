@@ -230,17 +230,10 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                   return (
                     <div
                       key={r.id}
-                      className="relative bg-card border border-border rounded-2xl p-3 shadow-sm cursor-pointer transition-all hover:shadow-md active:scale-[0.98]"
-                      onClick={() => openEdit(r)}
+                      className="relative bg-card border border-border rounded-2xl p-3 shadow-sm"
                     >
-                      <button
-                        onClick={(e) => { e.stopPropagation(); openEdit(r); }}
-                        className="absolute top-2 right-2 p-1.5 rounded-lg hover:bg-muted transition-colors"
-                      >
-                        <EditIcon className="w-3.5 h-3.5 opacity-40" />
-                      </button>
-
-                      <div className="flex items-center gap-1.5 mb-2 flex-wrap">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-1.5 min-w-0 flex-wrap flex-1">
                         <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-xs font-medium ${
                           student.gender === 'male'
                             ? 'bg-gender-male text-gender-male-text'
