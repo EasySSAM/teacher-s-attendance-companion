@@ -83,10 +83,11 @@ export default function Settings({
 
   const handleAddSingle = () => {
     const num = parseInt(newNumber);
-    if (isNaN(num) || !newName.trim()) return;
-    onAddStudent({ id: generateId(), number: num, name: newName.trim(), gender: newGender });
+    if (isNaN(num) || !newName.trim() || !newGender) return;
+    onAddStudent({ id: generateId(), number: num, name: newName.trim(), gender: newGender as 'male' | 'female' });
     setNewNumber('');
     setNewName('');
+    setNewGender('');
   };
 
   const handleEdit = (student: Student) => {
