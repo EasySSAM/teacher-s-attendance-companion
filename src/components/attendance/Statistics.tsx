@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Student, AttendanceRecord, Type1, DaySchedule } from '@/types/attendance';
-import { ChevronLeftIcon, ChevronRightIcon, CheckIcon, EditIcon } from './Icons';
+import { ChevronLeftIcon, ChevronRightIcon, CheckIcon, EditIcon, TrashIcon } from './Icons';
 import { formatDate, getType1Color, formatPeriods, getSchoolYear, getDayName } from '@/utils/attendance';
 import AttendanceModal from './AttendanceModal';
 
