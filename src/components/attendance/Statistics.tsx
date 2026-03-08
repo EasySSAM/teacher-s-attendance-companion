@@ -104,13 +104,18 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
         <div
           className="relative bg-card border border-border rounded-2xl p-2.5 shadow-sm"
         >
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex-1" />
+          <div className="flex items-center justify-end gap-0.5 mb-1">
             <button
               onClick={() => openEdit(r)}
               className="shrink-0 p-1 rounded-lg hover:bg-muted transition-colors"
             >
               <EditIcon className="w-3 h-3 opacity-40" />
+            </button>
+            <button
+              onClick={() => handleDelete(r.id)}
+              className="shrink-0 p-1 rounded-lg hover:bg-destructive/10 transition-colors"
+            >
+              <TrashIcon className="w-3 h-3 text-destructive opacity-60" />
             </button>
           </div>
           <div className="flex flex-wrap gap-1">
