@@ -1,24 +1,36 @@
 import React, { useState, useMemo } from 'react';
-import { Student, AttendanceRecord, Type1 } from '@/types/attendance';
-import { ChevronLeftIcon, ChevronRightIcon, CheckIcon } from './Icons';
+import { Student, AttendanceRecord, Type1, DaySchedule } from '@/types/attendance';
+import { ChevronLeftIcon, ChevronRightIcon, CheckIcon, EditIcon } from './Icons';
 import { formatDate, getType1Color, formatPeriods, getSchoolYear, getDayName } from '@/utils/attendance';
+import AttendanceModal from './AttendanceModal';
 
 interface StatisticsProps {
   students: Student[];
   records: AttendanceRecord[];
   yearlyExcludeTypes: Type1[];
+  schedule: DaySchedule;
+  warningPhrases: string[];
+  frequentReasons: string[];
   onUpdateRecord: (id: string, updates: Partial<AttendanceRecord>) => void;
+  onAddRecord: (record: AttendanceRecord) => void;
 }
 
 type SubTab = 'docs' | 'monthly-date' | 'monthly-student' | 'yearly';
 
-export default function Statistics({ students, records, yearlyExcludeTypes, onUpdateRecord }: StatisticsProps) {
+export default function Statistics({ students, records, yearlyExcludeTypes, schedule, warningPhrases, frequentReasons, onUpdateRecord, onAddRecord }: StatisticsProps) {
   const [subTab, setSubTab] = useState<SubTab>('docs');
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState({ year: now.getFullYear(), month: now.getMonth() + 1 });
   const [selectedSchoolYear, setSelectedSchoolYear] = useState(getSchoolYear());
+  const [editRecord, setEditRecord] = useState<AttendanceRecord | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const getStudent = (id: string) => students.find(s => s.id === id);
+
+  const openEdit = (record: AttendanceRecord) => {
+    setEditRecord(record);
+    setModalOpen(true);
+  };
 
   const subTabs: { key: SubTab; label: string }[] = [
     { key: 'docs', label: '서류미제출' },
@@ -75,6 +87,66 @@ export default function Statistics({ students, records, yearlyExcludeTypes, onUp
     });
   };
 
+  // Shared record card component
+  const RecordCard = ({ r, showDate = false }: { r: AttendanceRecord; showDate?: boolean }) => {
+    const student = getStudent(r.studentId);
+    if (!student) return null;
+    const colors = getType1Color(r.type1);
+    return (
+      <div
+        onClick={() => openEdit(r)}
+        className="relative bg-card border border-border rounded-2xl p-3 shadow-sm cursor-pointer transition-all hover:shadow-md active:scale-[0.98]"
+      >
+        <button
+          onClick={(e) => { e.stopPropagation(); openEdit(r); }}
+          className="absolute top-2 right-2 p-1.5 rounded-lg hover:bg-muted transition-colors"
+        >
+          <EditIcon className="w-3.5 h-3.5 opacity-40" />
+        </button>
+
+        <div className="flex items-center gap-2 mb-2">
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
+            student.gender === 'male'
+              ? 'bg-gender-male text-gender-male-text'
+              : 'bg-gender-female text-gender-female-text'
+          }`}>
+            {student.number}
+          </span>
+          <span className="font-semibold text-sm text-foreground">{student.name}</span>
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
+            {r.type1}{r.type2}
+          </span>
+        </div>
+
+        <div className="flex flex-wrap gap-1">
+          {showDate && (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+              {r.date.slice(5)} ({getDayName(r.date)})
+            </span>
+          )}
+          {r.periods.length > 0 ? (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+              {formatPeriods(r.periods)}
+            </span>
+          ) : (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused">
+              ⚠ 교시 미선택
+            </span>
+          )}
+          {r.reason ? (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+              {r.reason}
+            </span>
+          ) : (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused">
+              ⚠ 사유 미입력
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col h-full">
       {/* Sub tabs */}
@@ -112,7 +184,18 @@ export default function Statistics({ students, records, yearlyExcludeTypes, onUp
                   if (!student) return null;
                   const colors = getType1Color(r.type1);
                   return (
-                    <div key={r.id} className="bg-card border border-border rounded-2xl p-3 shadow-sm">
+                    <div
+                      key={r.id}
+                      className="relative bg-card border border-border rounded-2xl p-3 shadow-sm cursor-pointer transition-all hover:shadow-md active:scale-[0.98]"
+                      onClick={() => openEdit(r)}
+                    >
+                      <button
+                        onClick={(e) => { e.stopPropagation(); openEdit(r); }}
+                        className="absolute top-2 right-2 p-1.5 rounded-lg hover:bg-muted transition-colors"
+                      >
+                        <EditIcon className="w-3.5 h-3.5 opacity-40" />
+                      </button>
+
                       <div className="flex items-center gap-2 mb-2">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
                           student.gender === 'male'
@@ -143,7 +226,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, onUp
                         )}
                       </div>
 
-                      <div className="border-t border-border pt-2 space-y-1">
+                      <div className="border-t border-border pt-2 space-y-1" onClick={e => e.stopPropagation()}>
                         {r.requiredDocs.map(doc => (
                           <label key={doc} className="flex items-center gap-1.5 cursor-pointer">
                             <div
@@ -204,40 +287,9 @@ export default function Statistics({ students, records, yearlyExcludeTypes, onUp
                         </div>
                         <div className="border-t border-border mb-2" />
                         <div className="grid grid-cols-2 gap-2">
-                          {dayRecords.map(r => {
-                            const student = getStudent(r.studentId);
-                            if (!student) return null;
-                            const colors = getType1Color(r.type1);
-                            return (
-                              <div key={r.id} className="bg-card border border-border rounded-2xl p-3 shadow-sm">
-                                <div className="flex items-center gap-2 mb-2">
-                                  <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
-                                    student.gender === 'male'
-                                      ? 'bg-gender-male text-gender-male-text'
-                                      : 'bg-gender-female text-gender-female-text'
-                                  }`}>
-                                    {student.number}
-                                  </span>
-                                  <span className="font-semibold text-sm text-foreground">{student.name}</span>
-                                  <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
-                                    {r.type1}{r.type2}
-                                  </span>
-                                </div>
-                                <div className="flex flex-wrap gap-1">
-                                  {r.periods.length > 0 && (
-                                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
-                                      {formatPeriods(r.periods)}
-                                    </span>
-                                  )}
-                                  {r.reason && (
-                                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
-                                      {r.reason}
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })}
+                          {dayRecords.map(r => (
+                            <RecordCard key={r.id} r={r} />
+                          ))}
                         </div>
                       </div>
                     );
@@ -256,51 +308,24 @@ export default function Statistics({ students, records, yearlyExcludeTypes, onUp
               <span className="font-semibold text-foreground">{selectedMonth.year}년 {selectedMonth.month}월</span>
               <button onClick={() => changeMonth(1)} className="p-2 rounded-xl hover:bg-muted"><ChevronRightIcon /></button>
             </div>
-            <div className="p-3 space-y-2">
+            <div className="p-4 space-y-4">
               {students.map(student => {
                 const studentRecords = monthlyRecords.filter(r => r.studentId === student.id);
                 if (studentRecords.length === 0) return null;
                 return (
-                  <div key={student.id} className="bg-card border border-border rounded-2xl overflow-hidden">
-                    <div className="flex">
-                      {/* 1 part: student info */}
-                      <div className="flex flex-col items-center justify-center px-2 py-2 bg-muted/50 border-r border-border min-w-[48px]">
-                        <span className={`px-1.5 py-0.5 rounded text-[11px] font-semibold ${
-                          student.gender === 'male' ? 'bg-gender-male text-gender-male-text' : 'bg-gender-female text-gender-female-text'
-                        }`}>{student.number}</span>
-                        <span className="font-semibold text-[11px] text-foreground mt-0.5">{student.name}</span>
-                        <span className="text-[10px] text-muted-foreground">{studentRecords.length}건</span>
-                      </div>
-                      {/* 9 part: records grid */}
-                      <div className="flex-1 p-1.5 flex items-center">
-                        <div className="grid grid-cols-2 gap-1 w-full">
-                          {studentRecords.map(r => {
-                            const colors = getType1Color(r.type1);
-                            return (
-                              <div key={r.id} className="border border-border rounded-lg p-0.5 overflow-hidden">
-                                <div className="grid grid-cols-2 gap-0.5">
-                                  <span className="inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium bg-muted text-muted-foreground truncate">
-                                    {parseInt(r.date.slice(8))}({getDayName(r.date)})
-                                  </span>
-                                  <span className={`inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
-                                    {r.type1}{r.type2}
-                                  </span>
-                                  <span className={`inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium truncate ${
-                                    r.periods.length > 0 ? 'bg-muted text-muted-foreground' : 'bg-att-unexcused-bg text-att-unexcused'
-                                  }`}>
-                                    {r.periods.length > 0 ? formatPeriods(r.periods) : '⚠교시'}
-                                  </span>
-                                  <span className={`inline-flex items-center justify-center px-0.5 py-0 rounded text-[10px] font-medium truncate ${
-                                    r.reason ? 'bg-muted text-muted-foreground' : 'bg-att-unexcused-bg text-att-unexcused'
-                                  }`} title={r.reason || ''}>
-                                    {r.reason || '⚠사유'}
-                                  </span>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
+                  <div key={student.id}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${
+                        student.gender === 'male' ? 'bg-gender-male text-gender-male-text' : 'bg-gender-female text-gender-female-text'
+                      }`}>{student.number}</span>
+                      <span className="font-semibold text-sm text-foreground">{student.name}</span>
+                      <span className="text-xs text-muted-foreground">{studentRecords.length}건</span>
+                    </div>
+                    <div className="border-t border-border mb-2" />
+                    <div className="grid grid-cols-2 gap-2">
+                      {studentRecords.map(r => (
+                        <RecordCard key={r.id} r={r} showDate />
+                      ))}
                     </div>
                   </div>
                 );
@@ -367,6 +392,21 @@ export default function Statistics({ students, records, yearlyExcludeTypes, onUp
           </div>
         )}
       </div>
+
+      {/* Edit Modal */}
+      <AttendanceModal
+        isOpen={modalOpen}
+        onClose={() => { setModalOpen(false); setEditRecord(null); }}
+        students={students}
+        record={editRecord}
+        currentDate={editRecord?.date || ''}
+        schedule={schedule}
+        records={records}
+        onSave={onAddRecord}
+        onUpdate={onUpdateRecord}
+        frequentReasons={frequentReasons}
+        warningPhrases={warningPhrases}
+      />
     </div>
   );
 }
