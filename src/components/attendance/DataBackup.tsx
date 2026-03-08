@@ -81,7 +81,8 @@ export default function DataBackup({ students, records, onImportData }: DataBack
       return;
     }
 
-    const dateStr = `${startDate || 'all'}_${endDate || 'all'}`;
+    const now = new Date();
+    const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
 
     if (exportMode === 'csv') {
       const csv = handleExportCSV();
