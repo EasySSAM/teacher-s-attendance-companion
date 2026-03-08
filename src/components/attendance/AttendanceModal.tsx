@@ -104,7 +104,7 @@ export default function AttendanceModal({
     }
   };
 
-  const requiredDocs = getRequiredDocs(type1, type2, reason);
+  const requiredDocs = (type1 && type2) ? getRequiredDocs(type1, type2, reason) : [];
 
   const toggleDoc = (doc: string) => {
     setSubmittedDocs(prev =>
