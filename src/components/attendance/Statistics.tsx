@@ -6,6 +6,7 @@ import { formatDate, getType1Color, formatPeriods, getSchoolYear, getDayName } f
 interface StatisticsProps {
   students: Student[];
   records: AttendanceRecord[];
+  yearlyExcludeTypes: Type1[];
   onUpdateRecord: (id: string, updates: Partial<AttendanceRecord>) => void;
 }
 
