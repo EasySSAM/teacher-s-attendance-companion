@@ -12,7 +12,7 @@ interface StatisticsProps {
 
 type SubTab = 'docs' | 'monthly-date' | 'monthly-student' | 'yearly';
 
-export default function Statistics({ students, records, onUpdateRecord }: StatisticsProps) {
+export default function Statistics({ students, records, yearlyExcludeTypes, onUpdateRecord }: StatisticsProps) {
   const [subTab, setSubTab] = useState<SubTab>('docs');
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState({ year: now.getFullYear(), month: now.getMonth() + 1 });
