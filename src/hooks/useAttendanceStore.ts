@@ -123,6 +123,7 @@ export function useAttendanceStore() {
     records,
     schedule,
     warningPhrases,
+    yearlyExcludeTypes,
     addStudent,
     updateStudent,
     deleteStudent,
@@ -137,5 +138,6 @@ export function useAttendanceStore() {
     getFrequentReasons,
     updateSchedule,
     updateWarningPhrases,
+    updateYearlyExcludeTypes,
   };
 }
