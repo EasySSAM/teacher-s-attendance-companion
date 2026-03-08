@@ -247,7 +247,14 @@ export default function Settings({
           </div>
         </section>
 
-        {/* Bulk import */}
+        {/* Data backup */}
+        <DataBackup
+          students={students}
+          records={records}
+          onImportData={onImportData}
+        />
+
+
         <section>
           <h3 className="font-semibold text-foreground mb-3">일괄 등록</h3>
           <div className="bg-accent rounded-2xl p-4 text-sm mb-3">
