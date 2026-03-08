@@ -222,7 +222,7 @@ export default function AttendanceModal({
                   onChange={e => setDate(e.target.value)}
                   className="w-full p-3 rounded-xl border border-input bg-background text-foreground text-center"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-foreground pointer-events-none">
                   ({getDayName(date)})
                 </span>
               </div>
@@ -337,13 +337,13 @@ export default function AttendanceModal({
           {/* Periods */}
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-2">교시 선택</label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {availablePeriods.map(p => (
                 <button
                   key={p}
                   onClick={() => handlePeriodClick(p)}
                   disabled={type2 === '결석'}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium border transition-all ${
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-all ${
                     periods.includes(p)
                       ? 'bg-primary text-primary-foreground border-primary'
                       : 'bg-muted text-muted-foreground border-transparent'
@@ -359,7 +359,7 @@ export default function AttendanceModal({
           {requiredDocs.length > 0 && (
             <div>
               <label className="block text-sm font-medium text-muted-foreground mb-2">필요 서류</label>
-              <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
                 {requiredDocs.map(doc => (
                   <label key={doc} className="flex items-center gap-3 p-3 rounded-xl bg-muted/50 cursor-pointer">
                     <input
