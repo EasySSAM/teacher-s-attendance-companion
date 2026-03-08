@@ -245,6 +245,13 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                         <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
                           {r.type1}{r.type2}
                         </span>
+                        </div>
+                        <button
+                          onClick={() => openEdit(r)}
+                          className="shrink-0 p-1.5 rounded-lg hover:bg-muted transition-colors"
+                        >
+                          <EditIcon className="w-3.5 h-3.5 opacity-40" />
+                        </button>
                       </div>
 
                       <div className="flex flex-wrap gap-1 mb-2">
