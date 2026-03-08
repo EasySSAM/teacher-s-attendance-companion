@@ -15,6 +15,7 @@ interface AttendanceModalProps {
   onSave: (record: AttendanceRecord) => void;
   onUpdate: (id: string, updates: Partial<AttendanceRecord>) => void;
   frequentReasons: string[];
+  warningPhrases: string[];
 }
 
 export default function AttendanceModal({
@@ -28,6 +29,7 @@ export default function AttendanceModal({
   onSave,
   onUpdate,
   frequentReasons,
+  warningPhrases,
 }: AttendanceModalProps) {
   const [date, setDate] = useState(currentDate);
   const [studentId, setStudentId] = useState('');
@@ -37,6 +39,8 @@ export default function AttendanceModal({
   const [periods, setPeriods] = useState<number[]>([]);
   const [submittedDocs, setSubmittedDocs] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showWarningPopup, setShowWarningPopup] = useState(false);
+  const [pendingSave, setPendingSave] = useState<AttendanceRecord | null>(null);
 
   const isEdit = !!record;
 
@@ -108,10 +112,22 @@ export default function AttendanceModal({
     );
   };
 
-  // Warning: same reason in same month
+  // Warning: check warningPhrases against same-month records with matching reason
   const warningMessage = useMemo(() => {
     if (!reason || !studentId || !date) return '';
     const month = date.slice(0, 7);
+    // Check if reason contains any warning phrase
+    const matchedPhrase = warningPhrases.find(phrase => reason.includes(phrase));
+    if (matchedPhrase) {
+      const existing = records.filter(
+        r => r.studentId === studentId && r.date.startsWith(month) && r.reason.includes(matchedPhrase) && r.id !== record?.id
+      );
+      if (existing.length > 0) {
+        const details = existing.map(r => `${r.date.slice(5)} ${r.type1}${r.type2}`).join(', ');
+        return `⚠ 이번 달에 "${matchedPhrase}" 사유로 이미 기록이 있습니다: ${details}`;
+      }
+    }
+    // Fallback: exact reason match
     const existing = records.filter(
       r => r.studentId === studentId && r.date.startsWith(month) && r.reason === reason && r.id !== record?.id
     );
@@ -119,33 +135,54 @@ export default function AttendanceModal({
       return `이번 달에 같은 사유("${reason}")로 ${existing.length}건의 기록이 있습니다.`;
     }
     return '';
-  }, [reason, studentId, date, records, record]);
+  }, [reason, studentId, date, records, record, warningPhrases]);
 
   const filteredSuggestions = useMemo(() => {
     if (!reason || reason.length === 0) return [];
     return frequentReasons.filter(r => r.includes(reason) && r !== reason);
   }, [reason, frequentReasons]);
 
-  const handleSave = () => {
-    if (!studentId) return;
-    const data: AttendanceRecord = {
-      id: record?.id || generateId(),
-      studentId,
-      date,
-      type1,
-      type2,
-      reason,
-      periods,
-      requiredDocs,
-      submittedDocs,
-    };
+  const buildRecord = (): AttendanceRecord => ({
+    id: record?.id || generateId(),
+    studentId,
+    date,
+    type1,
+    type2,
+    reason,
+    periods,
+    requiredDocs,
+    submittedDocs,
+  });
 
+  const doSave = (data: AttendanceRecord) => {
     if (isEdit) {
       onUpdate(record!.id, data);
     } else {
       onSave(data);
     }
     onClose();
+  };
+
+  const handleSave = () => {
+    if (!studentId) return;
+    const data = buildRecord();
+
+    // Check if warning should be shown before saving
+    if (warningMessage) {
+      setPendingSave(data);
+      setShowWarningPopup(true);
+      return;
+    }
+
+    doSave(data);
+  };
+
+  const confirmSave = () => {
+    if (pendingSave) {
+      doSave(pendingSave);
+    }
+    setShowWarningPopup(false);
+    setPendingSave(null);
   };
 
   if (!isOpen) return null;
@@ -313,6 +350,35 @@ export default function AttendanceModal({
           </button>
         </div>
       </div>
+
+      {/* Warning confirmation popup */}
+      {showWarningPopup && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center">
+          <div className="absolute inset-0 bg-foreground/50" onClick={() => { setShowWarningPopup(false); setPendingSave(null); }} />
+          <div className="relative bg-card rounded-2xl p-6 w-80 shadow-2xl animate-slide-up">
+            <div className="flex items-center gap-2 mb-3">
+              <AlertIcon className="w-5 h-5 text-att-unexcused" />
+              <h3 className="font-semibold text-foreground">경고</h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-5">{warningMessage}</p>
+            <p className="text-sm text-foreground font-medium mb-4">그래도 저장하시겠습니까?</p>
+            <div className="flex gap-2">
+              <button
+                onClick={confirmSave}
+                className="flex-1 py-2.5 bg-att-unexcused text-primary-foreground rounded-xl font-semibold text-sm"
+              >
+                저장
+              </button>
+              <button
+                onClick={() => { setShowWarningPopup(false); setPendingSave(null); }}
+                className="flex-1 py-2.5 bg-muted text-muted-foreground rounded-xl font-medium text-sm"
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

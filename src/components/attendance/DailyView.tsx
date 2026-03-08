@@ -11,6 +11,7 @@ interface DailyViewProps {
   getActiveStudents: (date: string) => Student[];
   getRecordsForDate: (date: string) => AttendanceRecord[];
   getFrequentReasons: () => string[];
+  warningPhrases: string[];
   onAddRecord: (record: AttendanceRecord) => void;
   onUpdateRecord: (id: string, updates: Partial<AttendanceRecord>) => void;
   onDeleteRecord: (id: string) => void;
@@ -23,6 +24,7 @@ export default function DailyView({
   getActiveStudents,
   getRecordsForDate,
   getFrequentReasons,
+  warningPhrases,
   onAddRecord,
   onUpdateRecord,
   onDeleteRecord,
@@ -175,6 +177,7 @@ export default function DailyView({
         onSave={onAddRecord}
         onUpdate={onUpdateRecord}
         frequentReasons={frequentReasons}
+        warningPhrases={warningPhrases}
       />
     </div>
   );

@@ -4,6 +4,7 @@ import { Student, AttendanceRecord, DaySchedule, DEFAULT_SCHEDULE, SAMPLE_STUDEN
 const STUDENTS_KEY = 'attendance_students_list';
 const RECORDS_KEY = 'attendance_records_pro';
 const SCHEDULE_KEY = 'attendance_schedule';
+const WARNING_PHRASES_KEY = 'attendance_warning_phrases';
 
 function loadFromStorage<T>(key: string, fallback: T): T {
   try {
@@ -28,10 +29,14 @@ export function useAttendanceStore() {
   const [schedule, setSchedule] = useState<DaySchedule>(() =>
     loadFromStorage(SCHEDULE_KEY, DEFAULT_SCHEDULE)
   );
+  const [warningPhrases, setWarningPhrases] = useState<string[]>(() =>
+    loadFromStorage(WARNING_PHRASES_KEY, [])
+  );
 
   useEffect(() => saveToStorage(STUDENTS_KEY, students), [students]);
   useEffect(() => saveToStorage(RECORDS_KEY, records), [records]);
   useEffect(() => saveToStorage(SCHEDULE_KEY, schedule), [schedule]);
+  useEffect(() => saveToStorage(WARNING_PHRASES_KEY, warningPhrases), [warningPhrases]);
 
   const addStudent = useCallback((student: Student) => {
     setStudents(prev => [...prev, student].sort((a, b) => a.number - b.number));
@@ -100,10 +105,15 @@ export function useAttendanceStore() {
     setSchedule(newSchedule);
   }, []);
 
+  const updateWarningPhrases = useCallback((phrases: string[]) => {
+    setWarningPhrases(phrases);
+  }, []);
+
   return {
     students,
     records,
     schedule,
+    warningPhrases,
     addStudent,
     updateStudent,
     deleteStudent,
@@ -117,5 +127,6 @@ export function useAttendanceStore() {
     getActiveStudents,
     getFrequentReasons,
     updateSchedule,
+    updateWarningPhrases,
   };
 }

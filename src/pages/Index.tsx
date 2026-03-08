@@ -31,6 +31,7 @@ const Index = () => {
             getActiveStudents={store.getActiveStudents}
             getRecordsForDate={store.getRecordsForDate}
             getFrequentReasons={store.getFrequentReasons}
+            warningPhrases={store.warningPhrases}
             onAddRecord={store.addRecord}
             onUpdateRecord={store.updateRecord}
             onDeleteRecord={store.deleteRecord}
@@ -53,11 +54,13 @@ const Index = () => {
           <Settings
             students={store.students}
             schedule={store.schedule}
+            warningPhrases={store.warningPhrases}
             onAddStudent={store.addStudent}
             onUpdateStudent={store.updateStudent}
             onDeleteStudent={store.deleteStudent}
             onBulkAddStudents={store.bulkAddStudents}
             onUpdateSchedule={store.updateSchedule}
+            onUpdateWarningPhrases={store.updateWarningPhrases}
           />
         )}
       </div>
