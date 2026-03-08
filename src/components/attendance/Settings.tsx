@@ -276,30 +276,45 @@ export default function Settings({
         <section>
           <h3 className="font-semibold text-foreground mb-3">개별 추가</h3>
           <div className="bg-card border border-border rounded-2xl p-4 space-y-3">
-            <div className="grid grid-cols-3 gap-2">
+            <div className="flex gap-2">
               <input
                 type="number"
                 value={newNumber}
                 onChange={e => setNewNumber(e.target.value)}
                 placeholder="번호"
-                className="p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
+                className="w-16 p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
               />
               <input
                 type="text"
                 value={newName}
                 onChange={e => setNewName(e.target.value)}
                 placeholder="이름"
-                className="p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
+                className="flex-1 p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
               />
-              <select
-                value={newGender}
-                onChange={e => setNewGender(e.target.value as 'male' | 'female')}
-                className="p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
-              >
-                <option value="" disabled>성별</option>
-                <option value="male">남학생</option>
-                <option value="female">여학생</option>
-              </select>
+              <div className="flex rounded-xl border border-input overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setNewGender('male')}
+                  className={`px-3 py-2.5 text-sm font-medium transition-colors ${
+                    newGender === 'male'
+                      ? 'bg-gender-male text-gender-male-text'
+                      : 'bg-background text-muted-foreground hover:bg-muted'
+                  }`}
+                >
+                  남
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setNewGender('female')}
+                  className={`px-3 py-2.5 text-sm font-medium transition-colors ${
+                    newGender === 'female'
+                      ? 'bg-gender-female text-gender-female-text'
+                      : 'bg-background text-muted-foreground hover:bg-muted'
+                  }`}
+                >
+                  여
+                </button>
+              </div>
             </div>
             <button
               onClick={handleAddSingle}
