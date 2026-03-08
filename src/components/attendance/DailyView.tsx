@@ -130,7 +130,7 @@ export default function DailyView({
             <ChevronRightIcon />
           </button>
         </div>
-        <div className="mt-2 flex items-center gap-1">
+        <div className={`mt-2 flex items-center gap-1 ${selectedPeriod !== null ? 'justify-start' : 'justify-center'}`}>
           {selectedPeriod !== null && (
             <button
               onClick={() => setSelectedPeriod(null)}
