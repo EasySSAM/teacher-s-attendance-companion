@@ -26,7 +26,7 @@ const Index = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen max-w-lg mx-auto bg-background" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+    <div className="safe-top flex flex-col h-screen max-w-lg mx-auto bg-background">
       {/* Tab content */}
       <div className="flex-1 overflow-hidden">
         {activeTab === 'daily' && (
