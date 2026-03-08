@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: ['main']
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -25,11 +26,15 @@ jobs:
       - run: npm run build
         env:
           BASE_URL: /${{ github.event.repository.name }}/
+      - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -38,3 +43,4 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
