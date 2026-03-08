@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Student, AttendanceRecord, PERIOD_LABELS } from '@/types/attendance';
 import { encryptData, decryptData } from '@/utils/crypto';
+import { toDateStr } from '@/utils/attendance';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface DataBackupProps {
   students: Student[];
@@ -10,6 +13,11 @@ interface DataBackupProps {
 
 export default function DataBackup({ students, records, onImportData }: DataBackupProps) {
   const [startDate, setStartDate] = useState('');
+
+  const formatDisplayDate = (dateStr: string) => {
+    const d = new Date(dateStr + 'T00:00:00');
+    return `${d.getFullYear()}. ${String(d.getMonth() + 1).padStart(2, '0')}. ${String(d.getDate()).padStart(2, '0')}.`;
+  };
   const [endDate, setEndDate] = useState('');
   const [password, setPassword] = useState('');
   const [useEncryption, setUseEncryption] = useState(false);
@@ -183,23 +191,50 @@ export default function DataBackup({ students, records, onImportData }: DataBack
         <div className="flex gap-2">
           <div className="flex-1">
             <label className="block text-xs text-muted-foreground mb-1">시작일</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={e => setStartDate(e.target.value)}
-              className="w-full p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
-            />
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="w-full p-2.5 rounded-xl border border-input bg-background text-foreground text-sm text-left">
+                  {startDate ? formatDisplayDate(startDate) : <span className="text-muted-foreground">선택</span>}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={startDate ? new Date(startDate + 'T00:00:00') : undefined}
+                  onSelect={(day) => { if (day) setStartDate(toDateStr(day)); }}
+                  className="p-3 pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="flex-1">
             <label className="block text-xs text-muted-foreground mb-1">종료일</label>
-            <input
-              type="date"
-              value={endDate}
-              onChange={e => setEndDate(e.target.value)}
-              className="w-full p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
-            />
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="w-full p-2.5 rounded-xl border border-input bg-background text-foreground text-sm text-left">
+                  {endDate ? formatDisplayDate(endDate) : <span className="text-muted-foreground">선택</span>}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="end">
+                <Calendar
+                  mode="single"
+                  selected={endDate ? new Date(endDate + 'T00:00:00') : undefined}
+                  onSelect={(day) => { if (day) setEndDate(toDateStr(day)); }}
+                  className="p-3 pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
+
+        {(startDate || endDate) && (
+          <button
+            onClick={() => { setStartDate(''); setEndDate(''); }}
+            className="text-xs text-primary font-medium hover:underline"
+          >
+            기간 초기화
+          </button>
+        )}
 
         <p className="text-xs text-muted-foreground">
           {startDate || endDate
