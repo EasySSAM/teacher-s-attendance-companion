@@ -418,11 +418,36 @@ export default function Settings({
 
           {/* ===== 데이터 탭 ===== */}
           {settingsTab === 'data' && (
-            <DataBackup
-              students={students}
-              records={records}
-              onImportData={onImportData}
-            />
+            <>
+              <DataBackup
+                students={students}
+                records={records}
+                onImportData={onImportData}
+              />
+
+              {/* App info */}
+              <section className="mt-8 pt-6 border-t border-border">
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted">
+                    <span className="text-xs font-semibold text-foreground">출결 관리 앱</span>
+                    <span className="text-[10px] text-muted-foreground font-mono">v2025.03.08</span>
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-xs text-muted-foreground">
+                      제작 · <span className="font-medium text-foreground">Easy쌤</span>
+                    </p>
+                    <a
+                      href="https://blog.naver.com/ai_korean_t"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-primary font-medium hover:underline"
+                    >
+                      blog.naver.com/ai_korean_t
+                    </a>
+                  </div>
+                </div>
+              </section>
+            </>
           )}
 
         </div>
