@@ -179,24 +179,24 @@ export default function DailyView({
                   </div>
 
                   <div className="flex flex-wrap gap-1">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
                       {record.type1}{record.type2}
                     </span>
                     {record.periods.length > 0 ? (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-muted text-muted-foreground">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
                         {formatPeriods(record.periods)}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-att-unexcused-bg text-att-unexcused">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused">
                         ⚠ 교시 미선택
                       </span>
                     )}
                     {record.reason ? (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-muted text-muted-foreground">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
                         {record.reason}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-att-unexcused-bg text-att-unexcused">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-att-unexcused-bg text-att-unexcused">
                         ⚠ 사유 미입력
                       </span>
                     )}
