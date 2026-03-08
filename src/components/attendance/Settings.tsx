@@ -118,7 +118,7 @@ function AppLockSettings() {
   );
 }
 
-
+export default function Settings({
   students,
   records,
   schedule,
