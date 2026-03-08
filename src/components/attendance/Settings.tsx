@@ -282,20 +282,20 @@ export default function Settings({
                 value={newNumber}
                 onChange={e => setNewNumber(e.target.value)}
                 placeholder="번호"
-                className="w-16 p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
+                className="w-20 p-2.5 pr-1 rounded-xl border border-input bg-background text-foreground text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:opacity-100"
               />
               <input
                 type="text"
                 value={newName}
                 onChange={e => setNewName(e.target.value)}
                 placeholder="이름"
-                className="flex-1 p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
+                className="flex-1 min-w-0 p-2.5 rounded-xl border border-input bg-background text-foreground text-sm"
               />
-              <div className="flex rounded-xl border border-input overflow-hidden">
+              <div className="flex shrink-0 rounded-xl border border-input overflow-hidden">
                 <button
                   type="button"
                   onClick={() => setNewGender('male')}
-                  className={`px-3 py-2.5 text-sm font-medium transition-colors ${
+                  className={`px-4 py-2.5 text-sm font-medium transition-colors ${
                     newGender === 'male'
                       ? 'bg-gender-male text-gender-male-text'
                       : 'bg-background text-muted-foreground hover:bg-muted'
@@ -306,7 +306,7 @@ export default function Settings({
                 <button
                   type="button"
                   onClick={() => setNewGender('female')}
-                  className={`px-3 py-2.5 text-sm font-medium transition-colors ${
+                  className={`px-4 py-2.5 text-sm font-medium transition-colors ${
                     newGender === 'female'
                       ? 'bg-gender-female text-gender-female-text'
                       : 'bg-background text-muted-foreground hover:bg-muted'
