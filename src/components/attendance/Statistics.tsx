@@ -104,21 +104,8 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
         <div
           className="relative bg-card border border-border rounded-2xl p-2.5 shadow-sm"
         >
-          <div className="flex items-center justify-end gap-0.5 mb-1">
-            <button
-              onClick={() => openEdit(r)}
-              className="shrink-0 p-1 rounded-lg hover:bg-muted transition-colors"
-            >
-              <EditIcon className="w-3 h-3 opacity-40" />
-            </button>
-            <button
-              onClick={() => handleDelete(r.id)}
-              className="shrink-0 p-1 rounded-lg hover:bg-destructive/10 transition-colors"
-            >
-              <TrashIcon className="w-3 h-3 text-destructive opacity-60" />
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-1">
+          <div className="flex items-start gap-1">
+            <div className="flex-1 flex flex-wrap gap-1">
             <span className={`inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-semibold truncate ${colors.bg} ${colors.text} border ${colors.border}`}>
               {r.type1}{r.type2}
             </span>
@@ -143,6 +130,21 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                 ⚠ 사유
               </span>
             )}
+            </div>
+            <div className="flex items-start shrink-0">
+              <button
+                onClick={() => openEdit(r)}
+                className="p-1 rounded-lg hover:bg-muted transition-colors"
+              >
+                <EditIcon className="w-3 h-3 opacity-40" />
+              </button>
+              <button
+                onClick={() => handleDelete(r.id)}
+                className="p-1 rounded-lg hover:bg-destructive/10 transition-colors"
+              >
+                <TrashIcon className="w-3 h-3 text-destructive opacity-60" />
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -152,7 +154,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
       <div
         className="relative bg-card border border-border rounded-2xl p-3 shadow-sm"
       >
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-start justify-between mb-2">
           <div className="flex items-center gap-1.5 min-w-0 flex-wrap flex-1">
             <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-xs font-medium ${
               student.gender === 'male'
@@ -166,7 +168,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
               {r.type1}{r.type2}
             </span>
           </div>
-          <div className="flex items-center shrink-0">
+          <div className="flex items-start shrink-0">
             <button
               onClick={() => openEdit(r)}
               className="p-1.5 rounded-lg hover:bg-muted transition-colors"
@@ -213,23 +215,22 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
 
   return (
     <div className="flex flex-col h-full">
-      {/* Sub tabs */}
-      <div className="bg-card border-b border-border px-2 pt-3 pb-0">
-        <div className="flex gap-1 overflow-x-auto">
-          {subTabs.map(t => (
-            <button
-              key={t.key}
-              onClick={() => setSubTab(t.key)}
-              className={`px-3 py-2 text-xs font-medium rounded-t-xl whitespace-nowrap transition-colors ${
-                subTab === t.key
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-muted'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+      {/* Sub tabs - same style as Settings */}
+      <div className="flex border-b border-border bg-card shrink-0">
+        {subTabs.map(t => (
+          <button
+            key={t.key}
+            onClick={() => setSubTab(t.key)}
+            className={`flex-1 py-3 text-sm font-medium transition-colors relative ${
+              subTab === t.key ? 'text-primary' : 'text-muted-foreground'
+            }`}
+          >
+            {t.label}
+            {subTab === t.key && (
+              <div className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-primary rounded-full" />
+            )}
+          </button>
+        ))}
       </div>
 
       <div className="flex-1 overflow-y-auto">
@@ -252,7 +253,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                       key={r.id}
                       className="relative bg-card border border-border rounded-2xl p-3 shadow-sm"
                     >
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center gap-1.5 min-w-0 flex-wrap flex-1">
                         <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-md text-xs font-medium ${
                           student.gender === 'male'
@@ -266,7 +267,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                           {r.type1}{r.type2}
                         </span>
                         </div>
-                        <div className="flex items-center shrink-0">
+                        <div className="flex items-start shrink-0">
                           <button
                             onClick={() => openEdit(r)}
                             className="p-1.5 rounded-lg hover:bg-muted transition-colors"

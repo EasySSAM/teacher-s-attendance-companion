@@ -116,10 +116,13 @@ export default function AttendanceModal({
 
   // Warning: check warningPhrases against same-month records with matching reason
   const warningMessage = useMemo(() => {
-    if (!reason || !studentId || !date || warningPhrases.length === 0) return '';
+    if (!reason || !studentId || !date) return '';
+    // Filter out empty/whitespace-only phrases
+    const validPhrases = warningPhrases.filter(p => p.trim().length > 0);
+    if (validPhrases.length === 0) return '';
     const month = date.slice(0, 7);
     // Only check if reason contains a configured warning phrase
-    const matchedPhrase = warningPhrases.find(phrase => reason.includes(phrase));
+    const matchedPhrase = validPhrases.find(phrase => reason.includes(phrase));
     if (matchedPhrase) {
       const existing = records.filter(
         r => r.studentId === studentId && r.date.startsWith(month) && r.reason.includes(matchedPhrase) && r.id !== record?.id
