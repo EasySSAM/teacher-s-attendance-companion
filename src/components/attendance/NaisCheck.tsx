@@ -93,7 +93,29 @@ function parseDateFromNais(dateStr: string, year: number): string | null {
   return null;
 }
 
-function formatDateShort(dateStr: string): string {
+function parseCSVLine(line: string): string[] {
+  if (line.includes('\t')) {
+    return line.split('\t').map(c => c.trim().replace(/"/g, ''));
+  }
+  const result: string[] = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      inQuotes = !inQuotes;
+    } else if (ch === ',' && !inQuotes) {
+      result.push(current.trim());
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
+
+
   const d = new Date(dateStr + 'T00:00:00');
   const m = d.getMonth() + 1;
   const day = d.getDate();
