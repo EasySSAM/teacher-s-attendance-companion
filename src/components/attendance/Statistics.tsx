@@ -110,18 +110,39 @@ export default function Statistics({ students, records, onUpdateRecord }: Statis
                   const student = getStudent(r.studentId);
                   if (!student) return null;
                   const colors = getType1Color(r.type1);
-                  const dow = getDayName(r.date);
                   return (
-                    <div key={r.id} className={`${colors.bg} border ${colors.border} rounded-xl p-3`}>
-                      <div className="flex items-center gap-1.5 mb-1">
-                        <span className="font-semibold text-xs text-foreground">{student.number}번 {student.name}</span>
-                        <span className={`text-[10px] font-medium ${colors.text}`}>{r.type1}{r.type2}</span>
+                    <div key={r.id} className="bg-card border border-border rounded-2xl p-3 shadow-sm">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
+                          student.gender === 'male'
+                            ? 'bg-gender-male text-gender-male-text'
+                            : 'bg-gender-female text-gender-female-text'
+                        }`}>
+                          {student.number}
+                        </span>
+                        <span className="font-semibold text-sm text-foreground">{student.name}</span>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
+                          {r.type1}{r.type2}
+                        </span>
                       </div>
-                      <div className="text-[10px] text-muted-foreground space-y-0.5 mb-2">
-                        <div>{r.date.slice(5)} ({dow}) · {formatPeriods(r.periods)}</div>
-                        {r.reason && <div>사유: {r.reason}</div>}
+
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+                          {r.date.slice(5)} ({getDayName(r.date)})
+                        </span>
+                        {r.periods.length > 0 && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+                            {formatPeriods(r.periods)}
+                          </span>
+                        )}
+                        {r.reason && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+                            {r.reason}
+                          </span>
+                        )}
                       </div>
-                      <div className="space-y-1">
+
+                      <div className="border-t border-border pt-2 space-y-1">
                         {r.requiredDocs.map(doc => (
                           <label key={doc} className="flex items-center gap-1.5 cursor-pointer">
                             <div
