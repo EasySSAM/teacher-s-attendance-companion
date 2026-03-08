@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Student, AttendanceRecord, DaySchedule, DEFAULT_SCHEDULE, SAMPLE_STUDENTS } from '@/types/attendance';
+import { Student, AttendanceRecord, DaySchedule, DEFAULT_SCHEDULE, SAMPLE_STUDENTS, SAMPLE_RECORDS } from '@/types/attendance';
 
 const STUDENTS_KEY = 'attendance_students_list';
 const RECORDS_KEY = 'attendance_records_pro';
@@ -24,7 +24,7 @@ export function useAttendanceStore() {
     loadFromStorage(STUDENTS_KEY, SAMPLE_STUDENTS)
   );
   const [records, setRecords] = useState<AttendanceRecord[]>(() =>
-    loadFromStorage(RECORDS_KEY, [])
+    loadFromStorage(RECORDS_KEY, SAMPLE_RECORDS)
   );
   const [schedule, setSchedule] = useState<DaySchedule>(() =>
     loadFromStorage(SCHEDULE_KEY, DEFAULT_SCHEDULE)
