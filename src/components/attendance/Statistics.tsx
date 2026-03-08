@@ -72,8 +72,8 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
   // Yearly records (school year: March to February)
   const yearlyRecords = useMemo(() => {
     const startDate = `${selectedSchoolYear}-03-01`;
-    const endDate = `${selectedSchoolYear + 1}-02-28`;
-    return records.filter(r => r.date >= startDate && r.date <= endDate && !yearlyExcludeTypes.includes(r.type1));
+    const endDate = `${selectedSchoolYear + 1}-03-01`;
+    return records.filter(r => r.date >= startDate && r.date < endDate && !yearlyExcludeTypes.includes(r.type1));
   }, [records, selectedSchoolYear, yearlyExcludeTypes]);
 
   // Yearly stats per student
