@@ -343,7 +343,7 @@ export default function AttendanceModal({
                   key={p}
                   onClick={() => handlePeriodClick(p)}
                   disabled={type2 === '결석'}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium border transition-all ${
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-all ${
                     periods.includes(p)
                       ? 'bg-primary text-primary-foreground border-primary'
                       : 'bg-muted text-muted-foreground border-transparent'
