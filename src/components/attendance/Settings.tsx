@@ -414,6 +414,9 @@ export default function Settings({
                   </div>
                 </div>
               </section>
+
+              {/* App Lock */}
+              <AppLockSettings />
             </>
           )}
 
