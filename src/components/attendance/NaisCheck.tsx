@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo } from 'react';
-import { Student, AttendanceRecord, Type2 } from '@/types/attendance';
+import { Student, AttendanceRecord, Type1, Type2 } from '@/types/attendance';
 import { UploadIcon } from './Icons';
 import { ChevronLeftIcon, ChevronRightIcon } from './Icons';
 
@@ -8,20 +8,104 @@ interface NaisCheckProps {
   records: AttendanceRecord[];
 }
 
-interface NaisRow {
+interface NaisRecord {
+  date: string; // YYYY-MM-DD
   number: number;
   name: string;
-  결석: { 질병: number; 미인정: number; 기타: number; 출석인정: number };
-  지각: { 질병: number; 미인정: number; 기타: number; 출석인정: number };
-  조퇴: { 질병: number; 미인정: number; 기타: number; 출석인정: number };
-  결과: { 질병: number; 미인정: number; 기타: number; 출석인정: number };
+  type1: string; // e.g. 질병, 미인정, 기타, 출석인정
+  type2: string; // e.g. 결석, 지각, 조퇴, 결과
+  periods: number[];
+  reason: string;
 }
 
 interface DiffItem {
   type: 'app-only' | 'nais-only' | 'mismatch';
   studentName: string;
   studentNumber: number;
+  date: string;
   detail: string;
+}
+
+function parseNaisType(출결구분: string): { type1: string; type2: string } | null {
+  // 출결구분 is like "질병조퇴", "미인정결석", "출석인정결과", "기타지각" etc.
+  const type2List: Type2[] = ['결석', '지각', '조퇴', '결과'];
+  const type1List: Type1[] = ['출석인정', '질병', '미인정', '기타'];
+  
+  const trimmed = 출결구분.trim();
+  
+  for (const t2 of type2List) {
+    if (trimmed.endsWith(t2)) {
+      const prefix = trimmed.slice(0, trimmed.length - t2.length);
+      for (const t1 of type1List) {
+        if (prefix === t1) return { type1: t1, type2: t2 };
+      }
+      // If prefix doesn't match exactly, try partial
+      if (prefix === '') return { type1: '', type2: t2 };
+    }
+  }
+  return null;
+}
+
+function parsePeriods(text: string): number[] {
+  if (!text || text.trim() === '' || text.trim() === '-') return [];
+  const periods: number[] = [];
+  // Handle formats like "4,5,6,7" or "4교시~7교시" or "1~3" or "조회,1,2" etc.
+  const cleaned = text.replace(/교시/g, '').replace(/\s/g, '');
+  
+  // Replace 조회->0, 종례->11
+  let processed = cleaned.replace(/조회/g, '0').replace(/종례/g, '11');
+  
+  // Split by comma
+  const parts = processed.split(',');
+  for (const part of parts) {
+    if (part.includes('~') || part.includes('-')) {
+      const sep = part.includes('~') ? '~' : '-';
+      const [startStr, endStr] = part.split(sep);
+      const start = parseInt(startStr);
+      const end = parseInt(endStr);
+      if (!isNaN(start) && !isNaN(end)) {
+        for (let i = start; i <= end; i++) periods.push(i);
+      }
+    } else {
+      const n = parseInt(part);
+      if (!isNaN(n)) periods.push(n);
+    }
+  }
+  return periods.sort((a, b) => a - b);
+}
+
+function parseDateFromNais(dateStr: string, year: number): string | null {
+  // Handle formats: "11.12.(월)", "11.12", "11/12", "2024-11-12", "2024.11.12" etc.
+  const trimmed = dateStr.trim().replace(/\(.*?\)/g, '').trim();
+  
+  // YYYY-MM-DD
+  const fullMatch = trimmed.match(/^(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})\.?$/);
+  if (fullMatch) {
+    return `${fullMatch[1]}-${fullMatch[2].padStart(2, '0')}-${fullMatch[3].padStart(2, '0')}`;
+  }
+  
+  // MM.DD or MM/DD
+  const shortMatch = trimmed.match(/^(\d{1,2})[.\-/](\d{1,2})\.?$/);
+  if (shortMatch) {
+    return `${year}-${shortMatch[1].padStart(2, '0')}-${shortMatch[2].padStart(2, '0')}`;
+  }
+  
+  return null;
+}
+
+function formatDateShort(dateStr: string): string {
+  const d = new Date(dateStr + 'T00:00:00');
+  const m = d.getMonth() + 1;
+  const day = d.getDate();
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+  return `${m}.${day}.(${dayNames[d.getDay()]})`;
+}
+
+function formatPeriodsShort(periods: number[]): string {
+  if (!periods.length) return '전체';
+  const labels: Record<number, string> = { 0: '조회', 11: '종례' };
+  const sorted = [...periods].sort((a, b) => a - b);
+  return sorted.map(p => labels[p] || `${p}교시`).join(',');
 }
 
 export default function NaisCheck({ students, records }: NaisCheckProps) {
@@ -70,102 +154,170 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
     reader.readAsText(file);
   };
 
-  const parseNaisCSV = (text: string): NaisRow[] => {
+  const parseNaisCSV = (text: string): NaisRecord[] => {
     const lines = text.trim().split('\n');
-    const rows: NaisRow[] = [];
+    const result: NaisRecord[] = [];
     
     for (const line of lines) {
-      const cols = line.split(',').map(c => c.trim().replace(/"/g, ''));
-      // Try to find rows with student number and name
-      const num = parseInt(cols[0]);
+      // Support both comma and tab separated
+      const cols = line.includes('\t')
+        ? line.split('\t').map(c => c.trim().replace(/"/g, ''))
+        : line.split(',').map(c => c.trim().replace(/"/g, ''));
+      
+      if (cols.length < 4) continue;
+      
+      // Format: 일자, 번호, 성명, 출결구분, 결시교시, 사유
+      const dateStr = parseDateFromNais(cols[0], selectedMonth.year);
+      if (!dateStr) continue;
+      
+      const num = parseInt(cols[1]);
       if (isNaN(num)) continue;
       
-      const name = cols[1];
-      if (!name || name.length === 0) continue;
-
-      // Parse counts - try standard NAIS format
-      // Format varies, try to parse what we can
-      const row: NaisRow = {
+      const name = cols[2]?.trim();
+      if (!name) continue;
+      
+      const typeInfo = parseNaisType(cols[3] || '');
+      if (!typeInfo) continue;
+      
+      const periods = parsePeriods(cols[4] || '');
+      const reason = cols[5]?.trim() || '';
+      
+      result.push({
+        date: dateStr,
         number: num,
         name,
-        결석: { 질병: parseInt(cols[2]) || 0, 미인정: parseInt(cols[3]) || 0, 기타: parseInt(cols[4]) || 0, 출석인정: parseInt(cols[5]) || 0 },
-        지각: { 질병: parseInt(cols[6]) || 0, 미인정: parseInt(cols[7]) || 0, 기타: parseInt(cols[8]) || 0, 출석인정: parseInt(cols[9]) || 0 },
-        조퇴: { 질병: parseInt(cols[10]) || 0, 미인정: parseInt(cols[11]) || 0, 기타: parseInt(cols[12]) || 0, 출석인정: parseInt(cols[13]) || 0 },
-        결과: { 질병: parseInt(cols[14]) || 0, 미인정: parseInt(cols[15]) || 0, 기타: parseInt(cols[16]) || 0, 출석인정: parseInt(cols[17]) || 0 },
-      };
-      rows.push(row);
+        type1: typeInfo.type1,
+        type2: typeInfo.type2,
+        periods,
+        reason,
+      });
     }
-    return rows;
+    return result;
   };
 
   const runCheck = () => {
-    const naisRows = parseNaisCSV(csvText);
+    const naisRecords = parseNaisCSV(csvText);
     const results: DiffItem[] = [];
 
-    // Build app stats per student for this month
-    const appStats: Record<number, Record<string, Record<string, number>>> = {};
+    // Build a key for matching: date + studentNumber + type1 + type2
+    type RecordKey = string;
+    const makeKey = (date: string, num: number, t1: string, t2: string): RecordKey =>
+      `${date}|${num}|${t1}|${t2}`;
+
+    // Build app record map
+    const appMap = new Map<RecordKey, AttendanceRecord[]>();
     monthlyRecords.forEach(r => {
       const student = students.find(s => s.id === r.studentId);
       if (!student) return;
-      if (!appStats[student.number]) appStats[student.number] = {};
-      const key = r.type2;
-      if (!appStats[student.number][key]) appStats[student.number][key] = {};
-      const t1 = r.type1;
-      appStats[student.number][key][t1] = (appStats[student.number][key][t1] || 0) + 1;
+      const key = makeKey(r.date, student.number, r.type1, r.type2);
+      if (!appMap.has(key)) appMap.set(key, []);
+      appMap.get(key)!.push(r);
     });
 
-    // Compare
-    const type2s: Type2[] = ['결석', '지각', '조퇴', '결과'];
-    const type1s = ['질병', '미인정', '기타', '출석인정'] as const;
+    // Build nais record map
+    const naisMap = new Map<RecordKey, NaisRecord[]>();
+    naisRecords.forEach(nr => {
+      const key = makeKey(nr.date, nr.number, nr.type1, nr.type2);
+      if (!naisMap.has(key)) naisMap.set(key, []);
+      naisMap.get(key)!.push(nr);
+    });
 
-    // Check app records against NAIS
-    Object.entries(appStats).forEach(([numStr, type2Map]) => {
-      const num = parseInt(numStr);
-      const naisRow = naisRows.find(r => r.number === num);
-      const student = students.find(s => s.number === num);
+    // Also build simpler maps by date+student for detecting records that exist in one but not other
+    const appByDateStudent = new Map<string, AttendanceRecord[]>();
+    monthlyRecords.forEach(r => {
+      const student = students.find(s => s.id === r.studentId);
       if (!student) return;
+      const key = `${r.date}|${student.number}`;
+      if (!appByDateStudent.has(key)) appByDateStudent.set(key, []);
+      appByDateStudent.get(key)!.push(r);
+    });
 
-      if (!naisRow) {
-        results.push({
-          type: 'app-only',
-          studentName: student.name,
-          studentNumber: num,
-          detail: '앱에는 있지만 나이스에 없는 학생입니다.',
-        });
+    const naisByDateStudent = new Map<string, NaisRecord[]>();
+    naisRecords.forEach(nr => {
+      const key = `${nr.date}|${nr.number}`;
+      if (!naisByDateStudent.has(key)) naisByDateStudent.set(key, []);
+      naisByDateStudent.get(key)!.push(nr);
+    });
+
+    const processedKeys = new Set<string>();
+
+    // Check NAIS records - compare against app
+    naisRecords.forEach(nr => {
+      const key = makeKey(nr.date, nr.number, nr.type1, nr.type2);
+      if (processedKeys.has(key)) return;
+      processedKeys.add(key);
+      
+      const student = students.find(s => s.number === nr.number);
+      const studentName = student?.name || nr.name;
+      
+      const appRecs = appMap.get(key);
+      if (!appRecs || appRecs.length === 0) {
+        // Check if there's any app record for this date+student at all
+        const dsKey = `${nr.date}|${nr.number}`;
+        const appForDS = appByDateStudent.get(dsKey);
+        if (appForDS && appForDS.length > 0) {
+          // There are app records but with different type
+          results.push({
+            type: 'mismatch',
+            studentName,
+            studentNumber: nr.number,
+            date: nr.date,
+            detail: `나이스: ${nr.type1}${nr.type2} / 앱: ${appForDS.map(r => `${r.type1}${r.type2}`).join(', ')}`,
+          });
+        } else {
+          results.push({
+            type: 'nais-only',
+            studentName,
+            studentNumber: nr.number,
+            date: nr.date,
+            detail: `나이스에 ${nr.type1}${nr.type2} 기록이 있지만 앱에는 없습니다.`,
+          });
+        }
         return;
       }
 
-      type2s.forEach(t2 => {
-        type1s.forEach(t1 => {
-          const appCount = type2Map[t2]?.[t1] || 0;
-          const naisCount = naisRow[t2][t1] || 0;
-          if (appCount !== naisCount) {
-            results.push({
-              type: 'mismatch',
-              studentName: student.name,
-              studentNumber: num,
-              detail: `${t1}${t2}: 앱 ${appCount}건 / 나이스 ${naisCount}건`,
-            });
-          }
-        });
-      });
+      // Same type exists - compare periods
+      if (nr.periods.length > 0) {
+        const appPeriods = appRecs.flatMap(r => r.periods).sort((a, b) => a - b);
+        const naisPeriods = [...nr.periods].sort((a, b) => a - b);
+        const appSet = JSON.stringify([...new Set(appPeriods)].sort((a, b) => a - b));
+        const naisSet = JSON.stringify([...new Set(naisPeriods)].sort((a, b) => a - b));
+        
+        if (appSet !== naisSet) {
+          results.push({
+            type: 'mismatch',
+            studentName,
+            studentNumber: nr.number,
+            date: nr.date,
+            detail: `${nr.type1}${nr.type2} 교시 불일치 - 나이스: ${formatPeriodsShort(naisPeriods)} / 앱: ${formatPeriodsShort(appPeriods)}`,
+          });
+        }
+      }
     });
 
-    // Check NAIS records not in app
-    naisRows.forEach(nRow => {
-      const hasAnyData = type2s.some(t2 => type1s.some(t1 => nRow[t2][t1] > 0));
-      if (!hasAnyData) return;
+    // Check app records not in NAIS
+    const processedAppKeys = new Set<string>();
+    monthlyRecords.forEach(r => {
+      const student = students.find(s => s.id === r.studentId);
+      if (!student) return;
+      const dsKey = `${r.date}|${student.number}`;
+      if (processedAppKeys.has(dsKey)) return;
+      processedAppKeys.add(dsKey);
       
-      if (!appStats[nRow.number]) {
-        const student = students.find(s => s.number === nRow.number);
+      const naisForDS = naisByDateStudent.get(dsKey);
+      if (!naisForDS || naisForDS.length === 0) {
         results.push({
-          type: 'nais-only',
-          studentName: student?.name || nRow.name,
-          studentNumber: nRow.number,
-          detail: '나이스에는 있지만 앱에 없는 기록입니다.',
+          type: 'app-only',
+          studentName: student.name,
+          studentNumber: student.number,
+          date: r.date,
+          detail: `앱에 ${r.type1}${r.type2} 기록이 있지만 나이스에는 없습니다.`,
         });
       }
     });
+
+    // Sort by date then student number
+    results.sort((a, b) => a.date.localeCompare(b.date) || a.studentNumber - b.studentNumber);
 
     setDiffs(results);
     setChecked(true);
@@ -173,7 +325,7 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header - same style as DailyView */}
+      {/* Header */}
       <div className="bg-card border-b border-border px-4 py-3 shrink-0">
         <div className="flex items-center justify-between">
           <button onClick={() => changeMonth(-1)} className="p-2 rounded-xl hover:bg-muted transition-colors"><ChevronLeftIcon /></button>
@@ -187,12 +339,12 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
 
         {/* Instructions */}
         <div className="bg-accent rounded-2xl p-4 text-sm text-foreground">
-          <p className="font-semibold mb-2 text-accent-foreground">나이스 월별출결현황 파일 등록</p>
+          <p className="font-semibold mb-2 text-accent-foreground">나이스 출결현황 파일 등록</p>
           <p className="text-xs text-muted-foreground mb-1">
-            경로: 나이스 → [출결현황및통계] → [출결현황및통계] → 우측 '월별출결현황' 버튼 → 해당 월 선택 → 엑셀 파일 다운로드
+            나이스에서 다운받은 출결현황 파일(일자, 번호, 성명, 출결구분, 결시교시, 사유)을 등록해 주세요.
           </p>
           <p className="text-xs text-muted-foreground">
-            엑셀 파일을 '다른 이름으로 저장'하여 CSV파일로 저장한 후 등록해 주세요.
+            CSV 파일 업로드 또는 텍스트 붙여넣기를 지원합니다.
           </p>
         </div>
 
@@ -216,7 +368,7 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
             value={csvText}
             onChange={e => setCsvText(e.target.value)}
             rows={4}
-            placeholder="CSV 데이터를 붙여넣으세요..."
+            placeholder={"일자,번호,성명,출결구분,결시교시,사유\n11.12.(월),1,홍길동,질병조퇴,4~7,병원 방문"}
             className="w-full p-3 rounded-xl border border-input bg-background text-foreground text-sm resize-none"
           />
         </div>
@@ -237,18 +389,20 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
               <div className="bg-att-other-bg border border-att-other/20 rounded-2xl p-6 text-center">
                 <div className="text-4xl mb-2">👍</div>
                 <p className="font-semibold text-att-other">완벽합니다!</p>
-                <p className="text-sm text-muted-foreground mt-1">나이스 데이터와 일치합니다.</p>
+                <p className="text-sm text-muted-foreground mt-1">나이스 데이터와 앱 데이터가 일치합니다.</p>
               </div>
             ) : (
               <>
-                <p className="text-sm font-medium text-att-unexcused">{diffs.length}건의 차이를 발견했습니다</p>
+                <p className="text-sm font-medium text-att-unexcused">{diffs.length}건의 불일치를 발견했습니다</p>
                 {diffs.map((d, i) => (
                   <div key={i} className="bg-att-unexcused-bg border border-att-unexcused/20 rounded-2xl p-4">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-att-unexcused/10 text-att-unexcused">
                         {d.type === 'app-only' ? '앱에만 존재' : d.type === 'nais-only' ? '나이스에만 존재' : '불일치'}
                       </span>
-                      <span className="font-medium text-sm text-foreground">{d.studentNumber}번 {d.studentName}</span>
+                      <span className="font-medium text-sm text-foreground">
+                        {formatDateShort(d.date)} {d.studentNumber}번 {d.studentName}
+                      </span>
                     </div>
                     <p className="text-sm text-muted-foreground">{d.detail}</p>
                   </div>
