@@ -96,7 +96,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
       return (
         <div
           onClick={() => openEdit(r)}
-          className="relative bg-card border border-border rounded-2xl p-2.5 shadow-sm cursor-pointer transition-all hover:shadow-md active:scale-[0.98]"
+          className="relative bg-card border border-border rounded-2xl p-2.5 pr-7 shadow-sm cursor-pointer transition-all hover:shadow-md active:scale-[0.98]"
         >
           <button
             onClick={(e) => { e.stopPropagation(); openEdit(r); }}
