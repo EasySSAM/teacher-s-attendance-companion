@@ -258,6 +258,7 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
           </div>
         )}
       </div>
+      </div>
     </div>
   );
 }
