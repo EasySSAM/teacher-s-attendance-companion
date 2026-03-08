@@ -159,10 +159,8 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
     const result: NaisRecord[] = [];
     
     for (const line of lines) {
-      // Support both comma and tab separated
-      const cols = line.includes('\t')
-        ? line.split('\t').map(c => c.trim().replace(/"/g, ''))
-        : line.split(',').map(c => c.trim().replace(/"/g, ''));
+      // Parse CSV properly handling quoted fields
+      const cols = parseCSVLine(line);
       
       if (cols.length < 4) continue;
       
