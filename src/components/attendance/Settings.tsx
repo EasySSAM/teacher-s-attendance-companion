@@ -555,9 +555,9 @@ export default function Settings({
 
       {/* Transfer modal */}
       {transferModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-foreground/40" onClick={() => setTransferModal(null)} />
-          <div className="relative bg-card rounded-2xl p-5 w-full max-w-xs shadow-2xl animate-slide-up">
+          <div className="relative w-full max-w-[min(28rem,calc(100vw-2rem))] overflow-hidden bg-card rounded-2xl p-5 shadow-2xl animate-slide-up">
             <h3 className="font-semibold text-foreground mb-4">
               {transferModal.type === 'out' ? '전출일 입력' : '전입일 입력'}
             </h3>
@@ -565,7 +565,7 @@ export default function Settings({
               type="date"
               value={transferDate}
               onChange={e => setTransferDate(e.target.value)}
-              className="w-full p-3 rounded-xl border border-input bg-background text-foreground mb-4"
+              className="block w-full min-w-0 h-14 px-4 rounded-xl border border-input bg-background text-foreground mb-4"
             />
             <div className="flex gap-2">
               <button onClick={handleTransfer} className="flex-1 py-2.5 bg-primary text-primary-foreground rounded-xl font-semibold text-sm">확인</button>
