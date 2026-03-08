@@ -88,7 +88,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
   };
 
   // Shared record card component
-  const RecordCard = ({ r, showDate = false }: { r: AttendanceRecord; showDate?: boolean }) => {
+  const RecordCard = ({ r, showDate = false, hideStudent = false }: { r: AttendanceRecord; showDate?: boolean; hideStudent?: boolean }) => {
     const student = getStudent(r.studentId);
     if (!student) return null;
     const colors = getType1Color(r.type1);
@@ -105,14 +105,18 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
         </button>
 
         <div className="flex items-center gap-2 mb-2">
-          <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
-            student.gender === 'male'
-              ? 'bg-gender-male text-gender-male-text'
-              : 'bg-gender-female text-gender-female-text'
-          }`}>
-            {student.number}
-          </span>
-          <span className="font-semibold text-sm text-foreground">{student.name}</span>
+          {!hideStudent && (
+            <>
+              <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
+                student.gender === 'male'
+                  ? 'bg-gender-male text-gender-male-text'
+                  : 'bg-gender-female text-gender-female-text'
+              }`}>
+                {student.number}
+              </span>
+              <span className="font-semibold text-sm text-foreground">{student.name}</span>
+            </>
+          )}
           <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold ${colors.bg} ${colors.text} border ${colors.border}`}>
             {r.type1}{r.type2}
           </span>
@@ -324,7 +328,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
                     <div className="border-t border-border mb-2" />
                     <div className="grid grid-cols-2 gap-2">
                       {studentRecords.map(r => (
-                        <RecordCard key={r.id} r={r} showDate />
+                        <RecordCard key={r.id} r={r} showDate hideStudent />
                       ))}
                     </div>
                   </div>
