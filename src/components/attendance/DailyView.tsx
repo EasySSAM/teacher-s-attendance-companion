@@ -130,7 +130,7 @@ export default function DailyView({
             <ChevronRightIcon />
           </button>
         </div>
-        <div className="mt-2 flex items-center justify-center gap-1 overflow-hidden">
+        <div className="mt-2 flex items-center gap-1">
           {selectedPeriod !== null && (
             <button
               onClick={() => setSelectedPeriod(null)}
@@ -142,7 +142,7 @@ export default function DailyView({
           )}
           <button
             onClick={() => setSelectedPeriod(null)}
-            className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${
+            className={`shrink-0 text-xs font-medium px-2 py-1 rounded-full transition-colors ${
               selectedPeriod === null
                 ? (changedCount > 0 ? 'bg-att-unexcused-bg text-att-unexcused' : 'bg-att-other-bg text-att-other')
                 : 'bg-muted text-muted-foreground hover:bg-muted/80'
@@ -157,7 +157,9 @@ export default function DailyView({
               <button
                 key={p}
                 onClick={() => setSelectedPeriod(selectedPeriod === p ? null : p)}
-                className={`shrink-0 text-[11px] font-medium min-w-[28px] py-1 rounded-md transition-colors ${
+                className={`shrink-0 text-[11px] font-medium px-1 py-1 rounded-md transition-colors ${
+                  p !== 0 && p !== 11 ? 'min-w-[24px]' : ''
+                } ${
                   selectedPeriod === p
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted text-muted-foreground hover:bg-muted/80'
