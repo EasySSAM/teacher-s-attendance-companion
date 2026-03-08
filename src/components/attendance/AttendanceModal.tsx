@@ -215,16 +215,14 @@ export default function AttendanceModal({
               >
                 <ChevronLeftIcon />
               </button>
-              <div className="flex-1 relative">
+              <div className="flex-1 flex items-center justify-center gap-1 p-3 rounded-xl border border-input bg-background">
                 <input
                   type="date"
                   value={date}
                   onChange={e => setDate(e.target.value)}
-                  className="w-full p-3 rounded-xl border border-input bg-background text-foreground text-center"
+                  className="bg-transparent text-foreground text-sm text-center outline-none"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-foreground pointer-events-none">
-                  ({getDayName(date)})
-                </span>
+                <span className="text-sm text-foreground">({getDayName(date)})</span>
               </div>
               <button
                 onClick={() => setDate(addDaysSkipWeekend(date, 1))}
