@@ -1,7 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Student, AttendanceRecord, Type1, DaySchedule } from '@/types/attendance';
 import { ChevronLeftIcon, ChevronRightIcon, CheckIcon, EditIcon, TrashIcon } from './Icons';
-import { formatDate, getType1Color, formatPeriods, getSchoolYear, getDayName } from '@/utils/attendance';
+import { formatDate, getType1Color, formatPeriods, getSchoolYear, getDayName, toDateStr } from '@/utils/attendance';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import AttendanceModal from './AttendanceModal';
 
 interface StatisticsProps {
