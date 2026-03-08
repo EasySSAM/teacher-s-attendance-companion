@@ -371,7 +371,12 @@ export default function AttendanceModal({
           {/* Save button */}
           <button
             onClick={handleSave}
-            className="w-full py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold text-base shadow-lg hover:opacity-90 transition-opacity"
+            disabled={!studentId || !type1 || !type2}
+            className={`w-full py-3.5 rounded-xl font-semibold text-base shadow-lg transition-opacity ${
+              !studentId || !type1 || !type2
+                ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                : 'bg-primary text-primary-foreground hover:opacity-90'
+            }`}
           >
             {isEdit ? '수정하기' : '저장하기'}
           </button>
