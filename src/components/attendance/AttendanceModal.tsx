@@ -337,7 +337,7 @@ export default function AttendanceModal({
           {/* Periods */}
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-2">교시 선택</label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {availablePeriods.map(p => (
                 <button
                   key={p}
