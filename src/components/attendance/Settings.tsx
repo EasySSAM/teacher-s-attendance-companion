@@ -156,12 +156,29 @@ export default function Settings({
     const parsed: Student[] = [];
     for (const line of lines) {
       const cols = line.split(/[,\t]/).map(c => c.trim().replace(/"/g, ''));
-      const num = parseInt(cols[0]);
+      
+      // 나이스 형식 감지: 학년, 반, 번호, 성명, 성별, 비고 (6열)
+      // 또는 기존 형식: 번호, 이름, 성별 (3열)
+      let num: number;
+      let name: string;
+      let genderStr: string;
+      
+      if (cols.length >= 5 && !isNaN(parseInt(cols[0])) && !isNaN(parseInt(cols[1])) && !isNaN(parseInt(cols[2]))) {
+        // 나이스 형식: 학년(0), 반(1), 번호(2), 성명(3), 성별(4), 비고(5)
+        num = parseInt(cols[2]);
+        name = cols[3]?.trim();
+        genderStr = cols[4]?.trim();
+      } else {
+        // 기존 형식: 번호(0), 이름(1), 성별(2)
+        num = parseInt(cols[0]);
+        name = cols[1]?.trim();
+        genderStr = cols[2]?.trim();
+      }
+      
       if (isNaN(num)) continue;
-      const name = cols[1]?.trim();
       if (!name) continue;
+      
       let gender: 'male' | 'female' = 'male';
-      const genderStr = cols[2]?.trim();
       if (genderStr === '여' || genderStr === '여자' || genderStr === '여학생' || genderStr === 'F' || genderStr === 'female') {
         gender = 'female';
       }
