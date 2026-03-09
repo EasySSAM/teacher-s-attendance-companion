@@ -409,11 +409,11 @@ export default function NaisCheck({ students, records }: NaisCheckProps) {
         {/* Instructions */}
         <div className="bg-accent rounded-2xl p-4 text-sm text-foreground">
           <p className="font-semibold mb-2 text-accent-foreground">나이스 출결현황 파일 등록</p>
-          <p className="text-xs text-muted-foreground mb-1">
-            나이스에서 다운받은 출결현황 파일(일자, 번호, 성명, 출결구분, 결시교시, 사유)을 등록해 주세요.
+          <p className="text-xs text-muted-foreground mb-2">
+            나이스 → [학적] → [출결현황및통계] → '학급별출결현황' → 월 선택 및 '인정내역 표시' 체크 → '조회' 클릭 → 우측의 '월별 출결현황' 클릭 → 해당 월 선택 → 엑셀 파일 다운로드
           </p>
           <p className="text-xs text-muted-foreground">
-            CSV 파일 업로드 또는 텍스트 붙여넣기를 지원합니다.
+            엑셀 파일을 '다른 이름으로 저장'하면서 '파일 형식'을 'CSV UTF-8(쉼표로 분리)'로 지정하여 저장해 주세요.
           </p>
         </div>
 
