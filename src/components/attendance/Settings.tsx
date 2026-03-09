@@ -254,10 +254,10 @@ export default function Settings({
                 <div className="bg-accent rounded-2xl p-4 text-sm mb-3">
                   <p className="font-semibold text-accent-foreground mb-1">나이스 명렬표 파일 등록</p>
                   <p className="text-xs text-muted-foreground mb-1">
-                    경로: 나이스 → [기본학적관리] → [명렬표출력] → 엑셀 파일 다운로드
+                    경로: 나이스 → [기본학적관리] → [명렬표출력] → '조회' 클릭 → '명렬표 내용 선택' 클릭 → '성별' 추가 → 엑셀 파일 다운로드
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    엑셀 파일을 '다른 이름으로 저장'하여 CSV파일로 저장한 후 등록해 주세요.
+                    엑셀 파일을 '다른 이름으로 저장'하면서 '파일 형식'을 'CSV UTF-8(쉼표로 분리)'로 지정하여 저장해 주세요.
                   </p>
                 </div>
                 <textarea
