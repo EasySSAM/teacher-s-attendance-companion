@@ -2,6 +2,7 @@
   "name": "출결 관리",
   "short_name": "출결",
   "start_url": ".",
+  "scope": ".",
   "display": "standalone",
   "background_color": "#f5f6fa",
   "theme_color": "#4f46e5",
