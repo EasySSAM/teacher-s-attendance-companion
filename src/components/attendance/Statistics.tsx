@@ -13,6 +13,7 @@ interface StatisticsProps {
   schedule: DaySchedule;
   warningPhrases: string[];
   frequentReasons: string[];
+  getActiveStudents: (date: string) => Student[];
   onUpdateRecord: (id: string, updates: Partial<AttendanceRecord>) => void;
   onAddRecord: (record: AttendanceRecord) => void;
   onDeleteRecord: (id: string) => void;
@@ -20,7 +21,7 @@ interface StatisticsProps {
 
 type SubTab = 'docs' | 'monthly-date' | 'monthly-student' | 'yearly';
 
-export default function Statistics({ students, records, yearlyExcludeTypes, schedule, warningPhrases, frequentReasons, onUpdateRecord, onAddRecord, onDeleteRecord }: StatisticsProps) {
+export default function Statistics({ students, records, yearlyExcludeTypes, schedule, warningPhrases, frequentReasons, getActiveStudents, onUpdateRecord, onAddRecord, onDeleteRecord }: StatisticsProps) {
   const [subTab, setSubTab] = useState<SubTab>('docs');
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState({ year: now.getFullYear(), month: now.getMonth() + 1 });
@@ -525,6 +526,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
         isOpen={modalOpen}
         onClose={() => { setModalOpen(false); setEditRecord(null); }}
         students={students}
+        getActiveStudents={getActiveStudents}
         record={editRecord}
         currentDate={editRecord?.date || ''}
         schedule={schedule}

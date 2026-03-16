@@ -10,6 +10,7 @@ interface AttendanceModalProps {
   isOpen: boolean;
   onClose: () => void;
   students: Student[];
+  getActiveStudents: (date: string) => Student[];
   record?: AttendanceRecord | null;
   currentDate: string;
   schedule: DaySchedule;
@@ -24,6 +25,7 @@ export default function AttendanceModal({
   isOpen,
   onClose,
   students,
+  getActiveStudents,
   record,
   currentDate,
   schedule,
@@ -243,7 +245,7 @@ export default function AttendanceModal({
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-2">학생</label>
             <div className="grid grid-cols-5 gap-1 max-h-44 overflow-y-auto rounded-xl border border-input p-1.5 bg-background">
-              {students.map(s => (
+              {getActiveStudents(date).map(s => (
                 <button
                   key={s.id}
                   onClick={() => setStudentId(s.id)}
