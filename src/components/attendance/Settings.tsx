@@ -517,7 +517,7 @@ export default function Settings({
               <section>
                 <h3 className="font-semibold text-foreground mb-3">연간 누적 필터 설정</h3>
                 <p className="text-xs text-muted-foreground mb-3">
-                  연간(누적) 통계에서 카운팅에서 제외할 출결 구분을 선택하세요. 개근상·정근상 판단 기준으로 활용됩니다.
+                  연간(누적) 통계에서 카운팅에서 제외할 출결 구분을 선택하세요. 상담 시 참고 자료로 활용하거나 개근상 파악용으로 활용 가능합니다. 단, 개근상 최종 작업은 나이스 활용을 권고합니다.
                 </p>
                 <div className="bg-card border border-border rounded-2xl p-4">
                   <div className="space-y-2">
