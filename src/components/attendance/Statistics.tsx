@@ -13,6 +13,7 @@ interface StatisticsProps {
   schedule: DaySchedule;
   warningPhrases: string[];
   frequentReasons: string[];
+  getActiveStudents: (date: string) => Student[];
   onUpdateRecord: (id: string, updates: Partial<AttendanceRecord>) => void;
   onAddRecord: (record: AttendanceRecord) => void;
   onDeleteRecord: (id: string) => void;
