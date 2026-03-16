@@ -379,6 +379,26 @@ export default function Settings({
                               <option value="female">여학생</option>
                             </select>
                           </div>
+                          {(student.transferOutDate || student.transferInDate) && (
+                            <div className="flex flex-wrap gap-2">
+                              {student.transferOutDate && (
+                                <button
+                                  onClick={() => { onUpdateStudent(student.id, { transferOutDate: undefined }); }}
+                                  className="flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium bg-att-unexcused-bg text-att-unexcused hover:opacity-80 transition-opacity"
+                                >
+                                  전출 ({student.transferOutDate}) ✕
+                                </button>
+                              )}
+                              {student.transferInDate && (
+                                <button
+                                  onClick={() => { onUpdateStudent(student.id, { transferInDate: undefined }); }}
+                                  className="flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium bg-att-approved-bg text-att-approved hover:opacity-80 transition-opacity"
+                                >
+                                  전입 ({student.transferInDate}) ✕
+                                </button>
+                              )}
+                            </div>
+                          )}
                           <div className="flex gap-2">
                             <button onClick={handleSaveEdit} className="flex-1 py-2 bg-primary text-primary-foreground rounded-xl text-xs font-semibold">수정하기</button>
                             <button onClick={() => setEditingId(null)} className="flex-1 py-2 bg-muted text-muted-foreground rounded-xl text-xs font-medium">취소</button>
