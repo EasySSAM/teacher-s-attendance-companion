@@ -263,6 +263,7 @@ export default function DailyView({
         isOpen={modalOpen}
         onClose={() => { setModalOpen(false); setEditRecord(null); }}
         students={activeStudents}
+        getActiveStudents={getActiveStudents}
         record={editRecord}
         currentDate={currentDate}
         schedule={schedule}

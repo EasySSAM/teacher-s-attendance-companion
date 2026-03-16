@@ -526,6 +526,7 @@ export default function Statistics({ students, records, yearlyExcludeTypes, sche
         isOpen={modalOpen}
         onClose={() => { setModalOpen(false); setEditRecord(null); }}
         students={students}
+        getActiveStudents={getActiveStudents}
         record={editRecord}
         currentDate={editRecord?.date || ''}
         schedule={schedule}
