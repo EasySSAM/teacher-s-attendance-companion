@@ -3,6 +3,7 @@ import { Student, AttendanceRecord, DaySchedule, Type1, TYPE1_OPTIONS } from '@/
 import { TrashIcon, PlusIcon, EditIcon } from './Icons';
 import { generateId } from '@/utils/attendance';
 import DataBackup from './DataBackup';
+import { Calendar } from '@/components/ui/calendar';
 import { getPinEnabled, getStoredPin, setStoredPin, clearStoredPin } from './LockScreen';
 
 interface SettingsProps {
