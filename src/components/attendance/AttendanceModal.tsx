@@ -25,6 +25,7 @@ export default function AttendanceModal({
   isOpen,
   onClose,
   students,
+  getActiveStudents,
   record,
   currentDate,
   schedule,
