@@ -3,6 +3,7 @@ import { Student, AttendanceRecord, DaySchedule, Type1, TYPE1_OPTIONS } from '@/
 import { TrashIcon, PlusIcon, EditIcon } from './Icons';
 import { generateId } from '@/utils/attendance';
 import DataBackup from './DataBackup';
+import { Calendar } from '@/components/ui/calendar';
 import { getPinEnabled, getStoredPin, setStoredPin, clearStoredPin } from './LockScreen';
 
 interface SettingsProps {
@@ -575,15 +576,29 @@ export default function Settings({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-foreground/40" onClick={() => setTransferModal(null)} />
           <div className="relative w-full max-w-[min(28rem,calc(100vw-2rem))] overflow-hidden bg-card rounded-2xl p-5 shadow-2xl animate-slide-up">
-            <h3 className="font-semibold text-foreground mb-4">
-              {transferModal.type === 'out' ? '전출일 입력' : '전입일 입력'}
+            <h3 className="font-semibold text-foreground mb-3">
+              {transferModal.type === 'out' ? '전출일 선택' : '전입일 선택'}
             </h3>
-            <input
-              type="date"
-              value={transferDate}
-              onChange={e => setTransferDate(e.target.value)}
-              className="block w-full min-w-0 h-14 px-4 rounded-xl border border-input bg-background text-foreground mb-4"
-            />
+            {transferDate && (
+              <p className="text-sm text-center text-foreground mb-2 font-medium">
+                {transferDate.replace(/-/g, '. ')}
+              </p>
+            )}
+            <div className="flex justify-center mb-3">
+              <Calendar
+                mode="single"
+                selected={transferDate ? new Date(transferDate + 'T00:00:00') : undefined}
+                onSelect={(day) => {
+                  if (day) {
+                    const y = day.getFullYear();
+                    const m = String(day.getMonth() + 1).padStart(2, '0');
+                    const d = String(day.getDate()).padStart(2, '0');
+                    setTransferDate(`${y}-${m}-${d}`);
+                  }
+                }}
+                className="p-2 pointer-events-auto"
+              />
+            </div>
             <div className="flex gap-2">
               <button onClick={handleTransfer} className="flex-1 py-2.5 bg-primary text-primary-foreground rounded-xl font-semibold text-sm">확인</button>
               <button onClick={() => setTransferModal(null)} className="flex-1 py-2.5 bg-muted text-muted-foreground rounded-xl font-medium text-sm">취소</button>
