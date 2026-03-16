@@ -10,6 +10,7 @@ interface AttendanceModalProps {
   isOpen: boolean;
   onClose: () => void;
   students: Student[];
+  getActiveStudents: (date: string) => Student[];
   record?: AttendanceRecord | null;
   currentDate: string;
   schedule: DaySchedule;
