@@ -576,10 +576,10 @@ export default function Settings({
                     <div className="space-y-1">
                       <p className="text-sm font-semibold text-accent-foreground">앱 사용법 안내</p>
                       <p className="text-xs text-muted-foreground leading-relaxed">
-                        처음 사용하시거나 기능이 궁금하시면 블로그에서 상세 가이드를 확인하세요.
+                        처음 사용하시거나 기능이 궁금하시면 블로그에서 상세 가이드를 확인해 주세요. 사용 중 오류가 생기거나 기능에 대한 의견이 있으시면 댓글 부탁드립니다.
                       </p>
                       <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-1">
-                        사용법 보러가기 →
+                        사용법 보러가기(Easy쌤 블로그) →
                       </span>
                     </div>
                   </div>
