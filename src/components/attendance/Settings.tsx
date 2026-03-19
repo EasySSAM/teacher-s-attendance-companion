@@ -563,26 +563,39 @@ export default function Settings({
                 onImportData={onImportData}
               />
 
+              {/* Usage guide card */}
+              <section className="mt-6">
+                <a
+                  href="https://blog.naver.com/ai_korean_t/224218966388"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block rounded-xl bg-accent border border-primary/20 p-4 transition-all hover:shadow-md hover:border-primary/40"
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl mt-0.5">📖</span>
+                    <div className="space-y-1">
+                      <p className="text-sm font-semibold text-accent-foreground">앱 사용법 안내</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        처음 사용하시거나 기능이 궁금하시면 블로그에서 상세 가이드를 확인하세요.
+                      </p>
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-1">
+                        사용법 보러가기 →
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </section>
+
               {/* App info */}
-              <section className="mt-8 pt-6 border-t border-border">
-                <div className="flex flex-col items-center text-center space-y-2">
+              <section className="mt-6 pt-4 border-t border-border">
+                <div className="flex flex-col items-center text-center space-y-1">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted">
                     <span className="text-xs font-semibold text-foreground">출결 관리 앱</span>
-                    <span className="text-[10px] text-muted-foreground font-mono">v2026.03.08</span>
+                    <span className="text-[10px] text-muted-foreground font-mono">v2026.03.19</span>
                   </div>
-                  <div className="space-y-0.5">
-                    <p className="text-xs text-muted-foreground">
-                      제작 · <span className="font-medium text-foreground">Easy쌤</span>
-                    </p>
-                    <a
-                      href="https://blog.naver.com/ai_korean_t"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-primary font-medium hover:underline"
-                    >
-                      blog.naver.com/ai_korean_t
-                    </a>
-                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    제작 · <span className="font-medium text-foreground">Easy쌤</span>
+                  </p>
                 </div>
               </section>
             </>
